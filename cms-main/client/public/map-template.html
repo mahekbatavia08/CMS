@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Map UI Template — Property Explorer</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* ============ APP SHELL ============ */
+  #app { position: fixed; inset: 0; width: 100%; height: 100%; background: #0a0a12; }
+
+  /* ============ MAP PLACEHOLDER ============ */
+  #map { width: 100%; height: 100%; position: relative; overflow: hidden; }
+  #map-canvas {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(61,142,255,0.10), transparent 45%),
+      radial-gradient(circle at 75% 70%, rgba(61,142,255,0.08), transparent 40%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px),
+      linear-gradient(160deg, #14171f 0%, #0c0e13 100%);
+  }
+  .demo-plot { position: absolute; border-radius: 4px; cursor: pointer; transition: filter .15s ease, transform .15s ease; }
+  .demo-plot:hover { filter: brightness(1.25); transform: scale(1.02); }
+  .demo-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 3; transition: transform .2s ease, z-index .2s ease; }
+  .demo-pin:hover { transform: translate(-50%, -108%) scale(1.05); z-index: 10; }
+  .demo-pin-label {
+    background: rgba(0,0,0,0.8); color: #fff; padding: 4px 6px; border-radius: 8px;
+    font-size: 10px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    display: flex; align-items: center; gap: 6px; position: relative;
+  }
+  .demo-pin-label::after {
+    content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+    border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid rgba(0,0,0,0.8);
+  }
+  .demo-pin-dot { width: 8px; height: 8px; border-radius: 50%; background: #3D8EFF; flex-shrink: 0; box-shadow: 0 0 6px #3D8EFF; }
+  .demo-pin-badge { font-size: 8px; padding: 1px 4px; border-radius: 3px; background: rgba(255,255,255,0.15); color: #82B1FF; font-weight: 500; }
+  .demo-landmark-pin { position:absolute; transform: translate(-50%,-50%); font-size:18px; cursor:pointer; filter: drop-shadow(0 2px 3px rgba(0,0,0,.6)); }
+
+  /* ============ BACK BUTTON ============ */
+  #backBtn {
+    position: fixed; top: 16px; left: 16px; z-index: 9999;
+    display: none; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px;
+    padding: 0 14px; height: 38px;
+    color: #f8fafc; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    font-size: 13px; font-weight: 500;
+    font-family: inherit;
+  }
+  #backBtn:hover {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  }
+  #backBtn:active {
+    transform: scale(0.97);
+  }
+  @media (max-width: 480px) {
+    #backBtn {
+      top: 12px; left: 12px; height: 34px; padding: 0 10px; gap: 6px;
+    }
+  }
+
+  /* ============ ABOUT US MODAL ============ */
+  .aboutUs {
+    position: fixed; inset: 0; z-index: 30;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .5s ease, visibility 0s linear .5s;
+  }
+  .aboutUs.open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .5s ease, visibility 0s linear 0s; }
+  .modal-box {
+    background: rgba(20,20,20,0.92); color: #fff; padding: 30px; border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(255,255,255,0.1); text-align: center; width: 90%; max-width: 400px; position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .modal-box h2 { margin-top: 0; margin-bottom: 6px; font-size: 1.5rem; font-weight: 600; }
+  .modal-box .tag { margin-bottom: 25px; color: #b9b9b9; line-height: 1.6; font-size: .85rem; }
+  .about-logo { width: 90px; height: auto; margin: 0 auto 16px; display: block; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); }
+  .about-row {
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;
+    background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
+    text-align: left;
+  }
+  .about-row svg { width: 22px; height: 22px; fill: #3D8EFF; flex-shrink: 0; margin-top: 2px; }
+  .about-row .lbl { font-size: .85rem; color: #b9b9b9; line-height: 1.4; font-weight: 500; }
+  .about-row a { display: inline-block; margin-top: 4px; color: #58a6ff; text-decoration: underline; font-size: .8rem; font-weight: 500; }
+  .about-close-btn {
+    position: absolute; top: 15px; right: 15px; background: transparent; border: none; cursor: pointer;
+    padding: 5px; border-radius: 50%; transition: background .2s;
+  }
+  .about-close-btn:hover { background: rgba(97,97,97,0.2); }
+  .about-close-btn svg { width: 24px; height: 24px; fill: #b9b9b9; }
+  .about-follow-us {
+    display: flex; align-items: center; justify-content: center; gap: 15px;
+    margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(136,136,136,0.1);
+  }
+  .about-follow-title { font-weight: 600; color: #b9b9b9; font-size: .9rem; }
+  .about-social { display: flex; gap: 10px; }
+  .about-social-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+    transition: all .2s;
+  }
+  .about-social-btn svg { width: 18px; height: 18px; fill: #fff; }
+  .about-social-btn:hover { background: #3D8EFF; border-color: #3D8EFF; }
+
+  /* ============ GALLERY / MAP WRAPPER ============ */
+  #galleryAndMap { width: 100%; height: 100%; position: relative; }
+  #gallery {
+    position: fixed; inset: 0; z-index: 4;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: flex-start; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .4s ease-in-out;
+  }
+  #gallery.visible { opacity: 1; pointer-events: auto; }
+  .gallery-grid {
+    width: 90%; height: 75%; margin-top: 5%; border-radius: 12px;
+    background: rgba(0,0,0,0.2); box-shadow: 0 0 25px rgba(255,255,255,0.2); padding: 20px;
+    display: flex; flex-direction: column;
+  }
+  .gallery-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .gallery-title { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+  .gallery-count { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: rgba(255,255,255,0.1); color: #82B1FF; border: 1px solid rgba(255,255,255,0.15); }
+  .gallery-grid-inner {
+    width: 100%; flex: 1; display: grid; grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: min-content; gap: 20px; overflow-y: auto; padding-right: 10px;
+    scrollbar-color: rgba(255,255,255,0.36) transparent;
+  }
+  .gallery-item { position: relative; border-radius: 12px; overflow: hidden; min-height: 225px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.07); background: linear-gradient(150deg, #23293a, #171a24); border: 1px solid rgba(255,255,255,0.08); transition: transform .2s ease; }
+  .gallery-item:hover { transform: translateY(-3px); }
+  .gallery-item .thumb {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: .03em;
+    background-size: cover; background-position: center;
+  }
+  .gallery-item-content { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.8); padding: 6px 12px 12px; }
+  .gallery-item-content h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 600; color: #f0f0f0; }
+  .gallery-item-content p { margin: 0; font-size: .85rem; color: #c2c2c2; line-height: 1.4; display: flex; align-items: center; gap: 6px; }
+  .gallery-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.12); color: #82B1FF; margin-bottom: 4px; }
+
+  /* ============ TOP-RIGHT LOGO / ABOUT ============ */
+  .view-switcher.view-switcher2 {
+    top: 20px; right: 20px; left: auto; bottom: auto; transform: none;
+    flex-direction: row; z-index: 5;
+    display: flex; align-items: center; gap: 0;
+    background: rgba(0,0,0,0.7); padding: 4px; border-radius: 12px; backdrop-filter: blur(6px);
+  }
+  .view-switcher2 img { width: 34px; height: 34px; object-fit: contain; margin: 2px; }
+  .view-switcher2 button { margin: 2px; padding: 8px 12px; }
+
+  .shreepad-btn {
+    background: rgba(20,20,20,0.6); color: #f0f0f0; border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 15px; cursor: pointer; font-weight: 500; margin: 5px; border-radius: 8px;
+    transition: all .2s ease-in-out; display: flex; align-items: center; gap: 8px;
+  }
+  .shreepad-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .shreepad-btn:hover { background: rgba(40,40,40,0.8); border: 1px solid rgba(255,255,255,0.1); }
+  .shreepad-btn.active-view { background-color: #ffffff; color: #000000; border-color: #333; }
+  .shreepad-btn.active-view svg { fill: #000000; }
+
+  /* ============ PROPERTY FILTER SLIDE PANEL ============ */
+  #filter-slide-panel {
+    position: fixed; left: 0; top: 0; width: 320px; max-width: 85vw; height: 100vh;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    padding: 68px 20px 24px 20px; display: flex; flex-direction: column; gap: 15px;
+    transform: translateX(-100%); transition: transform .4s ease-in-out; z-index: 10;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15); overflow-y: auto;
+  }
+  #filter-slide-panel.visible { transform: translateX(0); }
+  .filter-header { display: flex; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #333; position: relative; }
+  .filter-header h3 { margin: 0; font-size: 1.2rem; font-weight: 600; color: #f0f0f0; display: flex; align-items: center; gap: 8px; }
+  .filter-header h3 svg { width: 18px; height: 18px; fill: #f0f0f0; }
+  .filter-header-div { position: absolute; right: 0; display: flex; gap: 5px; flex-direction: row-reverse; }
+  .filter-close-btn, .master-reset-btn {
+    background: transparent; border: none; padding: 8px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all .2s ease;
+  }
+  .filter-close-btn:hover, .master-reset-btn:hover { background: rgba(134,134,134,0.1); }
+  .filter-close-btn svg { width: 18px; height: 18px; fill: #f0f0f0; }
+  .master-reset-btn svg { width: 14px; height: 14px; fill: #f0f0f0; }
+  .master-reset-btn { display: none; }
+  .master-reset-btn.show { display: flex; }
+  .filter-group-row { display: flex; align-items: center; justify-content: space-between; color: #b9b9b9; }
+  .filter-group-label { font-size: 14px; color: #b9b9b9; }
+  .group-reset-btn { background: transparent; border: none; padding: 4px; cursor: pointer; display: none; }
+  .group-reset-btn.show { display: flex; }
+  .group-reset-btn svg { width: 12px; height: 12px; fill: #f0f0f0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    background: rgba(20,20,20,0.6); color: #f0f0f0; border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all .2s ease-in-out;
+  }
+  .chip:hover { background: rgba(40,40,40,0.8); }
+  .chip.active { background: #fff; color: #333; border-color: #333; }
+  .filter-divider { border: none; height: 1px; background-color: #ccc; margin: 0; }
+
+  /* ============ LANDMARK FILTER PANEL (bottom-left) ============ */
+  #filter-panel {
+    position: fixed; left: 20px; bottom: 20px;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); border-radius: 12px; padding: 8px 16px;
+    display: flex; flex-direction: column; opacity: 0; transition: opacity .4s ease-in-out; pointer-events: none; z-index: 5;
+  }
+  #filter-panel.visible { opacity: 1; pointer-events: auto; }
+  #show-all-container { display: flex; justify-content: flex-start; align-items: center; gap: 5px; margin: 10px 0; color: #ffffff; }
+  #show-all-container span { color: #f0f0f0; font-weight: 500; }
+  .landmarkTitle { font-size: 12px; color: #f0f0f0; margin-top: 6px; }
+  .filter-toggle { display: flex; justify-content: flex-start; align-items: center; gap: 5px; margin: 10px 0; }
+  .filter-toggle span { color: #f0f0f0; font-weight: 500; font-size: .9rem; }
+  .switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider-toggle { position: absolute; inset: 0; background-color: rgba(80,80,80,0.8); border: 1px solid rgba(10,10,10,0.8); transition: .4s; }
+  .slider-toggle::before { position: absolute; content: ''; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #fff; transition: .4s; }
+  input:checked + .slider-toggle { background-color: #dadadad5; border: 1px solid rgba(255,255,255,0.1); }
+  input:checked + .slider-toggle::before { transform: translateX(18px); }
+  .slider-toggle.round { border-radius: 22px; }
+  .slider-toggle.round::before { border-radius: 50%; }
+  .switch .slider-toggle { border-radius: 22px; }
+  .switch .slider-toggle::before { border-radius: 50%; }
+  .collapse-arrow { cursor: pointer; color: #f0f0f0; display: flex; margin-left: auto; }
+  .collapse-arrow svg { width: 24px; height: 24px; }
+  #category-filters { overflow: hidden; transition: max-height .35s ease, opacity .35s ease; max-height: 500px; opacity: 1; }
+  #category-filters.collapsed { max-height: 0; opacity: 0; }
+
+  /* ============ BOTTOM VIEW SWITCHER ============ */
+  .view-switcher {
+    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 5;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); padding: 4px; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex; gap: 0; align-items: center;
+  }
+  .toggle-group {
+    position: relative; overflow: hidden; display: flex; gap: 0; padding: 2px;
+    background: rgba(20,20,20,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+  }
+  .toggle-group .shreepad-btn {
+    position: relative; z-index: 1; padding: 8px 16px; border-radius: 6px; background: transparent; border: none;
+    transition: all .3s ease;
+  }
+  .toggle-group .shreepad-btn svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.7); }
+  .toggle-group .shreepad-btn span { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); }
+  .toggle-group .shreepad-btn.active-view svg { fill: #333; }
+  .toggle-group .shreepad-btn.active-view span { color: #333; }
+  .toggle-group .shreepad-btn:hover:not(.active-view) { background: rgba(255,255,255,0.1); }
+  .slider-pill {
+    position: absolute; margin: 5px; top: 2px; left: 2px;
+    height: calc(100% - 15px); width: calc(50% - 7px);
+    background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform .3s ease; z-index: 0;
+  }
+  .toggle-group .shreepad-btn.active-view { background: transparent; box-shadow: none; }
+
+  #showStatusBtn.status-active { background: rgba(255,255,255,1); color: #000; border-color: rgba(255,255,255,0.2); }
+  #showStatusBtn.status-active svg { fill: #000; }
+  #showStatusBtn.status-active span { color: #000; }
+
+  /* ============ SELECTED FILTERS BAR ============ */
+  .selected-filters-bar {
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%) scale(.95);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    padding: 4px 12px 16px; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    border-radius: 999px; font-size: 13px; color: #f0f0f0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+    text-align: center; z-index: 5; min-width: 140px;
+  }
+  .selected-filters-bar.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) scale(1); transition: opacity .25s ease, transform .25s ease, visibility 0s linear 0s; }
+
+  /* ============ PLOT STATUS: STATS BOX + PILLS ============ */
+  #us-stats-box {
+    position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 9999;
+    width: min(340px, 90vw); display: none; flex-direction: column; gap: 0;
+  }
+  #us-stats-box.open { display: flex; }
+  #us-proj-row {
+    display: flex; align-items: center; justify-content: center; gap: 6px; padding: 5px 8px; margin-bottom: 5px;
+    background: rgba(10,10,18,0.92); backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px; box-shadow: 0 0 0 .5px rgba(255,255,255,0.05) inset, 0 4px 24px rgba(0,0,0,0.65);
+  }
+  #us-proj-label {
+    font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.95); letter-spacing: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  #us-pills-row {
+    display: flex; align-items: stretch; padding: 3px; gap: 1px;
+    background: rgba(10,10,18,0.92); backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 14px; box-shadow: 0 0 0 .5px rgba(255,255,255,0.05) inset, 0 4px 24px rgba(0,0,0,0.65);
+    min-height: 60px; position: relative;
+  }
+  .us-stat-pill { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px; border-radius: 11px; cursor: pointer; position: relative; z-index: 1; }
+  .us-pill-num {
+    font-size: 20px; font-weight: 800; letter-spacing: -.05em; line-height: 1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .pill-all .us-pill-num { color: rgba(255,255,255,0.8); }
+  .pill-avail .us-pill-num { color: #3D8EFF; }
+  .pill-reserved .us-pill-num { color: #FFB020; }
+  .pill-sold .us-pill-num { color: #FF4444; }
+  .us-pill-lbl {
+    font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.8);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  #us-pill-slider-bg { position: absolute; top: 2px; left: 0; height: calc(100% - 4px); width: 0; border-radius: 10px; transition: left .32s cubic-bezier(.34,1.2,.64,1), width .32s cubic-bezier(.34,1.2,.64,1), background .2s ease; z-index: 0; }
+
+  #us-close-outside {
+    position: fixed; z-index: 20001; background: rgba(0,0,0,0.85); border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 50%; width: 34px; height: 34px; cursor: pointer; display: none; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+
+  /* ============ PLOT DETAIL ISLAND ============ */
+  #us-island {
+    position: fixed; left: 50%; transform: translateX(-50%); z-index: 19999;
+    background: rgba(10,10,18,0.92); border: 1px solid rgba(255,255,255,0.09);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; width: 180px; height: 36px; border-radius: 999px;
+    transition: width .5s cubic-bezier(.34,1.2,.64,1), height .5s cubic-bezier(.34,1.2,.64,1), border-radius .45s cubic-bezier(.34,1.2,.64,1), top .3s ease, opacity .3s ease;
+  }
+  #us-island.idle { opacity: 1; pointer-events: auto; }
+  #us-island.expanded { opacity: 1; pointer-events: auto; width: min(320px, 88vw); height: auto; min-height: 0; border-radius: 22px; padding: 12px 16px; flex-direction: column; align-items: stretch; gap: 10px; }
+  #us-island.idle #us-island-detail { display: none; }
+  #us-island.expanded #us-island-idle-content { display: none; }
+  #us-island-idle-content { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; }
+  .us-idle-text {
+    font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.92);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .us-idle-pulse { width: 7px; height: 7px; border-radius: 50%; background: #3D8EFF; animation: idleBreath 1.8s ease-in-out infinite; }
+  @keyframes idleBreath { 0%{opacity:.3;transform:scale(.7);} 50%{opacity:1;transform:scale(1.3);} 100%{opacity:.3;transform:scale(.7);} }
+  #us-island-detail { display: flex; flex-direction: column; gap: 10px; }
+  #us-island-top { display: flex; align-items: center; justify-content: space-between; }
+  #us-island-plot-num {
+    font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .us-island-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 20px; font-size: 8px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .us-island-badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .us-island-badge.AVAILABLE { background: rgba(61,142,255,0.14); color: #82B1FF; border: .5px solid rgba(61,142,255,0.3); }
+  .us-island-badge.AVAILABLE::before { background: #3D8EFF; }
+  .us-island-badge.RESERVED { background: rgba(255,176,32,0.14); color: #FFD87A; border: .5px solid rgba(255,176,32,0.3); }
+  .us-island-badge.RESERVED::before { background: #FFB020; }
+  .us-island-badge.SOLD { background: rgba(255,68,68,0.14); color: #FF8A8A; border: .5px solid rgba(255,68,68,0.28); }
+  .us-island-badge.SOLD::before { background: #FF4444; }
+  #us-island-grid { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 1px; background: rgba(255,255,255,0.05); border: .5px solid rgba(255,255,255,0.06); border-radius: 13px; overflow: hidden; }
+  .us-ig-cell { background: rgba(255,255,255,0.03); padding: 6px 3px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .us-ig-val {
+    font-size: 16px; font-weight: 800; color: rgba(255,255,255,0.92); letter-spacing: -.03em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-variant-numeric: tabular-nums;
+  }
+  .us-ig-lbl {
+    font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.6);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  #us-island-bar { height: 1.5px; border-radius: 2px; margin: 0 auto; width: 0; transition: width .45s ease .25s; }
+  #us-island.expanded #us-island-bar { width: 45%; }
+  #us-island-bar.AVAILABLE { background: linear-gradient(90deg,transparent,#3D8EFF,transparent); }
+  #us-island-bar.RESERVED { background: linear-gradient(90deg,transparent,#FFB020,transparent); }
+  #us-island-bar.SOLD { background: linear-gradient(90deg,transparent,#FF4444,transparent); }
+
+  /* ============ LEGEND ============ */
+  #sp-legend {
+    position: fixed; bottom: 90px; right: 16px; z-index: 9998; background: rgba(10,10,18,0.88);
+    backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 10px 14px;
+    display: none; flex-direction: column; gap: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  #sp-legend.visible { display: flex; }
+  .sp-leg-row { display: flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.65); }
+  .sp-leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .sp-leg-dot.AVAILABLE { background: #3D8EFF; }
+  .sp-leg-dot.RESERVED { background: #FFB020; }
+  .sp-leg-dot.SOLD { background: #FF4444; }
+
+  /* ============ FLOATING CONTROLS (share / VR / enquire / music / fullscreen) ============ */
+  .floating-controls {
+    position: fixed; bottom: 80px; right: 10px; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); padding: 8px;
+    display: flex; flex-direction: column; gap: 8px; z-index: 9999;
+  }
+  .control-btn { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s ease; }
+  .control-btn:hover { background: rgba(255,255,255,0.18); }
+  .control-btn svg { width: 22px; height: 22px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    #filter-slide-panel { width: 300px; }
+    .gallery-grid-inner { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    #filter-panel { left: 50%; transform: translateX(-50%); bottom: 84px; }
+    .gallery-grid-inner { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    #filter-panel { left: 5%; transform: none; bottom: 84px; padding: 3px 10px; max-width: 90vw; }
+    .filter-toggle { margin: 6px 0; }
+    .gallery-grid { height: 80dvh; margin-top: 5%; padding: 10px 15px 10px 10px; }
+    .gallery-grid-inner { grid-template-columns: 1fr; }
+    .gallery-item { min-height: 175px; }
+    .view-switcher { width: 90%; bottom: 8dvh; gap: 5px; }
+    .view-switcher .shreepad-btn { flex-direction: column; margin: 2px; padding: 5px 2px; width: 100%; }
+    .view-switcher.view-switcher2 { top: 8px; right: 8px; }
+    .view-switcher2 img { width: 26px; height: 26px; }
+    .view-switcher2 span { display: none; }
+    #filter-slide-panel { width: 85%; height: 40vh; left: 50%; top: auto; bottom: 0; transform: translateX(-50%) translateY(100%); border-radius: 16px 16px 0 0; padding: 15px; padding-bottom: 0; }
+    #filter-slide-panel.visible { transform: translateX(-50%) translateY(0); }
+    #us-stats-box { width: min(310px, 78vw); }
+    #sp-legend { bottom: 14dvh; right: 10px; }
+    .modal-box { margin: 0 15px; padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <button id="backBtn" title="Back">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;">
+      <path d="m12 19-7-7 7-7"/>
+      <path d="M19 12H5"/>
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <div id="aboutUs" class="aboutUs">
+    <div class="modal-box">
+      <button id="aboutUsCloseBtn" class="about-close-btn">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <img class="about-logo" id="aboutLogoImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%233D8EFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>" alt="Logo">
+      <h2 id="aboutTitle">360eye</h2>
+      <p class="tag" id="aboutTagline">Immersive 360° virtual tours for real estate.</p>
+
+      <div class="about-row">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="lbl" id="aboutAddress">Sample Site, Anthem Circle, City, State — 000000<br><a id="aboutMapLink" href="#">Open in Google</a></div>
+      </div>
+      <div class="about-row">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <div class="lbl"><a id="aboutPhone" href="tel:+910000000000" style="margin-top:0;">+91 00000 00000</a></div>
+      </div>
+
+      <div class="about-follow-us">
+        <span class="about-follow-title">Follow Us :</span>
+        <div class="about-social">
+          <a id="aboutWebLink" href="#" class="about-social-btn" title="Website"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></a>
+          <a id="aboutInstaLink" href="#" class="about-social-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></a>
+          <a id="aboutFbLink" href="#" class="about-social-btn" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="galleryAndMap">
+
+    <div id="gallery">
+      <div class="gallery-grid">
+        <div class="gallery-header">
+          <div class="gallery-title">
+            <span id="galleryMainTitle">Master Portfolio Gallery</span>
+            <span class="gallery-count" id="galleryCountBadge">0 Projects</span>
+          </div>
+        </div>
+        <div class="gallery-grid-inner" id="galleryGrid"></div>
+      </div>
+    </div>
+
+    <div id="map">
+      <div id="map-canvas"></div>
+    </div>
+
+    <div id="filter-slide-panel">
+      <div class="filter-header">
+        <svg viewBox="0 0 24 24" style="fill:#f0f0f0;width:18px;margin-right:10px"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+        <h3 style="margin:0;">Property Filter</h3>
+        <div class="filter-header-div">
+          <button id="filterCloseBtn" class="filter-close-btn" title="Close filter">
+            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+          <button id="masterResetBtnHeader" class="master-reset-btn" title="Reset all filters">
+            <svg viewBox="0 0 90 90"><path d="M75.702 53.014c-2.142 7.995-7.27 14.678-14.439 18.816-7.168 4.138-15.519 5.239-23.514 3.095-16.505-4.423-26.335-21.448-21.913-37.953C20.258 20.467 37.286 10.64 53.79 15.06c4.213 1.129 8.076 3.118 11.413 5.809l-8.349 8.35h26.654V2.565l-8.354 8.354c-5.1-4.405-11.133-7.61-17.74-9.381C33.451-4.882 8.735 9.389 2.314 33.35c-6.42 23.961 7.851 48.678 31.811 55.098C38.001 89.486 41.934 90 45.842 90c7.795 0 15.488-2.044 22.42-6.046 10.407-6.008 17.851-15.709 20.962-27.317z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="filter-group-category" style="margin-top:10px;">
+        <div class="filter-group-row"><span class="filter-group-label">Category</span><button class="group-reset-btn" data-group="category"><svg viewBox="0 0 90 90"><path d="M75.702 53.014c-2.142 7.995-7.27 14.678-14.439 18.816-7.168 4.138-15.519 5.239-23.514 3.095-16.505-4.423-26.335-21.448-21.913-37.953C20.258 20.467 37.286 10.64 53.79 15.06c4.213 1.129 8.076 3.118 11.413 5.809l-8.349 8.35h26.654V2.565l-8.354 8.354c-5.1-4.405-11.133-7.61-17.74-9.381C33.451-4.882 8.735 9.389 2.314 33.35c-6.42 23.961 7.851 48.678 31.811 55.098C38.001 89.486 41.934 90 45.842 90c7.795 0 15.488-2.044 22.42-6.046 10.407-6.008 17.851-15.709 20.962-27.317z"/></svg></button></div>
+        <div class="chip-row" id="categoryChips" data-group="category" style="margin-top:5px;"></div>
+      </div>
+
+      <hr class="filter-divider" id="divider-category">
+
+      <div id="filter-group-type">
+        <div class="filter-group-row"><span class="filter-group-label">Property Type</span><button class="group-reset-btn" data-group="type"><svg viewBox="0 0 90 90"><path d="M75.702 53.014c-2.142 7.995-7.27 14.678-14.439 18.816-7.168 4.138-15.519 5.239-23.514 3.095-16.505-4.423-26.335-21.448-21.913-37.953C20.258 20.467 37.286 10.64 53.79 15.06c4.213 1.129 8.076 3.118 11.413 5.809l-8.349 8.35h26.654V2.565l-8.354 8.354c-5.1-4.405-11.133-7.61-17.74-9.381C33.451-4.882 8.735 9.389 2.314 33.35c-6.42 23.961 7.851 48.678 31.811 55.098C38.001 89.486 41.934 90 45.842 90c7.795 0 15.488-2.044 22.42-6.046 10.407-6.008 17.851-15.709 20.962-27.317z"/></svg></button></div>
+        <div class="chip-row" id="propertyTypeChips" data-group="type" style="margin-top:5px;"></div>
+      </div>
+
+      <hr class="filter-divider" id="divider-type">
+
+      <div id="filter-group-possession">
+        <div class="filter-group-row"><span class="filter-group-label">Possession Status</span><button class="group-reset-btn" data-group="possession"><svg viewBox="0 0 90 90"><path d="M75.702 53.014c-2.142 7.995-7.27 14.678-14.439 18.816-7.168 4.138-15.519 5.239-23.514 3.095-16.505-4.423-26.335-21.448-21.913-37.953C20.258 20.467 37.286 10.64 53.79 15.06c4.213 1.129 8.076 3.118 11.413 5.809l-8.349 8.35h26.654V2.565l-8.354 8.354c-5.1-4.405-11.133-7.61-17.74-9.381C33.451-4.882 8.735 9.389 2.314 33.35c-6.42 23.961 7.851 48.678 31.811 55.098C38.001 89.486 41.934 90 45.842 90c7.795 0 15.488-2.044 22.42-6.046 10.407-6.008 17.851-15.709 20.962-27.317z"/></svg></button></div>
+        <div class="chip-row" id="possessionChips" data-group="possession" style="margin-top:5px;"></div>
+      </div>
+
+      <hr class="filter-divider" id="divider-possession">
+
+      <div id="filter-group-area">
+        <div class="filter-group-row"><span class="filter-group-label">Area</span><button class="group-reset-btn" data-group="area"><svg viewBox="0 0 90 90"><path d="M75.702 53.014c-2.142 7.995-7.27 14.678-14.439 18.816-7.168 4.138-15.519 5.239-23.514 3.095-16.505-4.423-26.335-21.448-21.913-37.953C20.258 20.467 37.286 10.64 53.79 15.06c4.213 1.129 8.076 3.118 11.413 5.809l-8.349 8.35h26.654V2.565l-8.354 8.354c-5.1-4.405-11.133-7.61-17.74-9.381C33.451-4.882 8.735 9.389 2.314 33.35c-6.42 23.961 7.851 48.678 31.811 55.098C38.001 89.486 41.934 90 45.842 90c7.795 0 15.488-2.044 22.42-6.046 10.407-6.008 17.851-15.709 20.962-27.317z"/></svg></button></div>
+        <div class="chip-row" id="areaChips" data-group="area" style="margin-top:5px;"></div>
+      </div>
+    </div>
+
+    <div class="view-switcher view-switcher2">
+      <img id="topLogo" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%233D8EFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>" alt="Logo">
+      <button id="showInstructionBtn" class="shreepad-btn">
+        <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <span>About Us</span>
+      </button>
+    </div>
+
+    <div id="filter-panel" class="visible">
+      <div class="landmarkTitle">Landmark Filter</div>
+      <div id="show-all-container">
+        <label class="switch"><input type="checkbox" id="show-all-toggle"><span class="slider-toggle round"></span></label>
+        <span style="font-size:12px;font-weight:600;color:#ffffff;">Show All</span>
+        <span class="collapse-arrow" id="landmarkCollapseArrow">
+          <svg id="arrowUp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <svg id="arrowDown" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </span>
+      </div>
+      <hr class="filter-divider">
+      <div id="category-filters">
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="transit"><span class="slider-toggle round"></span></label><span>BRTS, Metro, Railway</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="roads"><span class="slider-toggle round"></span></label><span>Roads, Bridges, Circle</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="school"><span class="slider-toggle round"></span></label><span>School, College</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="hospital"><span class="slider-toggle round"></span></label><span>Hospital</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="grocery"><span class="slider-toggle round"></span></label><span>Grocery &amp; Shopping Centre</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="water"><span class="slider-toggle round"></span></label><span>Garden, Lake, Temple</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="multiplex"><span class="slider-toggle round"></span></label><span>Multiplex</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="police"><span class="slider-toggle round"></span></label><span>Police Stations</span></div>
+        <div class="filter-toggle"><label class="switch"><input type="checkbox" class="landmark-toggle" data-cat="textile"><span class="slider-toggle round"></span></label><span>Textile Market</span></div>
+      </div>
+    </div>
+
+    <div class="selected-filters-bar" id="selectedFiltersBar"></div>
+
+    <div class="view-switcher">
+      <div class="toggle-group">
+        <div class="slider-pill" style="transform: translateX(100%);"></div>
+        <button id="showGalleryBtn" class="shreepad-btn">
+          <svg viewBox="0 0 24 24"><path d="M4 10h4v4H4v-4zm0-6h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zm-6 6h4v4h-4v-4zm0 6h4v4h-4v-4zm-6 0h4v4H4v-4zm12-6h4v4h-4v-4zm0 6h4v4h-4v-4z"/></svg>
+          <span>Gallery</span>
+        </button>
+        <button id="showMapBtn" class="shreepad-btn active-view">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <span id="mapBtnText">Map</span>
+        </button>
+      </div>
+      <button id="showFilterBtn" class="shreepad-btn">
+        <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+        <span>Filter</span>
+      </button>
+      <button id="showStatusBtn" class="shreepad-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <span>Plot Status</span>
+      </button>
+    </div>
+
+  </div>
+
+  <div id="us-stats-box">
+    <div id="us-proj-row">
+      <button id="us-proj-prev" style="background:rgba(255,255,255,0.08);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <span id="us-proj-label">Select Project</span>
+      <button id="us-proj-next" style="background:rgba(255,255,255,0.08);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+    </div>
+    <div id="us-pills-row">
+      <div id="us-pill-slider-bg"></div>
+      <div class="us-stat-pill pill-all active" data-f="ALL"><span class="us-pill-num" id="usp-total">0</span><span class="us-pill-lbl">Total</span></div>
+      <div class="us-stat-pill pill-avail" data-f="AVAILABLE"><span class="us-pill-num" id="usp-avail">0</span><span class="us-pill-lbl">Available</span></div>
+      <div class="us-stat-pill pill-reserved" data-f="RESERVED"><span class="us-pill-num" id="usp-resv">0</span><span class="us-pill-lbl">Reserved</span></div>
+      <div class="us-stat-pill pill-sold" data-f="SOLD"><span class="us-pill-num" id="usp-sold">0</span><span class="us-pill-lbl">Sold</span></div>
+    </div>
+  </div>
+
+  <button id="us-close-outside" title="Close plot status">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <div id="us-island">
+    <div id="us-island-idle-content">
+      <div class="us-idle-pulse"></div>
+      <span class="us-idle-text">Tap a plot</span>
+    </div>
+    <div id="us-island-detail">
+      <div id="us-island-top">
+        <div id="us-island-plot-num">Plot #—</div>
+        <div class="us-island-badge AVAILABLE" id="us-island-badge">Available</div>
+      </div>
+      <div id="us-island-grid">
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-sqyd">—</span><span class="us-ig-lbl">Sq. Yds</span></div>
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-size">—</span><span class="us-ig-lbl">Length × Width</span></div>
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-facing">—</span><span class="us-ig-lbl">Facing</span></div>
+      </div>
+      <div id="us-island-bar" class="AVAILABLE"></div>
+    </div>
+  </div>
+
+  <div id="sp-legend">
+    <div class="sp-leg-row"><div class="sp-leg-dot AVAILABLE"></div>Available</div>
+    <div class="sp-leg-row"><div class="sp-leg-dot RESERVED"></div>Reserved</div>
+    <div class="sp-leg-row"><div class="sp-leg-dot SOLD"></div>Sold</div>
+  </div>
+
+  <div class="floating-controls">
+    <div class="control-btn" id="shareCtrl" title="Share">
+      <svg viewBox="0 0 26 26" fill="none" stroke="#f0f0f0" stroke-width="2"><circle cx="18" cy="5" r="3" fill="#f0f0f0"/><circle cx="6" cy="12" r="3" fill="#f0f0f0"/><circle cx="18" cy="19" r="3" fill="#f0f0f0"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    </div>
+    <div class="control-btn" id="vrCtrl" title="VR">
+      <svg viewBox="0 0 32 32" style="transform:scale(1.2);"><path fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M3,11v10c0,1.1,0.9,2,2,2h6.2c0.5,0,1-0.2,1.4-0.6l2-2c0.8-0.8,2-0.8,2.8,0l2,2c0.4,0.4,0.9,0.6,1.4,0.6H27c1.1,0,2-0.9,2-2V11c0-1.1-0.9-2-2-2H5C3.9,9,3,9.9,3,11z"/><circle fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="9" cy="16" r="3"/><circle fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="23" cy="16" r="3"/></svg>
+    </div>
+    <div class="control-btn" id="enquireCtrl" title="Enquire">
+      <svg viewBox="-2 -2 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#39ff14"/><stop offset="50%" stop-color="#00ff99"/><stop offset="100%" stop-color="#00cc66"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#neonGreen)">
+          <path d="M9.516.012C4.206.262.017 4.652.033 9.929a9.798 9.798 0 0 0 1.085 4.465L.06 19.495a.387.387 0 0 0 .47.453l5.034-1.184a9.981 9.981 0 0 0 4.284 1.032c5.427.083 9.951-4.195 10.12-9.58C20.15 4.441 15.351-.265 9.516.011zm6.007 15.367a7.784 7.784 0 0 1-5.52 2.27 7.77 7.77 0 0 1-3.474-.808l-.701-.347-3.087.726.65-3.131-.346-.672A7.62 7.62 0 0 1 2.197 9.9c0-2.07.812-4.017 2.286-5.48a7.85 7.85 0 0 1 5.52-2.271c2.086 0 4.046.806 5.52 2.27a7.672 7.672 0 0 1 2.287 5.48c0 2.052-.825 4.03-2.287 5.481z"/>
+          <path d="M14.842 12.045l-1.931-.55a.723.723 0 0 0-.713.186l-.472.478a.707.707 0 0 1-.765.16c-.913-.367-2.835-2.063-3.326-2.912a.694.694 0 0 1 .056-.774l.412-.53a.71.71 0 0 0 .089-.726L7.38 5.553a.723.723 0 0 0-1.125-.256c-.539.453-1.179 1.14-1.256 1.903-.137 1.343.443 3.036 2.637 5.07 2.535 2.349 4.566 2.66 5.887 2.341.75-.18 1.35-.903 1.727-1.494a.713.713 0 0 0-.408-1.072z"/>
+        </g>
+      </svg>
+    </div>
+    <div class="control-btn" id="musicCtrl" title="Music">
+      <svg id="musicOnIcon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M4,11v10h5l10,6V5L9,11H4z M17,8.532v14.935L9.554,19H6v-6h3.554L17,8.532z M21.657,21.657l-1.414-1.414c2.339-2.34,2.339-6.146,0-8.486l1.414-1.414C24.775,13.462,24.775,18.538,21.657,21.657z M24.485,24.485l-1.414-1.414c3.899-3.899,3.899-10.243,0-14.143l1.414-1.414C29.164,12.193,29.164,19.807,24.485,24.485z"/></svg>
+      <svg id="musicOffIcon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="display:none;"><path fill="#ffffff" d="M1.5 5h2.79l3.86-3.83.85.35v13l-.85.33L4.29 11H1.5l-.5-.5v-5l.5-.5zm3.35 5.17L8 13.31V2.73L4.85 5.85 4.5 6H2v4h2.5l.35.17zm9.381-4.108l.707.707L13.207 8.5l1.731 1.732-.707.707L12.5 9.207l-1.732 1.732-.707-.707L11.793 8.5 10.06 6.77l.707-.707 1.733 1.73 1.731-1.731z"/></svg>
+    </div>
+    <div class="control-btn" id="fsCtrl" title="Fullscreen">
+      <svg id="fsOffIcon" viewBox="0 0 64 64" fill="none" stroke="#ffffff" stroke-width="6"><polyline points="20 8 8 8 8 20"/><line x1="8" y1="8" x2="24" y2="24"/><polyline points="56 20 56 8 44 8"/><line x1="56" y1="8" x2="40" y2="24"/><polyline points="44 56 56 56 56 44"/><line x1="56" y1="56" x2="40" y2="40"/><polyline points="8 44 8 56 20 56"/><line x1="8" y1="56" x2="24" y2="40"/></svg>
+      <svg id="fsOnIcon" style="display:none" viewBox="0 0 64 64" fill="none" stroke="#ffffff" stroke-width="6"><polyline points="52 40 40 40 40 52"/><line x1="40" y1="40" x2="56" y2="56"/><polyline points="24 52 24 40 12 40"/><line x1="24" y1="40" x2="8" y2="56"/><polyline points="12 24 24 24 24 12"/><line x1="24" y1="24" x2="8" y2="8"/><polyline points="40 12 40 24 52 24"/><line x1="40" y1="24" x2="56" y2="8"/></svg>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   PROJECT & MAP DATA ENGINE
+   ============================================================ */
+let activeProjects = [];
+let masterProjectInfo = null;
+let cmsApiBase = '';
+
+const DEMO_PROJECTS = [
+  { id: 'p1', name: 'Sample Park 1', category: 'Industrial', type: 'Open Plot', possession: 'Coming Soon', area: 'North Zone', top: '30%', left: '22%' },
+  { id: 'p2', name: 'Sample Bungalows', category: 'Residential', type: 'Bungalow', possession: 'Ready', area: 'Ring Road', top: '55%', left: '48%' },
+  { id: 'p3', name: 'Sample Commercial Hub', category: 'Commercial', type: 'Shop & Office', possession: 'Coming Soon', area: 'East Zone', top: '68%', left: '70%' },
+  { id: 'p4', name: 'Sample Park 2', category: 'Industrial', type: 'Open Plot', possession: 'Ready', area: 'South Zone', top: '20%', left: '65%' },
+];
+
+const DEMO_LANDMARKS = [
+  { cat: 'transit', name: 'Central BRTS', top: '40%', left: '35%', icon: '🚌' },
+  { cat: 'roads', name: 'Ring Road Circle', top: '58%', left: '30%', icon: '⭕' },
+  { cat: 'school', name: 'Greenfield School', top: '25%', left: '48%', icon: '🏫' },
+  { cat: 'hospital', name: 'City Hospital', top: '72%', left: '40%', icon: '🏥' },
+  { cat: 'grocery', name: 'Metro Mall', top: '45%', left: '62%', icon: '🛍️' },
+  { cat: 'water', name: 'City Garden', top: '35%', left: '55%', icon: '🌳' },
+  { cat: 'multiplex', name: 'Cinema Multiplex', top: '62%', left: '58%', icon: '🎬' },
+  { cat: 'police', name: 'Police Station', top: '48%', left: '25%', icon: '🚓' },
+  { cat: 'textile', name: 'Textile Market', top: '75%', left: '55%', icon: '🧵' },
+];
+
+const DEMO_UNITS = (() => {
+  const statuses = ['AVAILABLE','AVAILABLE','AVAILABLE','RESERVED','SOLD'];
+  const units = [];
+  for (let i = 1; i <= 24; i++) {
+    units.push({ id: i, sqyd: (250 + i * 7.3).toFixed(1), length: 40 + (i % 5), width: 60 + (i % 4), orientation: ['east','west','north','south'][i % 4], status: statuses[i % statuses.length] });
+  }
+  return units;
+})();
+
+const activeFilters = { category: new Set(), type: new Set(), possession: new Set(), area: new Set(), amenities: new Set() };
+
+/* ============================================================
+   INITIALIZE / RECEIVE CMS DATA
+   ============================================================ */
+window.addEventListener('message', (event) => {
+  const data = event.data;
+  if (!data) return;
+
+  if (data.type === 'INIT_PROJECT_DATA') {
+    masterProjectInfo = data.project;
+    if (data.apiBase) cmsApiBase = data.apiBase;
+    const rawList = data.childProjects && data.childProjects.length > 0
+      ? data.childProjects
+      : (data.project ? [data.project] : []);
+
+    buildProjectsDataset(rawList);
+    updateHeaderAndAboutUs();
+    renderGallery();
+    renderMapPins();
+    buildDynamicFilters();
+  }
+});
+
+function normalizePossession(val) {
+  if (!val) return 'Ready Position';
+  const s = String(val).toLowerCase().trim();
+  if (s.includes('ready') || s.includes('complet') || s.includes('position') || s.includes('possession')) return 'Ready Position';
+  if (s.includes('ongo') || s.includes('on-go') || s.includes('under') || s.includes('progress')) return 'Ongoing';
+  if (s.includes('soon') || s.includes('upcom')) return 'Coming Soon';
+  return val.trim();
+}
+
+function buildProjectsDataset(list) {
+  const rows = 6;
+  activeProjects = list.map((p, idx) => {
+    const name = p.general?.projectName || ('Project ' + (idx + 1));
+
+    let rawCats = [];
+    if (Array.isArray(p.filters?.category) && p.filters.category.length > 0) {
+      rawCats = p.filters.category.flatMap(c => typeof c === 'string' ? c.split(',') : [c]);
+    } else if (typeof p.filters?.category === 'string' && p.filters.category.trim()) {
+      rawCats = p.filters.category.split(',');
+    } else if (p.filters?.customCategory && String(p.filters.customCategory).trim()) {
+      rawCats = [p.filters.customCategory.trim()];
+    } else if (p.general?.projectType && String(p.general.projectType).trim()) {
+      rawCats = [p.general.projectType.trim()];
+    }
+
+    rawCats = rawCats.map(c => {
+      const s = String(c || '').trim();
+      if ((s.toLowerCase() === 'custom' || !s) && p.filters?.customCategory) {
+        return String(p.filters.customCategory).trim();
+      }
+      return s;
+    }).filter(Boolean);
+
+    if (rawCats.length === 0) {
+      const lowerName = (name || '').toLowerCase();
+      if (lowerName.includes('industr') || lowerName.includes('textile park') || lowerName.includes('eco park') || lowerName.includes('embro park')) {
+        rawCats = ['Industrial'];
+      } else if (lowerName.includes('commercial') || lowerName.includes('techno park') || lowerName.includes('market') || lowerName.includes('trade') || lowerName.includes('business')) {
+        rawCats = ['Commercial'];
+      } else {
+        rawCats = ['Residential'];
+      }
+    }
+    const categories = Array.from(new Set(rawCats));
+
+    let rawTypes = [];
+    if (Array.isArray(p.filters?.propertyType)) {
+      rawTypes = p.filters.propertyType.flatMap(t => typeof t === 'string' ? t.split(',') : [t]);
+    } else if (typeof p.filters?.propertyType === 'string' && p.filters.propertyType.trim()) {
+      rawTypes = p.filters.propertyType.split(',');
+    } else if (p.general?.propertyType) {
+      rawTypes = typeof p.general.propertyType === 'string' 
+        ? p.general.propertyType.split(',') 
+        : (Array.isArray(p.general.propertyType) ? p.general.propertyType : []);
+    }
+
+    rawTypes = rawTypes.flatMap(t => {
+      const s = String(t || '').trim();
+      const lowerS = s.toLowerCase();
+      if (lowerS === 'open plot' || lowerS === 'plot' || lowerS === 'plotting') return ['Plot'];
+      if (lowerS === 'bunglow' || lowerS === 'bungalow') return ['Bungalow'];
+      if (lowerS === 'villa') return ['Villa'];
+      if (lowerS === 'shop') return ['Shop'];
+      if (lowerS === 'office') return ['Office'];
+      if (lowerS === 'shop & office' || lowerS === 'shop and office') return ['Shop', 'Office'];
+      if (lowerS === 'both') return ['Bungalow', 'Villa'];
+      if (lowerS === 'constructed') return ['Shop', 'Office'];
+      if (lowerS === '2 bhk' || lowerS === '2bhk') return ['2 BHK'];
+      if (lowerS === '3 bhk' || lowerS === '3bhk') return ['3 BHK'];
+      if (lowerS === '4 bhk' || lowerS === '4bhk') return ['4 BHK'];
+      if (lowerS === 'penthouse') return ['Penthouse'];
+      return [s];
+    });
+
+    if (rawTypes.length === 0) {
+      const lowerName = (name || '').toLowerCase();
+      if (lowerName.includes('bunglow') || lowerName.includes('bungalow')) rawTypes.push('Bungalow');
+      else if (lowerName.includes('villa')) rawTypes.push('Villa');
+      else if (lowerName.includes('shop')) rawTypes.push('Shop');
+      else if (lowerName.includes('office')) rawTypes.push('Office');
+      else if (categories.includes('Industrial') || lowerName.includes('park') || lowerName.includes('estate') || lowerName.includes('plot')) rawTypes.push('Plot');
+      else if (categories.includes('Commercial')) rawTypes.push('Shop', 'Office');
+      else rawTypes.push('Bungalow', '2 BHK');
+    }
+    const types = Array.from(new Set(rawTypes.map(s => String(s || '').trim()).filter(Boolean)));
+
+    let poss = p.filters?.possessionStatus || p.general?.possessionStatus || p.general?.possession || '';
+    if (!poss && p.status?.status && ['Ongoing', 'Coming Soon', 'Ready Position', 'Ready Possession'].includes(p.status.status)) {
+      poss = p.status.status;
+    }
+    const possession = normalizePossession(poss);
+
+    function isValidPlaceName(str) {
+      if (!str) return false;
+      const s = String(str).trim().toLowerCase();
+      return s && s !== 'true' && s !== 'false' && s !== 'null' && s !== 'undefined' && s !== '1' && s !== '0' && s !== '[object object]';
+    }
+
+    let rawCities = [];
+    if (typeof p.filters?.city === 'string' && p.filters.city.trim()) {
+      rawCities = p.filters.city.split(',');
+    } else if (Array.isArray(p.filters?.city)) {
+      rawCities = p.filters.city.flatMap(c => typeof c === 'string' ? c.split(',') : [c]);
+    } else if (p.location?.city && String(p.location.city).trim()) {
+      rawCities = [p.location.city.trim()];
+    }
+    const cities = Array.from(new Set(rawCities.map(s => String(s || '').trim()).filter(isValidPlaceName)));
+    const city = cities[0] || (masterProjectInfo?.location?.city && isValidPlaceName(masterProjectInfo.location.city) ? masterProjectInfo.location.city : '');
+
+    let rawAreas = [];
+    if (Array.isArray(p.filters?.area) && p.filters.area.length > 0) {
+      rawAreas = p.filters.area.flatMap(a => typeof a === 'string' ? a.split(',') : [a]);
+    } else if (typeof p.filters?.area === 'string' && p.filters.area.trim()) {
+      rawAreas = p.filters.area.split(',');
+    } else if (Array.isArray(p.general?.area) && p.general.area.length > 0) {
+      rawAreas = p.general.area.flatMap(a => typeof a === 'string' ? a.split(',') : [a]);
+    } else if (typeof p.general?.area === 'string' && p.general.area.trim()) {
+      rawAreas = p.general.area.split(',');
+    } else if (p.location?.address && String(p.location.address).trim() && isValidPlaceName(p.location.address)) {
+      rawAreas = [p.location.address.trim()];
+    }
+
+    let areas = Array.from(new Set(rawAreas.map(s => String(s || '').trim()).filter(isValidPlaceName)));
+    if (areas.length === 0 && city) {
+      areas = [city];
+    }
+    const primaryArea = areas[0] || city || '';
+
+    const builder = p.general?.builderName || p.general?.projectName || 'Developer';
+    const desc = p.general?.description || '';
+    
+    function resolveImageUrl(url) {
+      if (!url) return '';
+      if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('blob:') || url.startsWith('data:')) return url;
+      const base = cmsApiBase || window.location.origin;
+      const cleanPath = url.startsWith('/') ? url : '/' + url.replace(/\\/g, '/');
+      return base + cleanPath;
+    }
+
+    const rawImg = p.media?.thumbnailImage?.url 
+      || p.media?.coverImage?.url 
+      || (p.media?.gallery && p.media.gallery[0]?.images && p.media.gallery[0].images[0]?.url) 
+      || '';
+
+    const img = resolveImageUrl(rawImg);
+
+    const r = idx % rows;
+    const c = Math.floor(idx / rows);
+    const topPct = 16 + (r * 12) + (Math.sin(idx * 1.5) * 4);
+    const leftPct = 12 + (c * 11) + (Math.cos(idx * 1.2) * 3);
+
+    return {
+      id: p._id || ('proj-' + idx),
+      name: name,
+      category: categories[0] || 'Residential',
+      categories: categories,
+      type: types[0] || 'Open Plot',
+      types: types,
+      possession: possession,
+      city: city,
+      cities: cities,
+      area: primaryArea,
+      areas: areas,
+      builder: builder,
+      desc: desc,
+      img: img,
+      top: Math.min(88, Math.max(12, topPct)) + '%',
+      left: Math.min(88, Math.max(10, leftPct)) + '%',
+      raw: p
+    };
+  });
+}
+
+function updateHeaderAndAboutUs() {
+  const title = (masterProjectInfo && masterProjectInfo.general?.projectName)
+    ? masterProjectInfo.general.projectName
+    : (activeProjects.length > 0 && activeProjects[0].raw?.portfolioName ? activeProjects[0].raw.portfolioName : 'Master Portfolio');
+
+  if (masterProjectInfo) {
+    document.getElementById('galleryMainTitle').textContent = title + ' Gallery';
+    document.getElementById('galleryCountBadge').textContent = activeProjects.length + ' Projects';
+    document.getElementById('aboutTitle').textContent = title;
+    if (masterProjectInfo.general?.description) {
+      document.getElementById('aboutTagline').textContent = masterProjectInfo.general.description;
+    }
+    if (masterProjectInfo.contact?.phone) {
+      document.getElementById('aboutPhone').textContent = masterProjectInfo.contact.phone;
+      document.getElementById('aboutPhone').href = 'tel:' + masterProjectInfo.contact.phone;
+      document.getElementById('enquireCtrl').onclick = function() {
+        const msg = encodeURIComponent('Hello! I am interested in exploring ' + title + '. Please share details.');
+        const cleanPhone = String(masterProjectInfo.contact.phone).replace(/[^0-9]/g, '');
+        window.open('https://wa.me/' + (cleanPhone.length <= 10 ? ('91' + cleanPhone) : cleanPhone) + '?text=' + msg, '_blank');
+      };
+    }
+    if (masterProjectInfo.location?.address || masterProjectInfo.location?.city) {
+      const fullAddr = [masterProjectInfo.location.address, masterProjectInfo.location.city, masterProjectInfo.location.state].filter(Boolean).join(', ');
+      document.getElementById('aboutAddress').innerHTML = fullAddr + '<br><a id="aboutMapLink" target="_blank" href="https://maps.google.com/?q=' + encodeURIComponent(fullAddr) + '">Open in Google</a>';
+    }
+    if (masterProjectInfo.contact?.social?.website) {
+      document.getElementById('aboutWebLink').href = masterProjectInfo.contact.social.website;
+      document.getElementById('aboutWebLink').target = '_blank';
+    }
+    if (masterProjectInfo.contact?.social?.instagram) {
+      document.getElementById('aboutInstaLink').href = masterProjectInfo.contact.social.instagram;
+      document.getElementById('aboutInstaLink').target = '_blank';
+    }
+    if (masterProjectInfo.contact?.social?.facebook) {
+      document.getElementById('aboutFbLink').href = masterProjectInfo.contact.social.facebook;
+      document.getElementById('aboutFbLink').target = '_blank';
+    }
+    if (masterProjectInfo.media?.logoImage?.url) {
+      const logoUrl = masterProjectInfo.media.logoImage.url.startsWith('http')
+        ? masterProjectInfo.media.logoImage.url
+        : (cmsApiBase + '/' + masterProjectInfo.media.logoImage.url.replace(/^\//, ''));
+      document.getElementById('topLogo').src = logoUrl;
+      document.getElementById('aboutLogoImg').src = logoUrl;
+    }
+  }
+}
+
+/* ============================================================
+   RENDER GALLERY
+   ============================================================ */
+const galleryGrid = document.getElementById('galleryGrid');
+function renderGallery() {
+  galleryGrid.innerHTML = '';
+  const list = activeProjects.length > 0 ? activeProjects : DEMO_PROJECTS;
+  list.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.dataset.id = p.id;
+    const bgStyle = p.img ? `background-image: url('${p.img}');` : '';
+    item.innerHTML = `
+      <div class="thumb" style="${bgStyle}">${!p.img ? p.name : ''}</div>
+      <div class="gallery-item-content">
+        <h3>${p.name}</h3>
+        <p>${p.category || ''} · ${p.area || ''}</p>
+      </div>`;
+    item.addEventListener('click', () => {
+      selectProject(p);
+      showMapBtn.click();
+    });
+    galleryGrid.appendChild(item);
+  });
+}
+
+/* ============================================================
+   RENDER MAP PINS & PLOTS
+   ============================================================ */
+const mapEl = document.getElementById('map');
+const landmarkLayer = document.createElement('div');
+landmarkLayer.id = 'landmarkLayer';
+mapEl.appendChild(landmarkLayer);
+
+DEMO_LANDMARKS.forEach(l => {
+  const el = document.createElement('div');
+  el.className = 'demo-landmark-pin';
+  el.dataset.cat = l.cat;
+  el.style.top = l.top; el.style.left = l.left;
+  el.style.display = 'none';
+  el.title = l.name;
+  el.textContent = l.icon;
+  landmarkLayer.appendChild(el);
+});
+
+const plotLayer = document.createElement('div');
+plotLayer.id = 'plotLayer';
+plotLayer.style.display = 'none';
+mapEl.appendChild(plotLayer);
+
+function renderPlotGrid() {
+  plotLayer.innerHTML = '';
+  const cols = 6, cellW = 6, cellH = 5, startTop = 32, startLeft = 30;
+  DEMO_UNITS.forEach((u, i) => {
+    const r = Math.floor(i / cols), c = i % cols;
+    const div = document.createElement('div');
+    div.className = 'demo-plot';
+    div.style.top = (startTop + r * (cellH + 1)) + '%';
+    div.style.left = (startLeft + c * (cellW + 1)) + '%';
+    div.style.width = cellW + '%';
+    div.style.height = cellH + '%';
+    div.style.background = colorFor(u.status);
+    div.dataset.unitId = u.id;
+    div.addEventListener('click', () => showUnitCard(u));
+    plotLayer.appendChild(div);
+  });
+}
+function colorFor(status) {
+  return { AVAILABLE: 'rgba(61,142,255,0.55)', RESERVED: 'rgba(255,152,0,0.55)', SOLD: 'rgba(247,42,0,0.7)' }[status] || 'rgba(96,125,139,0.5)';
+}
+
+function renderMapPins() {
+  document.querySelectorAll('.demo-pin').forEach(pin => pin.remove());
+  const list = activeProjects.length > 0 ? activeProjects : DEMO_PROJECTS;
+  list.forEach(p => {
+    const pin = document.createElement('div');
+    pin.className = 'demo-pin';
+    pin.id = 'pin-' + p.id;
+    pin.style.top = p.top; pin.style.left = p.left;
+    pin.dataset.name = p.name;
+    pin.dataset.category = p.category;
+    pin.dataset.type = p.type;
+    pin.dataset.possession = p.possession;
+    pin.dataset.area = p.area;
+    const badgeHtml = p.area ? `<span class="demo-pin-badge">${p.area}</span>` : '';
+    pin.innerHTML = `<div class="demo-pin-label"><span class="demo-pin-dot"></span><span>${p.name}</span>${badgeHtml}</div>`;
+    pin.addEventListener('click', () => selectProject(p));
+    mapEl.appendChild(pin);
+  });
+}
+
+// Initial render for fallback demo data
+renderMapPins();
+renderGallery();
+
+/* ============================================================
+   DYNAMIC & DEMO FILTERS ENGINE (MIRRORS TagsFiltersForm)
+   ============================================================ */
+function getDynamicPropertyTypes(selectedCategories = []) {
+  const isIndustrial = selectedCategories.includes("Industrial");
+  const isResidential = selectedCategories.includes("Residential");
+  const isCommercial = selectedCategories.includes("Commercial");
+
+  if (isIndustrial) {
+    return ["Plot"];
+  }
+  if (isResidential && isCommercial) {
+    return ["2 BHK", "3 BHK", "4 BHK", "Penthouse", "Shop", "Office"];
+  }
+  if (isResidential) {
+    return ["Bungalow", "Villa", "2 BHK", "3 BHK", "4 BHK", "Penthouse"];
+  }
+  if (isCommercial) {
+    return ["Shop", "Office"];
+  }
+  return ["Bungalow", "Villa", "2 BHK", "3 BHK", "4 BHK", "Penthouse", "Shop", "Office", "Plot"];
+}
+
+function populateCategoryChips(values) {
+  const container = document.getElementById('categoryChips');
+  if (!container) return;
+  container.innerHTML = '';
+  values.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.value = val;
+    btn.textContent = val;
+    if (activeFilters.category.has(val)) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      handleCategoryToggle(val);
+    });
+    container.appendChild(btn);
+  });
+}
+
+function handleCategoryToggle(cat) {
+  const isAlreadySelected = activeFilters.category.has(cat);
+  if (isAlreadySelected) {
+    if (cat === "Residential" || cat === "Commercial") {
+      activeFilters.category.delete(cat);
+    } else {
+      activeFilters.category.clear();
+    }
+  } else if (cat === "Industrial") {
+    activeFilters.category.clear();
+    activeFilters.category.add("Industrial");
+  } else if (cat === "Residential" || cat === "Commercial") {
+    const allowed = Array.from(activeFilters.category).filter(c => c === "Residential" || c === "Commercial");
+    activeFilters.category.clear();
+    allowed.forEach(c => activeFilters.category.add(c));
+    activeFilters.category.add(cat);
+  } else {
+    activeFilters.category.clear();
+    activeFilters.category.add(cat);
+  }
+
+  document.querySelectorAll('#categoryChips .chip').forEach(btn => {
+    btn.classList.toggle('active', activeFilters.category.has(btn.dataset.value));
+  });
+
+  refreshPropertyTypeChips();
+  applyFilters();
+}
+
+function refreshPropertyTypeChips() {
+  const selectedCats = Array.from(activeFilters.category);
+  const types = getDynamicPropertyTypes(selectedCats);
+  activeFilters.type.forEach(t => {
+    if (!types.includes(t)) activeFilters.type.delete(t);
+  });
+  populateChipsContainer('propertyTypeChips', types, 'type');
+}
+
+function buildDynamicFilters() {
+  var catSet = new Set(['Residential', 'Commercial', 'Industrial']);
+  var isValidFilterChip = function(str) {
+    if (!str) return false;
+    var s = String(str).trim().toLowerCase();
+    return s && s !== 'true' && s !== 'false' && s !== 'null' && s !== 'undefined' && s !== '1' && s !== '0';
+  };
+
+  activeProjects.forEach(p => {
+    p.categories?.forEach(c => { if (c && isValidFilterChip(c)) catSet.add(c); });
+  });
+  populateCategoryChips(Array.from(catSet));
+  refreshPropertyTypeChips();
+
+  populateChipsContainer('possessionChips', ['Ready Position', 'Ongoing', 'Coming Soon'], 'possession');
+
+  var areaSet = new Set();
+  activeProjects.forEach(p => {
+    p.areas?.forEach(a => { if (a && isValidFilterChip(a)) areaSet.add(a); });
+  });
+
+  const areaGroup = document.getElementById('filter-group-area');
+  if (areaSet.size > 0) {
+    populateChipsContainer('areaChips', Array.from(areaSet), 'area');
+    if (areaGroup) areaGroup.style.display = 'block';
+  } else if (areaGroup) {
+    areaGroup.style.display = 'none';
+  }
+}
+
+function populateChipsContainer(containerId, values, group) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  values.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.value = val;
+    btn.textContent = val;
+    if (activeFilters[group] && activeFilters[group].has(val)) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      if (btn.classList.contains('active')) activeFilters[group].add(val);
+      else activeFilters[group].delete(val);
+      applyFilters();
+    });
+    container.appendChild(btn);
+  });
+}
+
+// Initial default filter chips for demo mode
+populateCategoryChips(['Residential', 'Commercial', 'Industrial']);
+refreshPropertyTypeChips();
+populateChipsContainer('possessionChips', ['Ready Position', 'Ongoing', 'Coming Soon'], 'possession');
+populateChipsContainer('areaChips', ['North Zone', 'South Zone', 'East Zone', 'Ring Road'], 'area');
+
+function refreshGroupResetButtons() {
+  document.querySelectorAll('.group-reset-btn').forEach(btn => {
+    const group = btn.dataset.group;
+    btn.classList.toggle('show', activeFilters[group]?.size > 0);
+  });
+  const anyActive = Object.values(activeFilters).some(s => s.size > 0);
+  document.querySelectorAll('.master-reset-btn').forEach(btn => btn.classList.toggle('show', anyActive));
+}
+
+document.querySelectorAll('.group-reset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const group = btn.dataset.group;
+    activeFilters[group].clear();
+    if (group === 'category') {
+      activeFilters.type.clear();
+      refreshPropertyTypeChips();
+    }
+    document.querySelectorAll(`.chip-row[data-group="${group}"] .chip`).forEach(c => c.classList.remove('active'));
+    applyFilters();
+  });
+});
+
+document.getElementById('masterResetBtnHeader').addEventListener('click', () => {
+  Object.keys(activeFilters).forEach(k => activeFilters[k].clear());
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  refreshPropertyTypeChips();
+  applyFilters();
+});
+
+function applyFilters() {
+  const bar = document.getElementById('selectedFiltersBar');
+  const allVals = [
+    ...activeFilters.category,
+    ...activeFilters.type,
+    ...activeFilters.possession,
+    ...activeFilters.area
+  ];
+
+  const pins = document.querySelectorAll('.demo-pin');
+  pins.forEach(pin => {
+    const matchCat = activeFilters.category.size === 0 || activeFilters.category.has(pin.dataset.category);
+    const matchType = activeFilters.type.size === 0 || activeFilters.type.has(pin.dataset.type);
+    const matchPoss = activeFilters.possession.size === 0 || activeFilters.possession.has(pin.dataset.possession);
+    const matchArea = activeFilters.area.size === 0 || activeFilters.area.has(pin.dataset.area);
+    const match = matchCat && matchType && matchPoss && matchArea;
+    pin.style.display = match ? 'flex' : 'none';
+  });
+
+  const cards = document.querySelectorAll('.gallery-item');
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    const p = (activeProjects.length > 0 ? activeProjects : DEMO_PROJECTS).find(item => item.id == id);
+    if (p) {
+      const matchCat = activeFilters.category.size === 0 || activeFilters.category.has(p.category);
+      const matchType = activeFilters.type.size === 0 || activeFilters.type.has(p.type);
+      const matchPoss = activeFilters.possession.size === 0 || activeFilters.possession.has(p.possession);
+      const matchArea = activeFilters.area.size === 0 || activeFilters.area.has(p.area);
+      card.style.display = (matchCat && matchType && matchPoss && matchArea) ? 'block' : 'none';
+    }
+  });
+
+  if (allVals.length) { bar.textContent = allVals.join('  ·  '); bar.classList.add('show'); }
+  else { bar.classList.remove('show'); }
+  refreshGroupResetButtons();
+}
+
+/* ============================================================
+   VIEW SWITCHER: Gallery / Map
+   ============================================================ */
+const showGalleryBtn = document.getElementById('showGalleryBtn');
+const showMapBtn = document.getElementById('showMapBtn');
+const galleryDiv = document.getElementById('gallery');
+const filterPanel = document.getElementById('filter-panel');
+const slider = document.querySelector('.slider-pill');
+const toggleGroup = document.querySelector('.toggle-group');
+
+function setInitialSliderPosition() {
+  if (!slider || !toggleGroup) return;
+  const buttons = toggleGroup.querySelectorAll('.shreepad-btn');
+  const activeIndex = Array.from(buttons).findIndex(btn => btn.classList.contains('active-view'));
+  if (activeIndex >= 0) slider.style.transform = `translateX(${activeIndex * 100}%)`;
+}
+setInitialSliderPosition();
+
+showGalleryBtn.addEventListener('click', () => {
+  galleryDiv.classList.add('visible');
+  filterPanel.classList.remove('visible');
+  showGalleryBtn.classList.add('active-view');
+  showMapBtn.classList.remove('active-view');
+  if (slider) slider.style.transform = 'translateX(0%)';
+  if (statusModeOn) setStatusMode(false);
+});
+showMapBtn.addEventListener('click', () => {
+  galleryDiv.classList.remove('visible');
+  filterPanel.classList.add('visible');
+  showMapBtn.classList.add('active-view');
+  showGalleryBtn.classList.remove('active-view');
+  if (slider) slider.style.transform = 'translateX(100%)';
+});
+
+/* ============================================================
+   PROPERTY FILTER SLIDE PANEL
+   ============================================================ */
+const filterSlidePanel = document.getElementById('filter-slide-panel');
+const showFilterBtn = document.getElementById('showFilterBtn');
+document.getElementById('filterCloseBtn').addEventListener('click', () => {
+  filterSlidePanel.classList.remove('visible');
+  showFilterBtn.classList.remove('active-view');
+});
+showFilterBtn.addEventListener('click', () => {
+  const open = filterSlidePanel.classList.toggle('visible');
+  showFilterBtn.classList.toggle('active-view', open);
+  if (open && statusModeOn) setStatusMode(false);
+});
+
+/* ============================================================
+   LANDMARK TOGGLES + COLLAPSE ARROW
+   ============================================================ */
+const showAllToggle = document.getElementById('show-all-toggle');
+const landmarkToggles = document.querySelectorAll('.landmark-toggle');
+function updateLandmarks() {
+  landmarkToggles.forEach(t => {
+    document.querySelectorAll(`.demo-landmark-pin[data-cat="${t.dataset.cat}"]`).forEach(el => { el.style.display = t.checked ? 'block' : 'none'; });
+  });
+  showAllToggle.checked = Array.from(landmarkToggles).every(t => t.checked);
+}
+landmarkToggles.forEach(t => t.addEventListener('change', updateLandmarks));
+showAllToggle.addEventListener('change', e => {
+  landmarkToggles.forEach(t => { t.checked = e.target.checked; });
+  updateLandmarks();
+});
+
+const categoryFilters = document.getElementById('category-filters');
+const arrowUp = document.getElementById('arrowUp');
+const arrowDown = document.getElementById('arrowDown');
+document.getElementById('landmarkCollapseArrow').addEventListener('click', () => {
+  const collapsed = categoryFilters.classList.toggle('collapsed');
+  arrowUp.style.display = collapsed ? 'none' : 'block';
+  arrowDown.style.display = collapsed ? 'block' : 'none';
+});
+
+/* ============================================================
+   ABOUT US MODAL
+   ============================================================ */
+const aboutUs = document.getElementById('aboutUs');
+document.getElementById('showInstructionBtn').addEventListener('click', () => aboutUs.classList.add('open'));
+document.getElementById('aboutUsCloseBtn').addEventListener('click', () => aboutUs.classList.remove('open'));
+aboutUs.addEventListener('click', e => { if (e.target === aboutUs) aboutUs.classList.remove('open'); });
+
+/* ============================================================
+   PLOT STATUS MODE
+   ============================================================ */
+let statusModeOn = false;
+let activeUnitFilter = 'ALL';
+const statsBox = document.getElementById('us-stats-box');
+const island = document.getElementById('us-island');
+const showStatusBtn = document.getElementById('showStatusBtn');
+const legend = document.getElementById('sp-legend');
+const closeOutsideBtn = document.getElementById('us-close-outside');
+
+function selectProject(p) {
+  document.getElementById('us-proj-label').textContent = (p.name || '').toUpperCase();
+  document.getElementById('us-island-plot-num').textContent = p.name;
+  document.getElementById('us-ig-sqyd').textContent = p.area || 'City Zone';
+  document.getElementById('us-ig-size').textContent = p.type || 'Open Plot';
+  document.getElementById('us-ig-facing').textContent = p.category || 'Development';
+  
+  const badge = document.getElementById('us-island-badge');
+  badge.className = 'us-island-badge AVAILABLE';
+  badge.textContent = p.possession || 'Ready';
+
+  setStatusMode(true);
+}
+
+function setStatusMode(on) {
+  statusModeOn = on;
+  showStatusBtn.classList.toggle('status-active', on);
+  statsBox.classList.toggle('open', on);
+  legend.classList.toggle('visible', on);
+  plotLayer.style.display = on ? 'block' : 'none';
+  filterPanel.style.setProperty('display', on ? 'none' : '', 'important');
+  closeOutsideBtn.style.display = on ? 'flex' : 'none';
+  if (on) {
+    renderPlotGrid();
+    island.classList.remove('expanded');
+    island.classList.add('idle');
+    updateStatsBanner();
+    positionCloseBtn();
+  } else {
+    island.classList.remove('idle', 'expanded');
+  }
+}
+showStatusBtn.addEventListener('click', () => {
+  if (statusModeOn) setStatusMode(false);
+  else selectProject(activeProjects.length > 0 ? activeProjects : DEMO_PROJECTS[0]);
+});
+closeOutsideBtn.addEventListener('click', () => setStatusMode(false));
+
+function positionCloseBtn() {
+  const row = document.getElementById('us-proj-row');
+  const rect = row.getBoundingClientRect();
+  closeOutsideBtn.style.top = (rect.top + rect.height / 2 - 17) + 'px';
+  closeOutsideBtn.style.left = Math.min(rect.right + 8, window.innerWidth - 42) + 'px';
+}
+window.addEventListener('resize', () => { if (statusModeOn) positionCloseBtn(); });
+
+function updateStatsBanner() {
+  const counts = { AVAILABLE: 0, RESERVED: 0, SOLD: 0 };
+  DEMO_UNITS.forEach(u => counts[u.status]++);
+  document.getElementById('usp-total').textContent = DEMO_UNITS.length;
+  document.getElementById('usp-avail').textContent = counts.AVAILABLE;
+  document.getElementById('usp-resv').textContent = counts.RESERVED;
+  document.getElementById('usp-sold').textContent = counts.SOLD;
+}
+
+document.querySelectorAll('.us-stat-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.us-stat-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeUnitFilter = pill.dataset.f;
+    movePillSlider(pill);
+    document.querySelectorAll('.demo-plot').forEach(el => {
+      const unit = DEMO_UNITS.find(u => u.id == el.dataset.unitId);
+      el.style.display = (activeUnitFilter === 'ALL' || unit.status === activeUnitFilter) ? 'block' : 'none';
+    });
+  });
+});
+function movePillSlider(pill) {
+  const sliderBg = document.getElementById('us-pill-slider-bg');
+  const row = document.getElementById('us-pills-row');
+  const rowRect = row.getBoundingClientRect();
+  const pillRect = pill.getBoundingClientRect();
+  sliderBg.style.width = pillRect.width + 'px';
+  sliderBg.style.left = (pillRect.left - rowRect.left) + 'px';
+  const colorMap = { ALL: 'rgba(255,255,255,0.12)', AVAILABLE: 'rgba(61,142,255,0.18)', RESERVED: 'rgba(255,176,32,0.18)', SOLD: 'rgba(255,68,68,0.18)' };
+  sliderBg.style.background = colorMap[pill.dataset.f];
+}
+setTimeout(() => movePillSlider(document.querySelector('.us-stat-pill.active')), 200);
+
+function showUnitCard(unit) {
+  const icons = { east: '→', west: '←', north: '↑', south: '↓' };
+  document.getElementById('us-island-plot-num').textContent = `Plot #${unit.id}`;
+  document.getElementById('us-ig-sqyd').textContent = unit.sqyd;
+  document.getElementById('us-ig-size').textContent = `${unit.length} × ${unit.width}`;
+  document.getElementById('us-ig-facing').textContent = `${icons[unit.orientation]} ${unit.orientation[0].toUpperCase()}${unit.orientation.slice(1)}`;
+  const badge = document.getElementById('us-island-badge');
+  badge.className = `us-island-badge ${unit.status}`;
+  badge.textContent = unit.status[0] + unit.status.slice(1).toLowerCase();
+  document.getElementById('us-island-bar').className = unit.status;
+  island.classList.remove('idle');
+  island.classList.add('expanded');
+}
+
+/* ============================================================
+   BACK BUTTON & FLOATING CONTROLS
+   ============================================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.parent.postMessage({ type: 'GO_BACK_TO_MAP_SKIN' }, '*');
+});
+if (window.self !== window.top) {
+  document.getElementById('backBtn').style.display = 'flex';
+}
+
+document.getElementById('shareCtrl').addEventListener('click', async () => {
+  const shareData = { title: document.title, text: 'Check out this property tour', url: location.href };
+  if (navigator.share) { try { await navigator.share(shareData); } catch (e) {} }
+  else { await navigator.clipboard.writeText(location.href); alert('Link copied to clipboard!'); }
+});
+document.getElementById('vrCtrl').addEventListener('click', () => {
+  alert('VR mode — activated for 360 viewer.');
+});
+document.getElementById('enquireCtrl').addEventListener('click', () => {
+  const msg = encodeURIComponent('Hello! I am interested in your property. Please share more information.');
+  window.open(`https://wa.me/910000000000?text=${msg}`, '_blank');
+});
+let musicOn = true;
+document.getElementById('musicCtrl').addEventListener('click', () => {
+  musicOn = !musicOn;
+  document.getElementById('musicOnIcon').style.display = musicOn ? 'block' : 'none';
+  document.getElementById('musicOffIcon').style.display = musicOn ? 'none' : 'block';
+});
+document.getElementById('fsCtrl').addEventListener('click', () => {
+  const goingFullscreen = !document.fullscreenElement;
+  if (goingFullscreen) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+  document.getElementById('fsOffIcon').style.display = goingFullscreen ? 'none' : 'block';
+  document.getElementById('fsOnIcon').style.display = goingFullscreen ? 'block' : 'none';
+});
+
+// Request initial data from parent if embedded
+window.parent.postMessage({ type: 'GET_PROJECT_DATA' }, '*');
+</script>
+</body>
+</html>

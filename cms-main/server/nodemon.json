@@ -1,0 +1,21 @@
+{
+  "watch": [
+    "app.js",
+    "server.js",
+    "config",
+    "controllers",
+    "middlewares",
+    "models",
+    "routes",
+    "services",
+    "utils",
+    "validators"
+  ],
+  "ignore": [
+    "uploads/**",
+    "Local-Backup/**",
+    "LocalBackup/**",
+    "node_modules/**"
+  ],
+  "ext": "js,json"
+}

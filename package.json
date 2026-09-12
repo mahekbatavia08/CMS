@@ -1,0 +1,12 @@
+{
+  "name": "cms-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix cms-main",
+    "dev:client": "npm run dev:client --prefix cms-main",
+    "dev:server": "npm run dev:server --prefix cms-main",
+    "build": "npm run build --prefix cms-main",
+    "start": "npm start --prefix cms-main"
+  }
+}
