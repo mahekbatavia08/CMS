@@ -33,8 +33,7 @@
     "morgan": "^1.10.0",
     "multer": "^2.2.0",
     "pdf-to-png-converter": "^4.2.0",
-    "sharp": "^0.35.3",
-    "start": "^5.1.0"
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.3"

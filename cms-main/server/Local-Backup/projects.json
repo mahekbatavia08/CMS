@@ -1,1 +1,3565 @@
-[]
+[
+  {
+    "_id": "6aa77f5ebfebdd68ac31e276",
+    "general": {
+      "projectName": "Copy Of Pramukh ABC Group Data For Filter",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "copy-of-pramukh-abc-group-data-for-filter-o69e0",
+      "description": "Master Portfolio created for Copy Of Pramukh ABC Group Data For Filter"
+    },
+    "projectTag": "P1788775413368",
+    "projectCategory": "portfolio",
+    "parentProject": null,
+    "alsoShowAsIndividual": false,
+    "specifications": [],
+    "filters": {
+      "amenities": [],
+      "tags": [],
+      "category": [],
+      "propertyType": [],
+      "area": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "media": {
+      "gallery": []
+    },
+    "createdAt": "2026-09-14T05:00:14.892Z",
+    "updatedAt": "2026-09-14T05:00:14.892Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5ebfebdd68ac31e27c",
+    "general": {
+      "projectName": "Happiness Residency",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "happiness-residency-6z6oh",
+      "description": "",
+      "area": "Amroli"
+    },
+    "projectTag": "P1788775413369",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Amroli"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:14.937Z",
+    "updatedAt": "2026-09-14T05:00:14.937Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5ebfebdd68ac31e288",
+    "general": {
+      "projectName": "Nena Bungalows",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "nena-bungalows-eupsp",
+      "description": "",
+      "area": "New Mota Varachha"
+    },
+    "projectTag": "P1788775413370",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Both"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "New Mota Varachha"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:14.991Z",
+    "updatedAt": "2026-09-14T05:00:14.991Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e293",
+    "general": {
+      "projectName": "Pragati Eco Park",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pragati-eco-park-06fj0",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413371",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.033Z",
+    "updatedAt": "2026-09-14T05:00:15.033Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e29e",
+    "general": {
+      "projectName": "Pramukh ABC Bungalows",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-bungalows-9a1my",
+      "description": "",
+      "area": "Mota Varachha"
+    },
+    "projectTag": "P1788775413372",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Mota Varachha"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.073Z",
+    "updatedAt": "2026-09-14T05:00:15.073Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2a9",
+    "general": {
+      "projectName": "Pramukh ABC Bunglows Amroli",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-bunglows-amroli-13w7h",
+      "description": "",
+      "area": "Amroli"
+    },
+    "projectTag": "P1788775413373",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Bungalow"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Amroli"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.111Z",
+    "updatedAt": "2026-09-14T05:00:15.111Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2b4",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-z4ve4",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413374",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Constructed"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.149Z",
+    "updatedAt": "2026-09-14T05:00:15.149Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2bf",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 1",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-1-s6f25",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413375",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.190Z",
+    "updatedAt": "2026-09-14T05:00:15.190Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2ca",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 2",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-2-ob343",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413376",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.232Z",
+    "updatedAt": "2026-09-14T05:00:15.232Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2d5",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 3",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-3-cmd0e",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413377",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.275Z",
+    "updatedAt": "2026-09-14T05:00:15.275Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2e0",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 4",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-4-1n5v1",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413378",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.308Z",
+    "updatedAt": "2026-09-14T05:00:15.308Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2eb",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 5",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-5-e5yzv",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413379",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.341Z",
+    "updatedAt": "2026-09-14T05:00:15.341Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e2f6",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 6",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-6-ad7me",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413380",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Both"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.375Z",
+    "updatedAt": "2026-09-14T05:00:15.375Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e301",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 7",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-7-0m5ki",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413381",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Both"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.406Z",
+    "updatedAt": "2026-09-14T05:00:15.406Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e30c",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 8",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-8-lcqn4",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413382",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.435Z",
+    "updatedAt": "2026-09-14T05:00:15.435Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e317",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 9",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-9-4r4lu",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413383",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.468Z",
+    "updatedAt": "2026-09-14T05:00:15.468Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e322",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 10",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-10-hwj8z",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413384",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.508Z",
+    "updatedAt": "2026-09-14T05:00:15.508Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e32d",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 11",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-11-4a7ud",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413385",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.548Z",
+    "updatedAt": "2026-09-14T05:00:15.548Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e338",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 12",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-12-3m3uc",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413386",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.584Z",
+    "updatedAt": "2026-09-14T05:00:15.584Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e343",
+    "general": {
+      "projectName": "Pramukh ABC Embro Park 13",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-embro-park-13-xwiau",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413387",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Constructed"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.619Z",
+    "updatedAt": "2026-09-14T05:00:15.619Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e34e",
+    "general": {
+      "projectName": "Pramukh ABC Techno park 14",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-techno-park-14-cg8bd",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413388",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.657Z",
+    "updatedAt": "2026-09-14T05:00:15.657Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e359",
+    "general": {
+      "projectName": "Pramukh ABC Techno Park 15",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-techno-park-15-j1xh1",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413389",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.700Z",
+    "updatedAt": "2026-09-14T05:00:15.700Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e364",
+    "general": {
+      "projectName": "Pramukh ABC Techno Park 16",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-techno-park-16-23yof",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413390",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.738Z",
+    "updatedAt": "2026-09-14T05:00:15.738Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e36f",
+    "general": {
+      "projectName": "Pramukh ABC Techno Park 17",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-techno-park-17-4w3l8",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413391",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.779Z",
+    "updatedAt": "2026-09-14T05:00:15.779Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e37a",
+    "general": {
+      "projectName": "Pramukh ABC Techno Park 18",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-techno-park-18-umjy8",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413392",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "Coming soon",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.822Z",
+    "updatedAt": "2026-09-14T05:00:15.822Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e385",
+    "general": {
+      "projectName": "Pramukh ABC Villa",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-abc-villa-plrqj",
+      "description": "",
+      "area": "New Mota Varachha"
+    },
+    "projectTag": "P1788775413393",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "New Mota Varachha"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.867Z",
+    "updatedAt": "2026-09-14T05:00:15.867Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e390",
+    "general": {
+      "projectName": "Pramukh Avenue",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-avenue-svwqj",
+      "description": "",
+      "area": "Amroli"
+    },
+    "projectTag": "P1788775413394",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Amroli"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.911Z",
+    "updatedAt": "2026-09-14T05:00:15.911Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e39c",
+    "general": {
+      "projectName": "Pramukh Heights",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-heights-40otp",
+      "description": "",
+      "area": "Amroli"
+    },
+    "projectTag": "P1788775413395",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Amroli"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.953Z",
+    "updatedAt": "2026-09-14T05:00:15.953Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f5fbfebdd68ac31e3a8",
+    "general": {
+      "projectName": "Pramukh Residency",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-residency-xc16e",
+      "description": "",
+      "area": "Amroli"
+    },
+    "projectTag": "P1788775413396",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Amroli"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:15.987Z",
+    "updatedAt": "2026-09-14T05:00:15.987Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3b4",
+    "general": {
+      "projectName": "Prem Majestica",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "prem-majestica-i7kkh",
+      "description": "",
+      "area": "Jahangirabad"
+    },
+    "projectTag": "P1788775413397",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Both"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Jahangirabad"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.019Z",
+    "updatedAt": "2026-09-14T05:00:16.019Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3bf",
+    "general": {
+      "projectName": "Shree Ganesh Industries",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "shree-ganesh-industries-j6s5z",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413398",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.049Z",
+    "updatedAt": "2026-09-14T05:00:16.049Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3ca",
+    "general": {
+      "projectName": "Shree Hari Industries",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "shree-hari-industries-2ni4i",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413399",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.086Z",
+    "updatedAt": "2026-09-14T05:00:16.086Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3d5",
+    "general": {
+      "projectName": "Shree Ram Industries",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "shree-ram-industries-4t7bo",
+      "description": "",
+      "area": "Nr Ring Road"
+    },
+    "projectTag": "P1788775413400",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Completed",
+      "city": "Surat",
+      "area": [
+        "Nr Ring Road"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.124Z",
+    "updatedAt": "2026-09-14T05:00:16.124Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3e0",
+    "general": {
+      "projectName": "Velvet Valley",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "velvet-valley-57pmj",
+      "description": "",
+      "area": "Uttran"
+    },
+    "projectTag": "P1788775413401",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Both"
+      ],
+      "possessionStatus": "On-going",
+      "city": "Surat",
+      "area": [
+        "Uttran"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.159Z",
+    "updatedAt": "2026-09-14T05:00:16.159Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3eb",
+    "general": {
+      "projectName": "Vista Velly",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "vista-velly-x6un5",
+      "description": "",
+      "area": "Uttran"
+    },
+    "projectTag": "P1788775413402",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Coming soon",
+      "city": "Surat",
+      "area": [
+        "Uttran"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.192Z",
+    "updatedAt": "2026-09-14T05:00:16.192Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e3f7",
+    "general": {
+      "projectName": "Pramukh Industrial Park 1",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-industrial-park-1-0c7cv",
+      "description": "",
+      "area": "Atoadra"
+    },
+    "projectTag": "P1788775413403",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "Coming soon",
+      "city": "Surat",
+      "area": [
+        "Atoadra"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.224Z",
+    "updatedAt": "2026-09-14T05:00:16.224Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e402",
+    "general": {
+      "projectName": "Pramukh Industrial Park 2",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-industrial-park-2-7un4y",
+      "description": "",
+      "area": "Atoadra"
+    },
+    "projectTag": "P1788775413404",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "Coming soon",
+      "city": "Surat",
+      "area": [
+        "Atoadra"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.272Z",
+    "updatedAt": "2026-09-14T05:00:16.272Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e40d",
+    "general": {
+      "projectName": "Pramukh Textile Park",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "pramukh-textile-park-zswvk",
+      "description": "",
+      "area": "Paria"
+    },
+    "projectTag": "P1788775413405",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Open Plot"
+      ],
+      "possessionStatus": "Coming soon",
+      "city": "Surat",
+      "area": [
+        "Paria"
+      ],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.312Z",
+    "updatedAt": "2026-09-14T05:00:16.312Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa77f60bfebdd68ac31e418",
+    "general": {
+      "projectName": "Maroli Plotting Project",
+      "builderName": "Copy Of Pramukh ABC Group Data For Filter",
+      "slug": "maroli-plotting-project-tnq2m",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413406",
+    "projectCategory": "individual",
+    "parentProject": "6aa77f5ebfebdd68ac31e276",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:00:16.351Z",
+    "updatedAt": "2026-09-14T05:00:16.351Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dce2",
+    "general": {
+      "projectName": "Royal Ethics Data",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-data-lk9hm",
+      "description": "Master Portfolio created for Royal Ethics Data"
+    },
+    "projectTag": "P1788775413407",
+    "projectCategory": "portfolio",
+    "parentProject": null,
+    "alsoShowAsIndividual": false,
+    "specifications": [],
+    "filters": {
+      "amenities": [],
+      "tags": [],
+      "category": [],
+      "propertyType": [],
+      "area": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "media": {
+      "gallery": []
+    },
+    "createdAt": "2026-09-14T05:18:18.273Z",
+    "updatedAt": "2026-09-14T05:18:18.273Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dce8",
+    "general": {
+      "projectName": "Royal Ethics Park 1",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-1-yj9tc",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413408",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.314Z",
+    "updatedAt": "2026-09-14T05:18:18.314Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dcf2",
+    "general": {
+      "projectName": "Royal Ethics Park 2",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-2-x3wjb",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413409",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.364Z",
+    "updatedAt": "2026-09-14T05:18:18.364Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dcfc",
+    "general": {
+      "projectName": "Royal Ethics Park 3",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-3-f0ndz",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413410",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.409Z",
+    "updatedAt": "2026-09-14T05:18:18.409Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd06",
+    "general": {
+      "projectName": "Royal Ethics Park  4",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-4-wwxvp",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413411",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.453Z",
+    "updatedAt": "2026-09-14T05:18:18.453Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd10",
+    "general": {
+      "projectName": "Royal Ethics Park  5-6",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-5-6-3e2t9",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413412",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.499Z",
+    "updatedAt": "2026-09-14T05:18:18.499Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd1a",
+    "general": {
+      "projectName": "Royal Ethics Park 7",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-7-c8xji",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413413",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.539Z",
+    "updatedAt": "2026-09-14T05:18:18.539Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd24",
+    "general": {
+      "projectName": "Royal Ethics Park 8",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-8-lvovt",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413414",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.583Z",
+    "updatedAt": "2026-09-14T05:18:18.583Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd2e",
+    "general": {
+      "projectName": "Royal Ethics Park 9",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-9-tyha4",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413415",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.625Z",
+    "updatedAt": "2026-09-14T05:18:18.625Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd38",
+    "general": {
+      "projectName": "Royal Ethics Park 10",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-10-q9nn2",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413416",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.667Z",
+    "updatedAt": "2026-09-14T05:18:18.667Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd42",
+    "general": {
+      "projectName": "Royal Bunglows",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-bunglows-mj9bp",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413417",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Bungalow"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.719Z",
+    "updatedAt": "2026-09-14T05:18:18.719Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd4c",
+    "general": {
+      "projectName": "Royal Ethics Bunglow",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-bunglow-44738",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413418",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Bungalow"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.759Z",
+    "updatedAt": "2026-09-14T05:18:18.759Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd56",
+    "general": {
+      "projectName": "Royal Ethics Park",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-park-9sk6p",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413419",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.800Z",
+    "updatedAt": "2026-09-14T05:18:18.800Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd60",
+    "general": {
+      "projectName": "Royal Green",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-green-omijx",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413420",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.839Z",
+    "updatedAt": "2026-09-14T05:18:18.839Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd6b",
+    "general": {
+      "projectName": "Royal Ethics Industrial Park",
+      "builderName": "Royal Ethics Data",
+      "slug": "royal-ethics-industrial-park-hom1d",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413421",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.876Z",
+    "updatedAt": "2026-09-14T05:18:18.876Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa7839adbeee87d26b7dd75",
+    "general": {
+      "projectName": "Upcoming Commercial Project",
+      "builderName": "Royal Ethics Data",
+      "slug": "upcoming-commercial-project-9fzj2",
+      "tagline": "",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413422",
+    "projectCategory": "individual",
+    "parentProject": "6aa7839adbeee87d26b7dce2",
+    "alsoShowAsIndividual": true,
+    "filters": {
+      "category": [
+        "Commercial"
+      ],
+      "propertyType": [
+        "Shop",
+        "Office"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:18:18.914Z",
+    "updatedAt": "2026-09-14T05:39:47.528Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    }
+  },
+  {
+    "_id": "6aa783b5dbeee87d26b7dd86",
+    "general": {
+      "projectName": "abc",
+      "builderName": "abc",
+      "slug": "abc",
+      "projectType": "Commercial",
+      "tagline": "",
+      "description": ""
+    },
+    "projectTag": "P1788775413423",
+    "projectCategory": "portfolio",
+    "parentProject": null,
+    "alsoShowAsIndividual": false,
+    "contact": {
+      "phone": "",
+      "website": "",
+      "facebook": "",
+      "instagram": ""
+    },
+    "location": {
+      "address": "",
+      "googleMaps": ""
+    },
+    "specifications": [],
+    "filters": {
+      "amenities": [],
+      "tags": [],
+      "category": [],
+      "propertyType": [],
+      "area": []
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "status": {
+      "featured": false,
+      "published": false,
+      "status": "Draft",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "createdAt": "2026-09-14T05:18:45.363Z",
+    "updatedAt": "2026-09-14T05:18:45.363Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa783cddbeee87d26b7dd9e",
+    "general": {
+      "projectName": "1234",
+      "builderName": "test",
+      "slug": "1234-1",
+      "projectType": "",
+      "tagline": "",
+      "description": ""
+    },
+    "projectTag": "P1788775413424",
+    "projectCategory": "individual",
+    "parentProject": "6aa783b5dbeee87d26b7dd86",
+    "alsoShowAsIndividual": false,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    },
+    "specifications": [],
+    "filters": {
+      "category": "",
+      "propertyType": "",
+      "possessionStatus": "",
+      "city": "",
+      "area": "",
+      "amenities": [],
+      "tags": []
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "seo": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "shareDescription": ""
+    },
+    "status": {
+      "featured": false,
+      "published": false,
+      "status": "Draft",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "createdAt": "2026-09-14T05:19:09.816Z",
+    "updatedAt": "2026-09-14T05:19:12.431Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa78487dbeee87d26b7ddbf",
+    "general": {
+      "projectName": "copy test",
+      "builderName": "test123",
+      "slug": "copy-etst",
+      "projectType": "",
+      "tagline": "",
+      "description": ""
+    },
+    "projectTag": "P1788775413425",
+    "projectCategory": "individual",
+    "parentProject": "6aa783b5dbeee87d26b7dd86",
+    "alsoShowAsIndividual": false,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    },
+    "specifications": [],
+    "filters": {
+      "category": "",
+      "propertyType": "",
+      "possessionStatus": "",
+      "city": "",
+      "area": "",
+      "amenities": [],
+      "tags": []
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "seo": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "shareDescription": ""
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "createdAt": "2026-09-14T05:22:15.205Z",
+    "updatedAt": "2026-09-14T05:28:30.086Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa786354b0ec7dcf7c89be6",
+    "general": {
+      "projectName": "test1",
+      "builderName": "test123",
+      "slug": "1234-2",
+      "projectType": "",
+      "tagline": "",
+      "description": ""
+    },
+    "projectTag": "P1788775413426",
+    "projectCategory": "individual",
+    "parentProject": null,
+    "alsoShowAsIndividual": false,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    },
+    "specifications": [],
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Villa"
+      ],
+      "possessionStatus": "Coming Soon",
+      "city": "",
+      "area": "",
+      "amenities": [],
+      "tags": []
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "seo": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "shareDescription": ""
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "createdAt": "2026-09-14T05:29:25.513Z",
+    "updatedAt": "2026-09-14T06:24:00.340Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788424b0ec7dcf7c89c60",
+    "general": {
+      "projectName": "Royal Ethics Data (1)",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-data-1",
+      "projectType": "Commercial",
+      "tagline": "test",
+      "description": "Master Portfolio created for Royal Ethics Data (1)"
+    },
+    "projectTag": "P1788775413427",
+    "projectCategory": "portfolio",
+    "parentProject": null,
+    "alsoShowAsIndividual": false,
+    "specifications": [],
+    "filters": {
+      "amenities": [],
+      "tags": [],
+      "category": [],
+      "propertyType": [],
+      "area": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "media": {
+      "gallery": []
+    },
+    "createdAt": "2026-09-14T05:38:10.874Z",
+    "updatedAt": "2026-09-14T05:38:49.765Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "website": "",
+      "facebook": "",
+      "instagram": ""
+    },
+    "location": {
+      "address": "test",
+      "googleMaps": ""
+    }
+  },
+  {
+    "_id": "6aa788424b0ec7dcf7c89c66",
+    "general": {
+      "projectName": "Royal Ethics Park 1",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-1-w98o1",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413428",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:10.939Z",
+    "updatedAt": "2026-09-14T05:38:10.939Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89c70",
+    "general": {
+      "projectName": "Royal Ethics Park 2",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-2-s42bi",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413429",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.006Z",
+    "updatedAt": "2026-09-14T05:38:11.006Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89c7a",
+    "general": {
+      "projectName": "Royal Ethics Park 3",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-3-cghqk",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413430",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.074Z",
+    "updatedAt": "2026-09-14T05:38:11.074Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89c84",
+    "general": {
+      "projectName": "Royal Ethics Park  4",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-4-uvzyg",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413431",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.148Z",
+    "updatedAt": "2026-09-14T05:38:11.148Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89c8e",
+    "general": {
+      "projectName": "Royal Ethics Park  5-6",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-5-6-1uqva",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413432",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.211Z",
+    "updatedAt": "2026-09-14T05:38:11.211Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89c98",
+    "general": {
+      "projectName": "Royal Ethics Park 7",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-7-5va59",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413433",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.272Z",
+    "updatedAt": "2026-09-14T05:38:11.272Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89ca2",
+    "general": {
+      "projectName": "Royal Ethics Park 8",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-8-bi9gz",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413434",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.332Z",
+    "updatedAt": "2026-09-14T05:38:11.332Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cac",
+    "general": {
+      "projectName": "Royal Ethics Park 9",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-9-u6c9x",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413435",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.443Z",
+    "updatedAt": "2026-09-14T05:38:11.443Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cb6",
+    "general": {
+      "projectName": "Royal Ethics Park 10",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-10-ppb0s",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413436",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.506Z",
+    "updatedAt": "2026-09-14T05:38:11.506Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cc0",
+    "general": {
+      "projectName": "Royal Bunglows",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-bunglows-iqrod",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413437",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Bungalow"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.562Z",
+    "updatedAt": "2026-09-14T05:38:11.562Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cca",
+    "general": {
+      "projectName": "Royal Ethics Bunglow",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-bunglow-m3rge",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413438",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Bungalow"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.620Z",
+    "updatedAt": "2026-09-14T05:38:11.620Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cd4",
+    "general": {
+      "projectName": "Royal Ethics Park",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-park-jegqt",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413439",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.676Z",
+    "updatedAt": "2026-09-14T05:38:11.676Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cde",
+    "general": {
+      "projectName": "Royal Green",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-green-m1r5q",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413440",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "2 BHK",
+        "3 BHK"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.733Z",
+    "updatedAt": "2026-09-14T05:38:11.733Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89ce9",
+    "general": {
+      "projectName": "Royal Ethics Industrial Park",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "royal-ethics-industrial-park-w4scm",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413441",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Industrial"
+      ],
+      "propertyType": [
+        "Plot"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "specifications": [],
+    "media": {
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.790Z",
+    "updatedAt": "2026-09-14T05:38:11.790Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aa788434b0ec7dcf7c89cf3",
+    "general": {
+      "projectName": "Upcoming Commercial Project",
+      "builderName": "Royal Ethics Data (1)",
+      "slug": "upcoming-commercial-project-k05mb",
+      "tagline": "",
+      "description": "",
+      "area": ""
+    },
+    "projectTag": "P1788775413442",
+    "projectCategory": "individual",
+    "parentProject": "6aa788424b0ec7dcf7c89c60",
+    "alsoShowAsIndividual": false,
+    "filters": {
+      "category": [
+        "Commercial"
+      ],
+      "propertyType": [
+        "Shop",
+        "Office"
+      ],
+      "possessionStatus": "Ready Possession",
+      "city": "Surat",
+      "area": [],
+      "amenities": [],
+      "tags": []
+    },
+    "status": {
+      "featured": false,
+      "published": true,
+      "status": "Published",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "specifications": [],
+    "media": {
+      "coverImage": {
+        "url": "/uploads/projects/6aa788434b0ec7dcf7c89cf3/cover/1789383272985-f4d8589597d9.png",
+        "alt": ""
+      },
+      "gallery": []
+    },
+    "videos": [],
+    "brochures": [],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "createdAt": "2026-09-14T05:38:11.846Z",
+    "updatedAt": "2026-09-14T10:54:33.052Z",
+    "__v": 2,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    }
+  }
+]

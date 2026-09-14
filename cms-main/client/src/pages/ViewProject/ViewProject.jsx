@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Building2,
@@ -83,6 +83,17 @@ export default function ViewProject() {
 
   return (
     <div className="container mx-auto space-y-6 p-6">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+        <Link to={ROUTES.PROJECTS} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
+          Projects
+        </Link>
+        <span>/</span>
+        <span className="font-semibold text-slate-900 dark:text-slate-100 truncate max-w-xs">
+          {project.general?.projectName || "View Project"}
+        </span>
+      </nav>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -28,8 +28,8 @@ const CreateProject = () => {
     queryType === "portfolio" || queryType === "master"
       ? "portfolio"
       : queryType === "individual"
-      ? "individual"
-      : null
+        ? "individual"
+        : null
   );
 
   useEffect(() => {
@@ -145,7 +145,9 @@ const CreateProject = () => {
       // Invalidate React Query caches so new project appears everywhere
       await queryClient.invalidateQueries();
 
-      toast.success(response.message || "Project created successfully.");
+      if (!navigateToMapSkin) {
+        toast.success(response.message || "Project created successfully.");
+      }
       const createdId = project?._id || response.data?.project?._id || response.data?._id;
       methods.reset({}, { keepValues: true });
 
@@ -182,35 +184,54 @@ const CreateProject = () => {
   const onSubmit = (data) => handleSave(data, { navigateToMapSkin: false });
   const onNext = (data) => handleSave(data, { navigateToMapSkin: true });
 
+  const breadcrumb = (
+    <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
+      <Link to={ROUTES.PROJECTS} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
+        Projects
+      </Link>
+      <span>/</span>
+      <span className="font-semibold text-slate-900 dark:text-slate-100">Create Project</span>
+    </nav>
+  );
+
   if (!selectedType) {
     return (
-      <ProjectSelector
-        onContinue={(type) => {
-          methods.setValue("projectCategory", type);
-          setSelectedType(type);
-        }}
-      />
+      <div>
+        {breadcrumb}
+        <ProjectSelector
+          onContinue={(type) => {
+            methods.setValue("projectCategory", type);
+            setSelectedType(type);
+          }}
+        />
+      </div>
     );
   }
 
   if (selectedType === "portfolio") {
     return (
-      <PortfolioTourForm
-        methods={methods}
-        onSubmit={onSubmit}
-        isSubmitting={isSubmitting}
-      />
+      <div>
+        {breadcrumb}
+        <PortfolioTourForm
+          methods={methods}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     );
   }
 
   return (
-    <IndividualProjectForm
-      methods={methods}
-      onSubmit={onSubmit}
-      onNext={onNext}
-      isSubmitting={isSubmitting}
-      isNextSubmitting={isNextSubmitting}
-    />
+    <div>
+      {breadcrumb}
+      <IndividualProjectForm
+        methods={methods}
+        onSubmit={onSubmit}
+        onNext={onNext}
+        isSubmitting={isSubmitting}
+        isNextSubmitting={isNextSubmitting}
+      />
+    </div>
   );
 };
 

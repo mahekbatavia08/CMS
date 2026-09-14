@@ -13,12 +13,14 @@ import {
   Loader2,
   Map,
   Share2,
+  Search,
 } from "lucide-react";
 
 import { ROUTES } from "@/constants/routes";
 import projectService from "@/services/project/projectService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import ImportExportPortfolios from "@/components/project/ImportExportPortfolios";
 import DeleteProjectDialog from "@/components/project/DeleteProjectDialog";
 import { getImageUrl } from "@/lib/utils";
@@ -80,6 +82,8 @@ const ExportPortfolioZipButton = ({ portfolio, childProjects }) => {
 const MasterProjects = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const [search, setSearch] = useState("");
 
   const handleImported = async () => {
     await queryClient.invalidateQueries({ queryKey: ["masterPortfolios"] });
@@ -163,6 +167,20 @@ const MasterProjects = () => {
     return statsMap;
   }, [portfolios, allProjects]);
 
+  const filteredPortfolios = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return portfolios;
+
+    return portfolios.filter((portfolio) => {
+      const projectName = portfolio.general?.projectName || "";
+      const builderName = portfolio.general?.builderName || "";
+      return (
+        projectName.toLowerCase().includes(query) ||
+        builderName.toLowerCase().includes(query)
+      );
+    });
+  }, [portfolios, search]);
+
   return (
     <div className="space-y-8 pb-12">
       {/* Breadcrumb & Header */}
@@ -194,6 +212,20 @@ const MasterProjects = () => {
             </Link>
           </div>
         </div>
+
+        <div className="relative mt-4 max-w-md">
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by project or builder..."
+            className="pl-10 w-full"
+          />
+        </div>
       </div>
 
       {/* Content */}
@@ -215,9 +247,17 @@ const MasterProjects = () => {
             <Button>Create Master Portfolio</Button>
           </Link>
         </div>
+      ) : filteredPortfolios.length === 0 ? (
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-16 text-center">
+          <Search className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
+          <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-200">No Portfolios Found</h2>
+          <p className="mt-2 text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+            Try changing your search.
+          </p>
+        </div>
       ) : (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {portfolios.map((portfolio) => {
+          {filteredPortfolios.map((portfolio) => {
             const stats = portfolioStats[portfolio._id] || { count: 0, types: [], categories: [], publishedCount: 0, draftCount: 0 };
 
             return (() => {
@@ -227,8 +267,8 @@ const MasterProjects = () => {
               // Only show logo if there's a dedicated logo image, not the same as the thumbnail
               const logoUrl = portfolio.media?.logoImage?.url
                 || (portfolio.media?.coverImage?.url && portfolio.media?.thumbnailImage?.url
-                    ? portfolio.media.coverImage.url
-                    : null);
+                  ? portfolio.media.coverImage.url
+                  : null);
               const resolvedThumb = thumbUrl ? getImageUrl(thumbUrl) : null;
               const resolvedLogo = logoUrl && logoUrl !== thumbUrl ? getImageUrl(logoUrl) : null;
 
@@ -343,8 +383,8 @@ const MasterProjects = () => {
                         className="w-full flex items-center justify-center gap-1 text-xs font-semibold cursor-pointer"
                         variant="outline"
                       >
-                        <span>View</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        <Map className="h-3.5 w-3.5" />
+                        <span>Edit Project</span>
                       </Button>
 
                       <Button
@@ -352,7 +392,7 @@ const MasterProjects = () => {
                         className="w-full flex items-center justify-center gap-1 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white cursor-pointer shadow-sm px-2"
                       >
                         <Map className="h-3.5 w-3.5" />
-                        <span>Gallery</span>
+                        <span>Preview</span>
                       </Button>
                     </div>
                   </CardContent>

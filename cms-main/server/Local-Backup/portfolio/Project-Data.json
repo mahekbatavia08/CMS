@@ -1,1 +1,94 @@
-{}
+{
+  "p1": {
+    "projectName": "Copy Of Pramukh ABC Group Data For Filter",
+    "developer": "Copy Of Pramukh ABC Group Data For Filter",
+    "contact": {
+      "phone": "",
+      "email": "",
+      "social": {
+        "facebook": "",
+        "instagram": "",
+        "website": ""
+      }
+    },
+    "location": {
+      "text": "",
+      "googleMapLink": "",
+      "mapEmbedUrl": ""
+    },
+    "brochures": [],
+    "legal": [],
+    "photos": {},
+    "videos": {},
+    "floorplans": {}
+  },
+  "p2": {
+    "projectName": "Royal Ethics Data",
+    "developer": "Royal Ethics Data",
+    "contact": {
+      "phone": "",
+      "email": "",
+      "social": {
+        "facebook": "",
+        "instagram": "",
+        "website": ""
+      }
+    },
+    "location": {
+      "text": "",
+      "googleMapLink": "",
+      "mapEmbedUrl": ""
+    },
+    "brochures": [],
+    "legal": [],
+    "photos": {},
+    "videos": {},
+    "floorplans": {}
+  },
+  "p3": {
+    "projectName": "abc",
+    "developer": "abc",
+    "contact": {
+      "phone": "",
+      "email": "",
+      "social": {
+        "facebook": "",
+        "instagram": "",
+        "website": ""
+      }
+    },
+    "location": {
+      "text": "",
+      "googleMapLink": "",
+      "mapEmbedUrl": ""
+    },
+    "brochures": [],
+    "legal": [],
+    "photos": {},
+    "videos": {},
+    "floorplans": {}
+  },
+  "p4": {
+    "projectName": "Royal Ethics Data (1)",
+    "developer": "Royal Ethics Data (1)",
+    "contact": {
+      "phone": "",
+      "email": "",
+      "social": {
+        "facebook": "",
+        "instagram": "",
+        "website": ""
+      }
+    },
+    "location": {
+      "text": "test",
+      "googleMapLink": "",
+      "mapEmbedUrl": ""
+    },
+    "brochures": [],
+    "legal": [],
+    "photos": {},
+    "videos": {},
+    "floorplans": {}
+  }
+}

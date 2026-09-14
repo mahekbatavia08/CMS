@@ -6,6 +6,7 @@ import ImageUpload from "./ImageUpload";
 import FloorPlanUpload from "./FloorPlanUpload";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PROJECT_SECTIONS } from "@/constants/projectSections";
 
 const MediaInformationForm = ({
   title = "Media Information",
@@ -26,17 +27,19 @@ const MediaInformationForm = ({
 
       <CardContent className="space-y-8">
         {/* Cover Image */}
-        <Controller
-          name="media.coverImage"
-          control={control}
-          render={({ field }) => (
-            <ImageUpload
-              label={thumbnailLabel}
-              value={field.value}
-              onChange={field.onChange}
-            />
-          )}
-        />
+        <div id={PROJECT_SECTIONS.cover.id}>
+          <Controller
+            name="media.coverImage"
+            control={control}
+            render={({ field }) => (
+              <ImageUpload
+                label={thumbnailLabel}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
 
         {/* Thumbnail Image */}
         {showThumbnailImage && (
@@ -54,50 +57,60 @@ const MediaInformationForm = ({
         )}
 
         {/* Gallery Albums */}
-        {showGallery && <GalleryAlbums />}
+        {showGallery && (
+          <div id={PROJECT_SECTIONS.gallery.id}>
+            <GalleryAlbums />
+          </div>
+        )}
 
         {/* Brochures */}
         {showBrochures && (
-          <Controller
-            name="brochures"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <DocumentUpload
-                label="Brochures"
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
+          <div id={PROJECT_SECTIONS.brochure.id}>
+            <Controller
+              name="brochures"
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <DocumentUpload
+                  label="Brochures"
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
         )}
 
         {/* Floor Plans */}
         {showFloorPlans && (
-          <Controller
-            name="floorPlans"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <FloorPlanUpload value={field.value} onChange={field.onChange} />
-            )}
-          />
+          <div id={PROJECT_SECTIONS.floorplans.id}>
+            <Controller
+              name="floorPlans"
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <FloorPlanUpload value={field.value} onChange={field.onChange} />
+              )}
+            />
+          </div>
         )}
 
         {/* Legal Documents */}
         {showLegalDocuments && (
-          <Controller
-            name="legalDocuments"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <DocumentUpload
-                label="Legal Documents"
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
+          <div id={PROJECT_SECTIONS.legal.id}>
+            <Controller
+              name="legalDocuments"
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <DocumentUpload
+                  label="Legal Documents"
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
         )}
       </CardContent>
     </Card>

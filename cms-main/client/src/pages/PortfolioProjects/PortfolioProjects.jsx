@@ -18,11 +18,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DeleteProjectDialog from "@/components/project/DeleteProjectDialog";
 import { getImageUrl } from "@/lib/utils";
+import StatusCell from "@/components/dashboard/StatusCell";
+import CountCell from "@/components/dashboard/CountCell";
 
 const statusStyles = {
   Published: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
   Draft: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800",
   Archived: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700",
+};
+
+// Mirrors the server's buildProjectOverview (server/services/projectService.js)
+// so this page can show the same per-field completeness indicators as the
+// Dashboard's Project Overview.
+const computeProjectStats = (project) => {
+  const galleryImages =
+    project.media?.gallery?.reduce(
+      (total, album) => total + (album.images?.length ?? 0),
+      0,
+    ) ?? 0;
+
+  return {
+    cover: !!project.media?.coverImage?.url,
+    gallery: { images: galleryImages },
+    videos: project.videos?.length ?? 0,
+    brochures: project.brochures?.length ?? 0,
+    floorPlans: project.floorPlans?.length ?? 0,
+    legalDocuments: project.legalDocuments?.length ?? 0,
+    contact: !!project.contact?.email,
+  };
 };
 
 const PortfolioProjects = () => {
@@ -38,6 +61,10 @@ const PortfolioProjects = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const loadData = async () => {
     setIsLoading(true);
@@ -124,12 +151,31 @@ const PortfolioProjects = () => {
     });
   }, [projects, search, statusFilter, categoryFilter, typeFilter]);
 
+  // Reset to page 1 whenever the filtered result set changes
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, categoryFilter, typeFilter]);
+
+  const totalItems = filteredProjects.length;
+  const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
+  const currentPage = Math.min(page, totalPages);
+  const startItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(currentPage * pageSize, totalItems);
+
+  const paginatedProjects = useMemo(() => {
+    return filteredProjects.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  }, [filteredProjects, currentPage]);
+
   const handleEdit = (id) => {
     navigate(ROUTES.PROJECT_EDIT.replace(":id", id));
   };
 
   const handleView = (id) => {
     navigate(ROUTES.PROJECT_VIEW.replace(":id", id));
+  };
+
+  const handleSectionClick = (id, sectionSlug) => {
+    navigate(ROUTES.PROJECT_EDIT.replace(":id", id) + `?section=${sectionSlug}`);
   };
 
   return (
@@ -170,7 +216,7 @@ const PortfolioProjects = () => {
             className="flex items-center gap-2 cursor-pointer"
           >
             <Edit size={16} />
-            <span>Edit Tour</span>
+            <span>Edit Information</span>
           </Button>
 
           <Button
@@ -178,7 +224,7 @@ const PortfolioProjects = () => {
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm cursor-pointer"
           >
             <Map size={16} />
-            <span>Map &amp; Gallery Skin</span>
+            <span>Edit Map</span>
           </Button>
 
           <Link to={`${ROUTES.PROJECT_CREATE}?type=individual&portfolioId=${portfolioId}`}>
@@ -303,23 +349,30 @@ const PortfolioProjects = () => {
           </Button>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+        <div className="max-h-[600px] overflow-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+            <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
-                <th className="px-4 py-2.5">Project</th>
-                <th className="px-4 py-2.5">Builder</th>
-                <th className="px-4 py-2.5">Category</th>
-                <th className="px-4 py-2.5">Property Type</th>
-                <th className="px-4 py-2.5">Area</th>
-                <th className="px-4 py-2.5">Status</th>
-                <th className="px-4 py-2.5">Updated</th>
-                <th className="px-4 py-2.5 text-center">Actions</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Project</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Builder</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Category</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Property Type</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Area</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Status</th>
+                <th className="px-4 py-2.5 whitespace-nowrap">Updated</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Cover</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Gallery</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Videos</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Brochures</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Floor Plans</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Legal Docs</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Contact</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">Actions</th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-              {filteredProjects.map((project) => {
+              {paginatedProjects.map((project) => {
                 const projectCategories = Array.isArray(project.filters?.category)
                   ? project.filters.category
                   : (project.filters?.category ? [project.filters.category] : []);
@@ -329,6 +382,8 @@ const PortfolioProjects = () => {
                   : (project.filters?.propertyType ? [project.filters.propertyType] : []);
 
                 const areaDisplay = project.general?.area || (Array.isArray(project.filters?.area) ? project.filters.area.join(", ") : project.filters?.area) || "-";
+
+                const stats = computeProjectStats(project);
 
                 return (
                   <tr key={project._id} className="transition hover:bg-slate-50 dark:hover:bg-slate-800/40">
@@ -350,10 +405,10 @@ const PortfolioProjects = () => {
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                          <h3 className="font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
                             {project.general?.projectName || "Untitled Project"}
                           </h3>
-                          <p className="text-xs text-slate-400 dark:text-slate-500">
+                          <p className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
                             {project.location?.city ? `${project.location.city}` : "Surat"}
                           </p>
                         </div>
@@ -361,7 +416,7 @@ const PortfolioProjects = () => {
                     </td>
 
                     {/* Builder */}
-                    <td className="px-4 py-2.5 text-slate-600 dark:text-slate-300 font-medium text-xs">
+                    <td className="px-4 py-2.5 text-slate-600 dark:text-slate-300 font-medium text-xs whitespace-nowrap">
                       {project.general?.builderName || project.general?.projectName || "—"}
                     </td>
 
@@ -422,6 +477,69 @@ const PortfolioProjects = () => {
                       })}
                     </td>
 
+                    {/* Cover */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "cover")}
+                      title="Edit Cover Image"
+                    >
+                      <StatusCell value={stats.cover} />
+                    </td>
+
+                    {/* Gallery */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "gallery")}
+                      title="Edit Gallery"
+                    >
+                      <CountCell value={stats.gallery.images} />
+                    </td>
+
+                    {/* Videos */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "videos")}
+                      title="Edit Videos"
+                    >
+                      <CountCell value={stats.videos} />
+                    </td>
+
+                    {/* Brochures */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "brochure")}
+                      title="Edit Brochures"
+                    >
+                      <CountCell value={stats.brochures} />
+                    </td>
+
+                    {/* Floor Plans */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "floorplans")}
+                      title="Edit Floor Plans"
+                    >
+                      <CountCell value={stats.floorPlans} />
+                    </td>
+
+                    {/* Legal Docs */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "legal")}
+                      title="Edit Legal Docs"
+                    >
+                      <CountCell value={stats.legalDocuments} />
+                    </td>
+
+                    {/* Contact */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "contact")}
+                      title="Edit Contact"
+                    >
+                      <StatusCell value={stats.contact} />
+                    </td>
+
                     {/* Actions */}
                     <td className="px-4 py-2.5">
                       <div className="flex items-center justify-center gap-1.5">
@@ -454,6 +572,38 @@ const PortfolioProjects = () => {
               })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {!isLoading && filteredProjects.length > 0 && (
+        <div className="flex flex-col md:flex-row items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 gap-4 shadow-sm">
+          <div className="text-sm text-slate-600 dark:text-slate-300 text-center md:text-left">
+            Showing <strong className="font-semibold text-slate-900 dark:text-slate-100">{startItem}</strong> -{" "}
+            <strong className="font-semibold text-slate-900 dark:text-slate-100">{endItem}</strong> of{" "}
+            <strong className="font-semibold text-slate-900 dark:text-slate-100">{totalItems}</strong> projects
+          </div>
+
+          <div className="flex items-center gap-3">
+            <select
+              value={currentPage}
+              onChange={(e) => setPage(Number(e.target.value))}
+              className="h-9 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-2 py-1 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-slate-400"
+            >
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                const rangeStart = (pageNum - 1) * pageSize + 1;
+                const rangeEnd = Math.min(pageNum * pageSize, totalItems);
+                return (
+                  <option key={pageNum} value={pageNum}>
+                    {rangeStart}-{rangeEnd}
+                  </option>
+                );
+              })}
+            </select>
+
+            <span className="text-sm font-medium whitespace-nowrap text-slate-700 dark:text-slate-300">
+              Page {currentPage} of {totalPages}
+            </span>
+          </div>
         </div>
       )}
     </div>

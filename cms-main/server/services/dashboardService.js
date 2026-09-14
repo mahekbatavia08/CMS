@@ -26,7 +26,7 @@ const getDashboardStats = async () => {
 
   const baseFilter = buildProjectFilter({
     projectCategory: "individual",
-    includeSubProjects: false,
+    includeSubProjects: true,
   });
 
   if (deletedPortfolioIds.length > 0) {

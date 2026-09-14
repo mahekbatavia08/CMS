@@ -1,9 +1,22 @@
+import mongoose from "mongoose";
 import Project from "../models/Project.js";
 import ApiError from "../utils/ApiError.js";
 import { syncProjectFilters } from "./filterService.js";
 import path from "path";
 import floorPlanService, { deleteFloorPlanFiles } from "./floorPlanService.js";
 import { backupProjects } from "../utils/databaseBackup.js";
+import { escapeRegex } from "../utils/escapeRegex.js";
+
+/**
+ * Throws a 400 ApiError if the given id is not a well-formed ObjectId,
+ * so malformed ids fail cleanly instead of crashing with an uncaught
+ * Mongoose CastError.
+ */
+const assertValidObjectId = (id, label = "id") => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, `Invalid ${label}`);
+  }
+};
 
 /**
  * Creates a new project after confirming the slug is not already in use.
@@ -27,7 +40,7 @@ const buildProjectFilter = ({
   const andConditions = [];
 
   if (search) {
-    const searchRegex = new RegExp(search, "i");
+    const searchRegex = new RegExp(escapeRegex(search), "i");
 
     andConditions.push({
       $or: [
@@ -422,6 +435,7 @@ const getProjects = async (queryParams) => {
     featured,
     projectCategory,
     parentProject,
+    includeSubProjects,
     sort,
   } = queryParams;
 
@@ -434,6 +448,7 @@ const getProjects = async (queryParams) => {
     featured,
     projectCategory,
     parentProject,
+    includeSubProjects,
   });
 
   const sortOption = buildProjectSort(sort);
@@ -460,14 +475,17 @@ const getProjects = async (queryParams) => {
  */
 const getProjectOverview = async (queryParams) => {
   const {
-    // page = 1,
-    // limit = 25,
+    page = 1,
+    limit = 25,
     search,
     status,
     featured,
     projectCategory,
     sort,
   } = queryParams;
+
+  const currentPage = Math.max(parseInt(page, 10) || 1, 1);
+  const pageSize = Math.max(parseInt(limit, 10) || 25, 1);
 
   const deletedPortfolioIds = await Project.find({
     projectCategory: "portfolio",
@@ -486,7 +504,7 @@ const getProjectOverview = async (queryParams) => {
     status,
     featured,
     projectCategory: projectCategory || "individual",
-    includeSubProjects: false,
+    includeSubProjects: true,
   });
 
   if (deletedPortfolioIds.length > 0) {
@@ -500,17 +518,21 @@ const getProjectOverview = async (queryParams) => {
 
   const totalItems = await Project.countDocuments(filter);
 
-  // const totalPages = Math.ceil(totalItems / pageSize) || 0;
+  const totalPages = Math.ceil(totalItems / pageSize) || 0;
 
-  const projects = await Project.find(filter).sort(sortOption).lean();
+  const projects = await Project.find(filter)
+    .sort(sortOption)
+    .skip((currentPage - 1) * pageSize)
+    .limit(pageSize)
+    .lean();
 
   const items = projects.map(buildProjectOverview);
 
   return {
     items,
     totalItems,
-    // totalPages,
-    // currentPage,
+    totalPages,
+    currentPage,
   };
 };
 
@@ -521,6 +543,8 @@ const getProjectOverview = async (queryParams) => {
  * @returns {Promise<object>} The project document
  */
 const getProjectById = async (id) => {
+  assertValidObjectId(id, "project id");
+
   const project = await Project.findById(id);
 
   if (!project) {
@@ -539,6 +563,8 @@ const getProjectById = async (id) => {
  * @returns {Promise<object>} The updated project document
  */
 const updateProject = async (id, rawUpdateData) => {
+  assertValidObjectId(id, "project id");
+
   const updateData = { ...rawUpdateData };
 
   // Normalize status if primitive string is passed
@@ -656,6 +682,8 @@ const deleteProject = async (id) => {
   // Coerce id in case it's a stringified ObjectId object ({ $oid: "..." })
   const resolvedId = id && typeof id === "object" && id.$oid ? id.$oid : id;
 
+  assertValidObjectId(resolvedId, "project id");
+
   const project = await Project.findById(resolvedId);
 
   if (!project) {
@@ -687,6 +715,8 @@ const deleteProject = async (id) => {
 };
 
 export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) => {
+  assertValidObjectId(projectId, "project id");
+
   if (!floorPlanFile) {
     throw new ApiError(400, "Floor plan file is required.");
   }
@@ -729,6 +759,8 @@ export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) =>
 };
 
 export const deleteProjectFloorPlan = async (projectId, floorPlanId) => {
+  assertValidObjectId(projectId, "project id");
+
   const project = await Project.findById(projectId);
 
   if (!project) {
@@ -763,6 +795,8 @@ export const replaceProjectFloorPlan = async (
   title,
   floorPlanFile,
 ) => {
+  assertValidObjectId(projectId, "project id");
+
   const project = await Project.findById(projectId);
 
   if (!project) {

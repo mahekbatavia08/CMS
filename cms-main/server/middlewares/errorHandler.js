@@ -1,3 +1,5 @@
+import ApiError from "../utils/ApiError.js";
+
 /**
  * Centralized error handling middleware.
  * Must be registered last, after all routes and the notFound middleware.
@@ -12,9 +14,18 @@ const errorHandler = (err, req, res, next) => {
 
   const isProduction = process.env.NODE_ENV === "production";
 
+  // ApiError messages are intentionally written to be safe to show to
+  // clients. Anything else (raw Mongoose/DB/programming errors) can leak
+  // internal details, so it's replaced with a generic message in production.
+  const isOperational = err instanceof ApiError;
+  const message =
+    isOperational || !isProduction
+      ? err.message || "Internal Server Error"
+      : "Internal Server Error";
+
   res.status(statusCode).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message,
     stack: isProduction ? undefined : err.stack,
   });
 };

@@ -19,6 +19,16 @@ export const PROJECT_SECTIONS = {
     id: "section-media",
     label: "Main Media & Banner",
   },
+  cover: {
+    slug: "cover",
+    id: "section-cover",
+    label: "Cover / Thumbnail Image",
+  },
+  floorplans: {
+    slug: "floorplans",
+    id: "section-floorplans",
+    label: "Floor Plans",
+  },
   gallery: {
     slug: "gallery",
     id: "section-gallery",

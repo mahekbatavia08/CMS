@@ -477,7 +477,7 @@
     </div>
 
     <div id="map">
-      <div id="map-canvas"></div>
+      <div id="map-canvas"><div id="google-map-layer" style="position:absolute; inset:0; display:none;"></div></div>
     </div>
 
     <div id="filter-slide-panel">
@@ -698,6 +698,49 @@ const DEMO_UNITS = (() => {
 const activeFilters = { category: new Set(), type: new Set(), possession: new Set(), area: new Set(), amenities: new Set() };
 
 /* ============================================================
+   REAL GOOGLE MAP BACKGROUND (optional — only if a CMS-supplied
+   API key is provided; falls back to the existing placeholder
+   background otherwise). Purely a visual backdrop layered behind
+   the existing pins/plots/filters/gallery, which are untouched.
+   ============================================================ */
+let googleMapInstance = null;
+let googleMapsLoadPromise = null;
+
+function loadGoogleMapsScript(apiKey) {
+  if (window.google && window.google.maps) return Promise.resolve();
+  if (googleMapsLoadPromise) return googleMapsLoadPromise;
+  googleMapsLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(apiKey);
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+  return googleMapsLoadPromise;
+}
+
+function initGoogleMap(apiKey) {
+  if (!apiKey) return;
+  const layer = document.getElementById('google-map-layer');
+  if (!layer) return;
+
+  loadGoogleMapsScript(apiKey).then(() => {
+    layer.style.display = 'block';
+    if (!googleMapInstance) {
+      googleMapInstance = new google.maps.Map(layer, {
+        center: { lat: 23.0225, lng: 72.5714 },
+        zoom: 15,
+        disableDefaultUI: true,
+        clickableIcons: false,
+      });
+    }
+  }).catch((err) => {
+    console.error('Failed to load Google Maps:', err);
+  });
+}
+
+/* ============================================================
    INITIALIZE / RECEIVE CMS DATA
    ============================================================ */
 window.addEventListener('message', (event) => {
@@ -716,6 +759,7 @@ window.addEventListener('message', (event) => {
     renderGallery();
     renderMapPins();
     buildDynamicFilters();
+    if (data.googleMapsApiKey) initGoogleMap(data.googleMapsApiKey);
   }
 });
 

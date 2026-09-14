@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -191,10 +191,12 @@ const EditProject = () => {
       // Invalidate React Query caches so updated project appears everywhere
       await queryClient.invalidateQueries();
 
-      toast.success(
-        response.message ||
-        "Project updated successfully."
-      );
+      if (!navigateToMapSkin) {
+        toast.success(
+          response.message ||
+          "Project updated successfully."
+        );
+      }
 
       methods.reset({}, { keepValues: true });
 
@@ -205,8 +207,6 @@ const EditProject = () => {
       }
     } catch (error) {
       const responseData = error?.response?.data;
-
-      console.log("Validation Error:", responseData);
 
       if (responseData?.errors?.length) {
         toast.error(
@@ -250,30 +250,68 @@ const EditProject = () => {
   }
 
   const isPortfolioTour = methods.watch("projectCategory") === "portfolio";
+  const parentProjectId = methods.watch("parentProject");
+  const projectName = methods.watch("general.projectName") || "Untitled Project";
+
+  let crumbLabel = "Projects";
+  let crumbLink = ROUTES.PROJECTS;
+
+  if (isPortfolioTour) {
+    crumbLabel = "Master Project";
+    crumbLink = ROUTES.PROJECTS_MASTER;
+  } else if (parentProjectId) {
+    crumbLabel = "Master Project";
+    crumbLink = ROUTES.PROJECTS_PORTFOLIO_DETAIL.replace(":portfolioId", parentProjectId);
+  } else {
+    crumbLabel = "Projects";
+    crumbLink = ROUTES.PROJECTS_INDIVIDUAL;
+  }
+
+  const breadcrumb = (
+    <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
+      <Link to={crumbLink} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
+        {crumbLabel}
+      </Link>
+      <span>/</span>
+      <span className="text-slate-700 dark:text-slate-300 truncate max-w-[220px]">
+        {projectName}
+      </span>
+      <span>/</span>
+      <span className="font-semibold text-slate-900 dark:text-slate-100">
+        Edit Project
+      </span>
+    </nav>
+  );
 
   if (isPortfolioTour) {
     return (
-      <PortfolioTourForm
-        methods={methods}
-        onSubmit={onSubmit}
-        onBack={handleBack}
-        isSubmitting={isSubmitting}
-      />
+      <div>
+        {breadcrumb}
+        <PortfolioTourForm
+          methods={methods}
+          onSubmit={onSubmit}
+          onBack={handleBack}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     );
   }
 
   return (
-    <ProjectForm
-      methods={methods}
-      onSubmit={onSubmit}
-      onNext={onNext}
-      onBack={handleBack}
-      isSubmitting={isSubmitting}
-      isNextSubmitting={isNextSubmitting}
-      title="Edit Project"
-      description="Update the project details below."
-      submitButtonText="Save Changes"
-    />
+    <div>
+      {breadcrumb}
+      <ProjectForm
+        methods={methods}
+        onSubmit={onSubmit}
+        onNext={onNext}
+        onBack={handleBack}
+        isSubmitting={isSubmitting}
+        isNextSubmitting={isNextSubmitting}
+        title="Edit Project"
+        description="Update the project details below."
+        submitButtonText="Save Changes"
+      />
+    </div>
   );
 };
 

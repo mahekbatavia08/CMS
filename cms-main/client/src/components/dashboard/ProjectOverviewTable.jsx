@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronUp, ChevronDown } from "lucide-react";
-import CompletionCell from "./CompletionCell";
 import StatusCell from "./StatusCell";
 import CountCell from "./CountCell";
 import { ROUTES } from "@/constants/routes";
@@ -79,34 +78,12 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
     navigate(ROUTES.PROJECT_EDIT.replace(":id", projectId) + `?section=${sectionSlug}`);
   };
 
-  const getMissingItemSlug = (itemName) => {
-    switch (itemName) {
-      case "Cover Image": return "media";
-      case "Gallery": return "gallery";
-      case "Videos": return "videos";
-      case "Brochures": return "brochure";
-      case "Floor Plans": return "media";
-      case "Legal Documents": return "legal";
-      case "SEO": return "seo";
-      case "Contact": return "contact";
-      case "Location": return "location";
-      default: return "general";
-    }
-  };
-
   return (
     <div className="max-h-[650px] overflow-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 shadow-sm transition-colors">
       <table className="min-w-full border-collapse">
         <thead className="sticky top-0 z-20 border-b border-slate-200 bg-slate-50 dark:bg-slate-900 dark:border-slate-800 shadow-sm">
           <tr>
-            <th 
-              className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 sticky left-0 z-30 bg-slate-50 dark:bg-slate-900 cursor-pointer group hover:bg-slate-100 dark:hover:bg-slate-800 border-r border-slate-200 dark:border-slate-800"
-              onClick={() => requestSort('projectTag')}
-            >
-              Tag {getSortIcon('projectTag')}
-            </th>
-
-            <th 
+            <th
               className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer group hover:bg-slate-100 dark:hover:bg-slate-800"
               onClick={() => requestSort('projectName')}
             >
@@ -176,19 +153,6 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
               Contact {getSortIcon('stats.contact')}
             </th>
 
-            <th 
-              className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer group hover:bg-slate-100 dark:hover:bg-slate-800"
-              onClick={() => requestSort('stats.missing.length')}
-            >
-              Missing {getSortIcon('stats.missing.length')}
-            </th>
-
-            <th 
-              className="px-5 py-4 text-center text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer group hover:bg-slate-100 dark:hover:bg-slate-800"
-              onClick={() => requestSort('stats.completion')}
-            >
-              Completion {getSortIcon('stats.completion')}
-            </th>
           </tr>
         </thead>
 
@@ -198,15 +162,7 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
               key={project._id}
               className="group transition-colors hover:bg-blue-50/40 dark:hover:bg-slate-800/60"
             >
-              <td 
-                className="px-5 py-4 whitespace-nowrap cursor-pointer transition-colors sticky left-0 z-10 bg-white dark:bg-slate-900 group-hover:bg-blue-50/40 dark:group-hover:bg-slate-800/60 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400"
-                onClick={() => handleCellClick(project._id, "general")}
-                title="Edit General Info"
-              >
-                {project.projectTag}
-              </td>
-
-              <td 
+              <td
                 className="px-5 py-4 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap cursor-pointer hover:underline transition-colors"
                 onClick={() => handleCellClick(project._id, "general")}
                 title="Edit General Info"
@@ -222,9 +178,9 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
                 {project.builderName}
               </td>
 
-              <td 
+              <td
                 className="px-5 py-4 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-                onClick={() => handleCellClick(project._id, "media")}
+                onClick={() => handleCellClick(project._id, "cover")}
                 title="Edit Cover Image"
               >
                 <StatusCell value={project.stats.cover} />
@@ -254,9 +210,9 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
                 <CountCell value={project.stats.brochures} />
               </td>
 
-              <td 
+              <td
                 className="px-5 py-4 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-                onClick={() => handleCellClick(project._id, "media")}
+                onClick={() => handleCellClick(project._id, "floorplans")}
                 title="Edit Floor Plans"
               >
                 <CountCell value={project.stats.floorPlans} />
@@ -286,32 +242,6 @@ const ProjectOverviewTable = ({ projects, isLoading, isError }) => {
                 <StatusCell value={project.stats.contact} />
               </td>
 
-              <td className="px-5 py-4">
-                {project.stats.missing && project.stats.missing.length === 0 ? (
-                    <span className="rounded-full bg-green-100 dark:bg-green-900/30 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-400">
-                        Complete
-                    </span>
-                ) : (
-                    <div className="flex flex-wrap gap-1">
-                        {project.stats.missing?.map((item) => (
-                            <span
-                                key={item}
-                                onClick={() => handleCellClick(project._id, getMissingItemSlug(item))}
-                                className="rounded-full bg-red-100 dark:bg-red-900/30 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-400 cursor-pointer hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-                                title={`Edit ${item}`}
-                            >
-                                {item}
-                            </span>
-                        ))}
-                    </div>
-                )}
-              </td>
-
-              <td className="px-5 py-4">
-                <CompletionCell
-                  value={project.stats.completion}
-                />
-              </td>
             </tr>
           ))}
         </tbody>

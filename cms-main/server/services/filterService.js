@@ -1,4 +1,5 @@
 import FilterValue from "../models/FilterValue.js";
+import { escapeRegex } from "../utils/escapeRegex.js";
 
 
 /**
@@ -12,7 +13,7 @@ export const getSuggestions = async (type, query = "") => {
 
     if (query.trim()) {
         filters.value = {
-            $regex: query.trim(),
+            $regex: escapeRegex(query.trim()),
             $options: "i",
         };
     }

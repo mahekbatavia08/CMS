@@ -47,6 +47,13 @@ const Dashboard = () => {
     }));
   };
 
+  const handlePageChange = (page) => {
+    setFilters((prev) => ({
+      ...prev,
+      page,
+    }));
+  };
+
   const handleReset = () => {
     setFilters({
       search: "",
@@ -78,11 +85,16 @@ const Dashboard = () => {
   const projects =
     overviewResponse?.data?.items ?? [];
 
+  const totalPages = overviewResponse?.data?.totalPages ?? 1;
+  const currentPage = overviewResponse?.data?.currentPage ?? filters.page;
+
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-        Dashboard
-      </h1>
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+          Dashboard
+        </h1>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <StatsCard
@@ -117,6 +129,30 @@ const Dashboard = () => {
         isLoading={overviewLoading}
         isError={overviewError}
       />
+
+      {!overviewLoading && !overviewError && totalPages > 1 && (
+        <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm dark:border-slate-800 dark:bg-slate-900">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="rounded-md border border-slate-200 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            Previous
+          </button>
+
+          <span className="text-slate-600 dark:text-slate-400">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className="rounded-md border border-slate-200 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -8,14 +8,10 @@ const storage = multer.diskStorage({
 
     fs.mkdirSync(uploadDir, { recursive: true });
 
-    console.log("Upload directory:", uploadDir);
-
     cb(null, uploadDir);
   },
 
   filename(req, file, cb) {
-    console.log("Incoming file:", file.originalname);
-
     const ext = path.extname(file.originalname);
 
     cb(null, `${Date.now()}${ext}`);
@@ -23,13 +19,6 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  console.log("File received by Multer:");
-  console.log({
-    fieldname: file.fieldname,
-    originalname: file.originalname,
-    mimetype: file.mimetype,
-  });
-
   const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
   if (!allowedTypes.includes(file.mimetype)) {
     return cb(new Error("Only PDF, PNG, and JPEG files are allowed for floor plans."));
