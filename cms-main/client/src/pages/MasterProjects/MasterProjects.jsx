@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   FolderKanban,
@@ -85,6 +85,11 @@ const MasterProjects = () => {
 
   const [search, setSearch] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const highlightId = searchParams.get("highlight");
+  const [activeHighlight, setActiveHighlight] = useState(highlightId);
+  const cardRefs = useRef({});
+
   const handleImported = async () => {
     await queryClient.invalidateQueries({ queryKey: ["masterPortfolios"] });
     await queryClient.invalidateQueries({ queryKey: ["allProjectsForMasterCounts"] });
@@ -121,6 +126,27 @@ const MasterProjects = () => {
   }, [allProjectsData]);
 
   const isLoading = isPortfoliosLoading || isAllProjectsLoading;
+
+  // Briefly highlight and scroll to a portfolio card when arriving via
+  // ?highlight=<id> (e.g. from the Edit Project breadcrumb).
+  useEffect(() => {
+    if (!highlightId || isLoading) return undefined;
+
+    const el = cardRefs.current[highlightId];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    const timer = setTimeout(() => {
+      setActiveHighlight(null);
+      const next = new URLSearchParams(searchParams);
+      next.delete("highlight");
+      setSearchParams(next, { replace: true });
+    }, 2200);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlightId, isLoading]);
 
   // Aggregate project statistics per portfolio
   const portfolioStats = useMemo(() => {
@@ -186,10 +212,6 @@ const MasterProjects = () => {
       {/* Breadcrumb & Header */}
       <div>
         <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-          <Link to={ROUTES.DASHBOARD} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
-            Dashboard
-          </Link>
-          <span>/</span>
           <span className="font-semibold text-slate-900 dark:text-slate-100">Master Project</span>
         </nav>
 
@@ -275,7 +297,12 @@ const MasterProjects = () => {
               return (
                 <Card
                   key={portfolio._id}
-                  className="group relative overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-200 hover:shadow-xl hover:border-slate-400 dark:hover:border-slate-600 flex flex-col justify-between pt-0 py-0 gap-0"
+                  ref={(el) => (cardRefs.current[portfolio._id] = el)}
+                  className={`group relative overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-500 hover:shadow-xl hover:border-slate-400 dark:hover:border-slate-600 flex flex-col justify-between pt-0 py-0 gap-0 ${
+                    activeHighlight === portfolio._id
+                      ? "ring-2 ring-blue-400 ring-offset-2 dark:ring-offset-slate-950"
+                      : ""
+                  }`}
                 >
                   {/* Thumbnail Banner */}
                   <div
@@ -350,21 +377,8 @@ const MasterProjects = () => {
                       </p>
                     )}
 
-                    {/* Status & Date Bar */}
-                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
-                      <div className="flex items-center gap-2">
-                        <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          <span>{stats.publishedCount} Published</span>
-                        </span>
-                        {stats.draftCount > 0 && (
-                          <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
-                            <Clock className="h-3.5 w-3.5" />
-                            <span>{stats.draftCount} Draft</span>
-                          </span>
-                        )}
-                      </div>
-
+                    {/* Date Bar */}
+                    <div className="flex items-center justify-end text-xs text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>

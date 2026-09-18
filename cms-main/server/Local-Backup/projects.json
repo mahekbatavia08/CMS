@@ -2,10 +2,11 @@
   {
     "_id": "6aa77f5ebfebdd68ac31e276",
     "general": {
-      "projectName": "Copy Of Pramukh ABC Group Data For Filter",
+      "projectName": "Pramukh ABC Group Data",
       "builderName": "Copy Of Pramukh ABC Group Data For Filter",
-      "slug": "copy-of-pramukh-abc-group-data-for-filter-o69e0",
-      "description": "Master Portfolio created for Copy Of Pramukh ABC Group Data For Filter"
+      "slug": "pramukh-abc-group-data",
+      "tagline": "",
+      "description": "Master Portfolio created for Pramukh ABC Group Data"
     },
     "projectTag": "P1788775413368",
     "projectCategory": "portfolio",
@@ -34,8 +35,19 @@
       "gallery": []
     },
     "createdAt": "2026-09-14T05:00:14.892Z",
-    "updatedAt": "2026-09-14T05:00:14.892Z",
-    "__v": 0
+    "updatedAt": "2026-09-18T12:56:38.098Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "",
+      "googleMaps": ""
+    }
   },
   {
     "_id": "6aa77f5ebfebdd68ac31e27c",
@@ -1363,6 +1375,7 @@
       "projectName": "Prem Majestica",
       "builderName": "Copy Of Pramukh ABC Group Data For Filter",
       "slug": "prem-majestica-i7kkh",
+      "tagline": "",
       "description": "",
       "area": "Jahangirabad"
     },
@@ -1382,6 +1395,7 @@
       "area": [
         "Jahangirabad"
       ],
+      "squareFoot": "",
       "amenities": [],
       "tags": []
     },
@@ -1401,8 +1415,19 @@
     "legalDocuments": [],
     "floorPlans": [],
     "createdAt": "2026-09-14T05:00:16.019Z",
-    "updatedAt": "2026-09-14T05:00:16.019Z",
-    "__v": 0
+    "updatedAt": "2026-09-17T08:11:49.017Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "whatsapp": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    }
   },
   {
     "_id": "6aa77f60bfebdd68ac31e3bf",
@@ -1787,6 +1812,7 @@
       "projectName": "Maroli Plotting Project",
       "builderName": "Copy Of Pramukh ABC Group Data For Filter",
       "slug": "maroli-plotting-project-tnq2m",
+      "tagline": "",
       "description": "",
       "area": ""
     },
@@ -1804,6 +1830,7 @@
       "possessionStatus": "Ready Possession",
       "city": "Surat",
       "area": [],
+      "squareFoot": "",
       "amenities": [],
       "tags": []
     },
@@ -1823,15 +1850,28 @@
     "legalDocuments": [],
     "floorPlans": [],
     "createdAt": "2026-09-14T05:00:16.351Z",
-    "updatedAt": "2026-09-14T05:00:16.351Z",
-    "__v": 0
+    "updatedAt": "2026-09-17T09:37:43.228Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "whatsapp": ""
+    },
+    "location": {
+      "address": "",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    }
   },
   {
     "_id": "6aa7839adbeee87d26b7dce2",
     "general": {
       "projectName": "Royal Ethics Data",
       "builderName": "Royal Ethics Data",
-      "slug": "royal-ethics-data-lk9hm",
+      "slug": "royal-ethics-data-2",
+      "projectType": "Commercial",
+      "tagline": "iuy7",
       "description": "Master Portfolio created for Royal Ethics Data"
     },
     "projectTag": "P1788775413407",
@@ -1861,8 +1901,18 @@
       "gallery": []
     },
     "createdAt": "2026-09-14T05:18:18.273Z",
-    "updatedAt": "2026-09-14T05:18:18.273Z",
-    "__v": 0
+    "updatedAt": "2026-09-18T08:10:56.684Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "website": "",
+      "facebook": "",
+      "instagram": ""
+    },
+    "location": {
+      "address": "",
+      "googleMaps": ""
+    }
   },
   {
     "_id": "6aa7839adbeee87d26b7dce8",
@@ -2410,6 +2460,7 @@
       "projectName": "Royal Green",
       "builderName": "Royal Ethics Data",
       "slug": "royal-green-omijx",
+      "tagline": "",
       "description": "",
       "area": ""
     },
@@ -2428,6 +2479,7 @@
       "possessionStatus": "Ready Possession",
       "city": "Surat",
       "area": [],
+      "squareFoot": "",
       "amenities": [],
       "tags": []
     },
@@ -2447,8 +2499,25 @@
     "legalDocuments": [],
     "floorPlans": [],
     "createdAt": "2026-09-14T05:18:18.839Z",
-    "updatedAt": "2026-09-14T05:18:18.839Z",
-    "__v": 0
+    "updatedAt": "2026-09-15T10:18:08.874Z",
+    "__v": 0,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "test",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "googleMaps": ""
+    }
   },
   {
     "_id": "6aa7839adbeee87d26b7dd6b",
@@ -2456,6 +2525,7 @@
       "projectName": "Royal Ethics Industrial Park",
       "builderName": "Royal Ethics Data",
       "slug": "royal-ethics-industrial-park-hom1d",
+      "tagline": "",
       "description": "",
       "area": ""
     },
@@ -2473,6 +2543,7 @@
       "possessionStatus": "Ready Possession",
       "city": "Surat",
       "area": [],
+      "squareFoot": "",
       "amenities": [],
       "tags": []
     },
@@ -2492,58 +2563,11 @@
     "legalDocuments": [],
     "floorPlans": [],
     "createdAt": "2026-09-14T05:18:18.876Z",
-    "updatedAt": "2026-09-14T05:18:18.876Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa7839adbeee87d26b7dd75",
-    "general": {
-      "projectName": "Upcoming Commercial Project",
-      "builderName": "Royal Ethics Data",
-      "slug": "upcoming-commercial-project-9fzj2",
-      "tagline": "",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413422",
-    "projectCategory": "individual",
-    "parentProject": "6aa7839adbeee87d26b7dce2",
-    "alsoShowAsIndividual": true,
-    "filters": {
-      "category": [
-        "Commercial"
-      ],
-      "propertyType": [
-        "Shop",
-        "Office"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:18:18.914Z",
-    "updatedAt": "2026-09-14T05:39:47.528Z",
-    "__v": 0,
+    "updatedAt": "2026-09-18T08:11:11.221Z",
+    "__v": 4,
     "contact": {
-      "phone": "",
-      "whatsapp": "",
+      "phone": "987456239",
+      "whatsapp": "456789321456",
       "email": "",
       "website": "",
       "facebook": "",
@@ -2560,27 +2584,28 @@
     }
   },
   {
-    "_id": "6aa783b5dbeee87d26b7dd86",
+    "_id": "6aa93a7743957584b2b82376",
     "general": {
-      "projectName": "abc",
-      "builderName": "abc",
-      "slug": "abc",
+      "projectName": "Universal Reality",
+      "builderName": "Universal Reality",
+      "slug": "universal-reality",
       "projectType": "Commercial",
-      "tagline": "",
+      "tagline": "Building excellence",
       "description": ""
     },
-    "projectTag": "P1788775413423",
+    "projectTag": "P1788775413443",
     "projectCategory": "portfolio",
     "parentProject": null,
     "alsoShowAsIndividual": false,
     "contact": {
-      "phone": "",
-      "website": "",
+      "phone": "704 66 77 666",
+      "website": "https://universalrealty.co.in/",
       "facebook": "",
-      "instagram": ""
+      "instagram": "",
+      "youtube": ""
     },
     "location": {
-      "address": "",
+      "address": "Universal Trade Center, NR. Hari Om Circle, L.P. Savani Road,Adajan ,Surat",
       "googleMaps": ""
     },
     "specifications": [],
@@ -2591,948 +2616,13 @@
       "propertyType": [],
       "area": []
     },
-    "media": {
-      "coverImage": null,
-      "thumbnailImage": null,
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "status": {
-      "featured": false,
-      "published": false,
-      "status": "Draft",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "createdAt": "2026-09-14T05:18:45.363Z",
-    "updatedAt": "2026-09-14T05:18:45.363Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa783cddbeee87d26b7dd9e",
-    "general": {
-      "projectName": "1234",
-      "builderName": "test",
-      "slug": "1234-1",
-      "projectType": "",
-      "tagline": "",
-      "description": ""
-    },
-    "projectTag": "P1788775413424",
-    "projectCategory": "individual",
-    "parentProject": "6aa783b5dbeee87d26b7dd86",
-    "alsoShowAsIndividual": false,
-    "contact": {
-      "phone": "",
-      "whatsapp": "",
-      "email": "",
-      "website": "",
-      "facebook": "",
-      "instagram": "",
-      "linkedin": "",
-      "youtube": ""
-    },
-    "location": {
-      "address": "",
-      "city": "",
-      "state": "",
-      "pincode": "",
-      "googleMaps": ""
-    },
-    "specifications": [],
-    "filters": {
-      "category": "",
-      "propertyType": "",
-      "possessionStatus": "",
-      "city": "",
-      "area": "",
-      "amenities": [],
-      "tags": []
-    },
-    "media": {
-      "coverImage": null,
-      "thumbnailImage": null,
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "seo": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "shareDescription": ""
-    },
-    "status": {
-      "featured": false,
-      "published": false,
-      "status": "Draft",
-      "isDeleted": false
-    },
-    "mapSkin": "",
-    "createdAt": "2026-09-14T05:19:09.816Z",
-    "updatedAt": "2026-09-14T05:19:12.431Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa78487dbeee87d26b7ddbf",
-    "general": {
-      "projectName": "copy test",
-      "builderName": "test123",
-      "slug": "copy-etst",
-      "projectType": "",
-      "tagline": "",
-      "description": ""
-    },
-    "projectTag": "P1788775413425",
-    "projectCategory": "individual",
-    "parentProject": "6aa783b5dbeee87d26b7dd86",
-    "alsoShowAsIndividual": false,
-    "contact": {
-      "phone": "",
-      "whatsapp": "",
-      "email": "",
-      "website": "",
-      "facebook": "",
-      "instagram": "",
-      "linkedin": "",
-      "youtube": ""
-    },
-    "location": {
-      "address": "",
-      "city": "",
-      "state": "",
-      "pincode": "",
-      "googleMaps": ""
-    },
-    "specifications": [],
-    "filters": {
-      "category": "",
-      "propertyType": "",
-      "possessionStatus": "",
-      "city": "",
-      "area": "",
-      "amenities": [],
-      "tags": []
-    },
-    "media": {
-      "coverImage": null,
-      "thumbnailImage": null,
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "seo": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "shareDescription": ""
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "",
-    "createdAt": "2026-09-14T05:22:15.205Z",
-    "updatedAt": "2026-09-14T05:28:30.086Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa786354b0ec7dcf7c89be6",
-    "general": {
-      "projectName": "test1",
-      "builderName": "test123",
-      "slug": "1234-2",
-      "projectType": "",
-      "tagline": "",
-      "description": ""
-    },
-    "projectTag": "P1788775413426",
-    "projectCategory": "individual",
-    "parentProject": null,
-    "alsoShowAsIndividual": false,
-    "contact": {
-      "phone": "",
-      "whatsapp": "",
-      "email": "",
-      "website": "",
-      "facebook": "",
-      "instagram": "",
-      "linkedin": "",
-      "youtube": ""
-    },
-    "location": {
-      "address": "",
-      "city": "",
-      "state": "",
-      "pincode": "",
-      "googleMaps": ""
-    },
-    "specifications": [],
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Villa"
-      ],
-      "possessionStatus": "Coming Soon",
-      "city": "",
-      "area": "",
-      "amenities": [],
-      "tags": []
-    },
-    "media": {
-      "coverImage": null,
-      "thumbnailImage": null,
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "seo": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "shareDescription": ""
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "",
-    "createdAt": "2026-09-14T05:29:25.513Z",
-    "updatedAt": "2026-09-14T12:22:05.665Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788424b0ec7dcf7c89c60",
-    "general": {
-      "projectName": "Royal Ethics Data (1)",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-data-1",
-      "projectType": "Commercial",
-      "tagline": "test",
-      "description": "Master Portfolio created for Royal Ethics Data (1)"
-    },
-    "projectTag": "P1788775413427",
-    "projectCategory": "portfolio",
-    "parentProject": null,
-    "alsoShowAsIndividual": false,
-    "specifications": [],
-    "filters": {
-      "amenities": [],
-      "tags": [],
-      "category": [],
-      "propertyType": [],
-      "area": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "media": {
-      "gallery": []
-    },
-    "createdAt": "2026-09-14T05:38:10.874Z",
-    "updatedAt": "2026-09-14T05:38:49.765Z",
-    "__v": 0,
-    "contact": {
-      "phone": "",
-      "website": "",
-      "facebook": "",
-      "instagram": ""
-    },
-    "location": {
-      "address": "test",
-      "googleMaps": ""
-    }
-  },
-  {
-    "_id": "6aa788424b0ec7dcf7c89c66",
-    "general": {
-      "projectName": "Royal Ethics Park 1",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-1-w98o1",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413428",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:10.939Z",
-    "updatedAt": "2026-09-14T05:38:10.939Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89c70",
-    "general": {
-      "projectName": "Royal Ethics Park 2",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-2-s42bi",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413429",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.006Z",
-    "updatedAt": "2026-09-14T05:38:11.006Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89c7a",
-    "general": {
-      "projectName": "Royal Ethics Park 3",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-3-cghqk",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413430",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.074Z",
-    "updatedAt": "2026-09-14T05:38:11.074Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89c84",
-    "general": {
-      "projectName": "Royal Ethics Park  4",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-4-uvzyg",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413431",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.148Z",
-    "updatedAt": "2026-09-14T05:38:11.148Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89c8e",
-    "general": {
-      "projectName": "Royal Ethics Park  5-6",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-5-6-1uqva",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413432",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.211Z",
-    "updatedAt": "2026-09-14T05:38:11.211Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89c98",
-    "general": {
-      "projectName": "Royal Ethics Park 7",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-7-5va59",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413433",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.272Z",
-    "updatedAt": "2026-09-14T05:38:11.272Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89ca2",
-    "general": {
-      "projectName": "Royal Ethics Park 8",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-8-bi9gz",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413434",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.332Z",
-    "updatedAt": "2026-09-14T05:38:11.332Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cac",
-    "general": {
-      "projectName": "Royal Ethics Park 9",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-9-u6c9x",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413435",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.443Z",
-    "updatedAt": "2026-09-14T05:38:11.443Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cb6",
-    "general": {
-      "projectName": "Royal Ethics Park 10",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-10-ppb0s",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413436",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.506Z",
-    "updatedAt": "2026-09-14T05:38:11.506Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cc0",
-    "general": {
-      "projectName": "Royal Bunglows",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-bunglows-iqrod",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413437",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Bungalow"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.562Z",
-    "updatedAt": "2026-09-14T05:38:11.562Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cca",
-    "general": {
-      "projectName": "Royal Ethics Bunglow",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-bunglow-m3rge",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413438",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Bungalow"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.620Z",
-    "updatedAt": "2026-09-14T05:38:11.620Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cd4",
-    "general": {
-      "projectName": "Royal Ethics Park",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-park-jegqt",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413439",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.676Z",
-    "updatedAt": "2026-09-14T05:38:11.676Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cde",
-    "general": {
-      "projectName": "Royal Green",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-green-m1r5q",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413440",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Residential"
-      ],
-      "propertyType": [
-        "2 BHK",
-        "3 BHK"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.733Z",
-    "updatedAt": "2026-09-14T05:38:11.733Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89ce9",
-    "general": {
-      "projectName": "Royal Ethics Industrial Park",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "royal-ethics-industrial-park-w4scm",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413441",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Industrial"
-      ],
-      "propertyType": [
-        "Plot"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "default",
-    "specifications": [],
-    "media": {
-      "gallery": []
-    },
-    "videos": [],
-    "brochures": [],
-    "legalDocuments": [],
-    "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.790Z",
-    "updatedAt": "2026-09-14T05:38:11.790Z",
-    "__v": 0
-  },
-  {
-    "_id": "6aa788434b0ec7dcf7c89cf3",
-    "general": {
-      "projectName": "Upcoming Commercial Project",
-      "builderName": "Royal Ethics Data (1)",
-      "slug": "upcoming-commercial-project-k05mb",
-      "tagline": "",
-      "description": "",
-      "area": ""
-    },
-    "projectTag": "P1788775413442",
-    "projectCategory": "individual",
-    "parentProject": "6aa788424b0ec7dcf7c89c60",
-    "alsoShowAsIndividual": false,
-    "filters": {
-      "category": [
-        "Commercial"
-      ],
-      "propertyType": [
-        "Shop",
-        "Office"
-      ],
-      "possessionStatus": "Ready Possession",
-      "city": "Surat",
-      "area": [],
-      "amenities": [],
-      "tags": []
-    },
-    "status": {
-      "featured": false,
-      "published": true,
-      "status": "Published",
-      "isDeleted": false
-    },
-    "mapSkin": "",
-    "specifications": [],
     "media": {
       "coverImage": {
-        "url": "/uploads/projects/6aa788434b0ec7dcf7c89cf3/cover/1789383272985-f4d8589597d9.png",
+        "url": "/uploads/projects/6aa93a7743957584b2b82376/cover/1789475448193-96ade49221ea.jpeg",
+        "alt": ""
+      },
+      "thumbnailImage": {
+        "url": "/uploads/projects/6aa93a7743957584b2b82376/thumbnail/1789475448457-9358c2ee6ee0.jpg",
         "alt": ""
       },
       "gallery": []
@@ -3541,9 +2631,244 @@
     "brochures": [],
     "legalDocuments": [],
     "floorPlans": [],
-    "createdAt": "2026-09-14T05:38:11.846Z",
-    "updatedAt": "2026-09-14T12:23:00.863Z",
-    "__v": 2,
+    "status": {
+      "featured": false,
+      "published": false,
+      "status": "Draft",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "createdAt": "2026-09-15T12:30:47.458Z",
+    "updatedAt": "2026-09-18T12:55:40.150Z",
+    "__v": 0
+  },
+  {
+    "_id": "6aab7f1ca0f09491a8fc80ad",
+    "general": {
+      "projectName": "Universal Commercial Capital",
+      "builderName": "Universal Realty",
+      "slug": "upcoming-commercial-project-2",
+      "projectType": "",
+      "tagline": "Bulding exclusive",
+      "description": ""
+    },
+    "projectTag": "P1788775413444",
+    "projectCategory": "individual",
+    "parentProject": "6aa93a7743957584b2b82376",
+    "alsoShowAsIndividual": false,
+    "contact": {
+      "phone": "",
+      "whatsapp": "",
+      "email": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    },
+    "location": {
+      "address": "Universal Trade Center, NR. Hari Om Circle, L.P. Savani Road,Adajan ,Surat",
+      "city": "surat",
+      "state": "gujarat",
+      "pincode": "395009",
+      "googleMaps": "https://maps.app.goo.gl/25GuMzBN87LqYGjh8"
+    },
+    "specifications": [
+      {
+        "primaryTitle": "BUILDING FEATURES",
+        "items": [
+          {
+            "title": "STAIRCASE",
+            "description": "• Vitrified tile dado for 4' ht. on stair dado",
+            "icon": ""
+          },
+          {
+            "title": "BUILDING STRUCTURE",
+            "description": "Earthquake resistant R.C.C. frame structure",
+            "icon": ""
+          },
+          {
+            "title": "ETRANCE FOYER",
+            "description": "Elegant entrance foyer with good ambience",
+            "icon": ""
+          },
+          {
+            "title": "PARKING",
+            "description": "Ample owner's paring at double basement floors with well designed parking layout \nexclusive paving parking areas",
+            "icon": ""
+          },
+          {
+            "title": "PASSAGE",
+            "description": "Italian flooring & elegant ceiling",
+            "icon": ""
+          },
+          {
+            "title": "FLOORING",
+            "description": "Elegantand exquisite Italian flooring atground floorentrance foyer",
+            "icon": ""
+          }
+        ]
+      },
+      {
+        "primaryTitle": "EXTERNAL FINISHES",
+        "items": [
+          {
+            "title": "PLASTER",
+            "description": "Doble coat roller/gutka finish plaster",
+            "icon": ""
+          },
+          {
+            "title": "TERRACE",
+            "description": "water proofing on terrace with suitable finish china mosaic flooring",
+            "icon": ""
+          },
+          {
+            "title": "ELEVATORS",
+            "description": "High standard auto lift with optimum capacity of kone",
+            "icon": ""
+          },
+          {
+            "title": "FIRE SAFETY",
+            "description": "Fire hydrant and fire extinguisher",
+            "icon": ""
+          },
+          {
+            "title": "electrification",
+            "description": "",
+            "icon": ""
+          },
+          {
+            "title": "CCTV camera",
+            "description": "",
+            "icon": ""
+          }
+        ]
+      },
+      {
+        "primaryTitle": "INTERIOR UNIT FINISHES",
+        "items": [
+          {
+            "title": "FLOORING",
+            "description": "",
+            "icon": ""
+          },
+          {
+            "title": "SHUTTER",
+            "description": "",
+            "icon": ""
+          },
+          {
+            "title": "WINDOWS",
+            "description": "",
+            "icon": ""
+          },
+          {
+            "title": "TOILATES",
+            "description": "",
+            "icon": ""
+          },
+          {
+            "title": "WALL FINISH",
+            "description": "",
+            "icon": ""
+          }
+        ]
+      }
+    ],
+    "filters": {
+      "category": [
+        "Commercial"
+      ],
+      "propertyType": [
+        "Office"
+      ],
+      "possessionStatus": "Ready Position",
+      "city": "surat",
+      "area": "adajan",
+      "squareFoot": "734.00",
+      "amenities": [],
+      "tags": []
+    },
+    "rera": {
+      "certificate": null
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": [
+        {
+          "albumName": "Album 1",
+          "displayOrder": 0,
+          "images": [
+            {
+              "url": "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709986-66649095325c.png",
+              "alt": "",
+              "caption": "",
+              "displayOrder": 0
+            },
+            {
+              "url": "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709989-65f2896cdeb7.png",
+              "alt": "",
+              "caption": "",
+              "displayOrder": 1
+            },
+            {
+              "url": "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710027-9d1373d9d357.png",
+              "alt": "",
+              "caption": "",
+              "displayOrder": 2
+            },
+            {
+              "url": "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710029-de8edad94c58.png",
+              "alt": "",
+              "caption": "",
+              "displayOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    "videos": [],
+    "brochures": [
+      {
+        "title": "Universal-Business-Center",
+        "url": "/uploads/projects/6aab7f1ca0f09491a8fc80ad/brochures/1789624092602-f908a03bcb59.pdf",
+        "createdAt": "2026-09-17T05:48:12.693Z",
+        "updatedAt": "2026-09-18T12:54:19.800Z"
+      }
+    ],
+    "legalDocuments": [],
+    "floorPlans": [],
+    "seo": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "shareDescription": ""
+    },
+    "status": {
+      "featured": false,
+      "published": false,
+      "status": "Draft",
+      "isDeleted": false
+    },
+    "mapSkin": "",
+    "createdAt": "2026-09-17T05:48:12.529Z",
+    "updatedAt": "2026-09-18T12:54:19.800Z",
+    "__v": 108
+  },
+  {
+    "_id": "6aabc8f7a0f09491a8fc8a99",
+    "general": {
+      "projectName": "Universal Homes",
+      "builderName": "Universal Realty",
+      "slug": "u",
+      "projectType": "",
+      "tagline": "",
+      "description": ""
+    },
+    "projectTag": "P1788775413445",
+    "projectCategory": "individual",
+    "parentProject": "6aa93a7743957584b2b82376",
+    "alsoShowAsIndividual": false,
     "contact": {
       "phone": "",
       "whatsapp": "",
@@ -3560,6 +2885,127 @@
       "state": "",
       "pincode": "",
       "googleMaps": ""
-    }
+    },
+    "specifications": [
+      {
+        "primaryTitle": "Unit Finishes",
+        "items": [
+          {
+            "title": "Entrance Foyer, Stair & Lobby",
+            "description": "",
+            "icon": ""
+          }
+        ]
+      }
+    ],
+    "filters": {
+      "category": [
+        "Residential"
+      ],
+      "propertyType": [
+        "3 BHK",
+        "4 BHK"
+      ],
+      "possessionStatus": "Ready Position",
+      "city": "surat",
+      "area": "Adajan",
+      "squareFoot": "",
+      "amenities": [],
+      "tags": []
+    },
+    "rera": {
+      "certificate": null
+    },
+    "media": {
+      "coverImage": null,
+      "thumbnailImage": null,
+      "gallery": [
+        {
+          "albumName": "Album 1",
+          "displayOrder": 0,
+          "images": []
+        }
+      ]
+    },
+    "videos": [],
+    "brochures": [
+      {
+        "title": "AURA_BROCHURE",
+        "url": "/uploads/projects/6aabc8f7a0f09491a8fc8a99/brochures/1789647715923-010620a10e21.pdf",
+        "createdAt": "2026-09-17T12:21:56.029Z",
+        "updatedAt": "2026-09-18T12:52:15.377Z"
+      }
+    ],
+    "legalDocuments": [
+      {
+        "title": "Airport_NOC",
+        "url": "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187663-2c405a52e115.pdf",
+        "createdAt": "2026-09-17T12:13:07.706Z",
+        "updatedAt": "2026-09-18T12:52:15.377Z"
+      },
+      {
+        "title": "Devlopment_Permission",
+        "url": "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187662-83edecb70c95.pdf",
+        "createdAt": "2026-09-17T12:13:07.716Z",
+        "updatedAt": "2026-09-18T12:52:15.377Z"
+      },
+      {
+        "title": "NA_Order",
+        "url": "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187661-0f44528cd48a.pdf",
+        "createdAt": "2026-09-17T12:13:07.727Z",
+        "updatedAt": "2026-09-18T12:52:15.377Z"
+      },
+      {
+        "title": "LandDocument",
+        "url": "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187667-67df28e4de75.pdf",
+        "createdAt": "2026-09-17T12:13:07.739Z",
+        "updatedAt": "2026-09-18T12:52:15.377Z"
+      }
+    ],
+    "floorPlans": [
+      {
+        "title": "2nd floor",
+        "originalPdf": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/2ff3c27e-1353-4159-a200-be28ae001a87/original.png",
+        "thumbnail": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/2ff3c27e-1353-4159-a200-be28ae001a87/original.png",
+        "pages": [
+          {
+            "pageNumber": 1,
+            "dziPath": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/2ff3c27e-1353-4159-a200-be28ae001a87/original.png",
+            "url": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/2ff3c27e-1353-4159-a200-be28ae001a87/original.png"
+          }
+        ],
+        "displayOrder": 0,
+        "_id": "6aabdb91a0f09491a8fc92fb"
+      },
+      {
+        "title": "2nd floor",
+        "originalPdf": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png",
+        "thumbnail": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png",
+        "pages": [
+          {
+            "pageNumber": 1,
+            "dziPath": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png",
+            "url": "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png"
+          }
+        ],
+        "displayOrder": 0,
+        "_id": "6aabdb91a0f09491a8fc92fd"
+      }
+    ],
+    "seo": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "shareDescription": ""
+    },
+    "status": {
+      "featured": false,
+      "published": false,
+      "status": "Draft",
+      "isDeleted": false
+    },
+    "mapSkin": "default",
+    "createdAt": "2026-09-17T11:03:19.069Z",
+    "updatedAt": "2026-09-18T12:52:15.377Z",
+    "__v": 185
   }
 ]

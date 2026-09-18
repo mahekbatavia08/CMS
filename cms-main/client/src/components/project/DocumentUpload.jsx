@@ -3,6 +3,7 @@ import { FileText, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { getImageUrl } from "@/lib/utils";
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
@@ -126,8 +127,12 @@ const DocumentUpload = ({
       {value?.length > 0 && (
         <div className="space-y-3">
           {value.map((document, index) => {
-            const file =
-              document.file || document;
+            const file = document.file || null;
+            const displayName = document.title || file?.name || "Document";
+            const sizeLabel = file
+              ? `${(file.size / 1024 / 1024).toFixed(2)} MB`
+              : null;
+            const viewUrl = !file && document.url ? getImageUrl(document.url) : null;
 
             return (
               <div
@@ -138,16 +143,26 @@ const DocumentUpload = ({
                   <FileText className="h-8 w-8 text-red-500" />
 
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-slate-100">
-                      {file.name}
-                    </p>
+                    {viewUrl ? (
+                      <a
+                        href={viewUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+                      >
+                        {displayName}
+                      </a>
+                    ) : (
+                      <p className="font-medium text-slate-900 dark:text-slate-100">
+                        {displayName}
+                      </p>
+                    )}
 
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      {(file.size / 1024 / 1024).toFixed(
-                        2
-                      )}{" "}
-                      MB
-                    </p>
+                    {sizeLabel && (
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        {sizeLabel}
+                      </p>
+                    )}
                   </div>
                 </div>
 

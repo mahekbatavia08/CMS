@@ -271,8 +271,11 @@ const uploadLegalDocument = async (projectId, file, title) => {
 
   const project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/legal`);
-  
+  // Uploaded as "raw" (not "auto") because Cloudinary resolves PDFs under
+  // "auto" to an image-delivery resource, which its PDF/ZIP access
+  // restrictions block from being viewed directly.
+  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/legal`, "raw");
+
   if (!cloudinaryResponse) {
     throw new ApiError(500, "Failed to upload legal document to Cloudinary");
   }
@@ -287,6 +290,43 @@ const uploadLegalDocument = async (projectId, file, title) => {
   return project;
 };
 
+/**
+ * Uploads (and replaces) a project's RERA certificate.
+ * The previous certificate file, if any, is deleted from Cloudinary.
+ *
+ * @param {string} projectId
+ * @param {object} file - Multer file object (from uploads/temp/)
+ * @returns {Promise<object>} The updated project document
+ */
+const uploadReraCertificate = async (projectId, file) => {
+  if (!file) {
+    throw new ApiError(400, "No file was uploaded");
+  }
+
+  const project = await getProjectOrThrow(projectId, file);
+
+  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/rera`);
+
+  if (!cloudinaryResponse) {
+    throw new ApiError(500, "Failed to upload RERA certificate to Cloudinary");
+  }
+
+  const previousCertificateUrl = project.rera?.certificate?.url;
+
+  if (!project.rera) project.rera = {};
+  project.rera.certificate = {
+    url: cloudinaryResponse.secure_url,
+    name: file.originalname || "",
+  };
+  await project.save();
+
+  if (previousCertificateUrl && previousCertificateUrl.includes("cloudinary.com")) {
+    await deleteFromCloudinary(previousCertificateUrl, "image");
+  }
+
+  return project;
+};
+
 export {
   uploadCoverImage,
   uploadThumbnailImage,
@@ -295,4 +335,5 @@ export {
   uploadFloorPlan,
   uploadBrochure,
   uploadLegalDocument,
+  uploadReraCertificate,
 };

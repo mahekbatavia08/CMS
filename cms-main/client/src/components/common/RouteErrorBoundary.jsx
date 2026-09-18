@@ -41,10 +41,10 @@ const RouteErrorBoundary = () => {
           Try Again
         </button>
         <button
-          onClick={() => navigate(ROUTES.DASHBOARD)}
+          onClick={() => navigate(ROUTES.PROJECTS_MASTER)}
           className="rounded-lg bg-black px-6 py-2 font-medium text-white transition-colors hover:bg-slate-800 dark:bg-white dark:text-black dark:hover:bg-slate-200"
         >
-          Return to Dashboard
+          Return to Projects
         </button>
       </div>
     </div>

@@ -3,8 +3,6 @@
 
   LOGIN: "/login",
 
-  DASHBOARD: "/dashboard",
-
   PROJECTS: "/projects",
 
   PROJECTS_MASTER: "/projects/master",

@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useBlocker } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { FormProvider, useFormContext } from "react-hook-form";
 
@@ -15,12 +14,12 @@ import StickyActionBar from "./StickyActionBar";
 import { PROJECT_SECTIONS } from "@/constants/projectSections";
 
 const slugify = (text) =>
-  text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+    text
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
 
 const PortfolioTourFields = () => {
     const { register, watch, setValue, formState: { errors } } = useFormContext();
@@ -172,6 +171,24 @@ const PortfolioTourFields = () => {
                                 </p>
                             )}
                         </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="youtube">YouTube Link</Label>
+                            <Input
+                                id="youtube"
+                                placeholder="https://youtube.com/..."
+                                {...register("contact.youtube", {
+                                    pattern: {
+                                        value: /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?(\/.*)?$/i,
+                                        message: "Please enter a valid YouTube URL",
+                                    },
+                                })}
+                            />
+                            {errors.contact?.youtube && (
+                                <p className="text-xs text-red-500 font-medium mt-1">
+                                    {errors.contact.youtube.message}
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </CardContent>
             </Card>
@@ -185,6 +202,7 @@ const PortfolioTourFields = () => {
                 showLegalDocuments={false}
                 showFloorPlans={false}
                 showThumbnailImage={true}
+                showRera={false}
             />
 
             {/* Videos */}
@@ -205,25 +223,8 @@ const PortfolioTourForm = ({
     onSubmit,
     onBack,
     isSubmitting = false,
+    hideSubmit = false,
 }) => {
-    const isDirty = methods.formState.isDirty;
-
-    const blocker = useBlocker(
-        ({ currentLocation, nextLocation }) =>
-            isDirty && currentLocation.pathname !== nextLocation.pathname
-    );
-
-    useEffect(() => {
-        if (blocker.state === "blocked") {
-            const confirm = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-            if (confirm) {
-                blocker.proceed();
-            } else {
-                blocker.reset();
-            }
-        }
-    }, [blocker]);
-
     return (
         <FormProvider {...methods}>
             <form
@@ -233,7 +234,7 @@ const PortfolioTourForm = ({
                         data.general.builderName = data.general.projectName;
                     }
                     if (!data.general.projectType) {
-                        data.general.projectType = "Commercial"; 
+                        data.general.projectType = "Commercial";
                     }
                     if (!data.status.status) {
                         data.status.status = "Published";
@@ -266,9 +267,10 @@ const PortfolioTourForm = ({
 
                 <PortfolioTourFields />
 
-                <StickyActionBar 
-                    isSubmitting={isSubmitting} 
-                    submitButtonText="Save Configuration" 
+                <StickyActionBar
+                    isSubmitting={isSubmitting}
+                    submitButtonText="Save Configuration"
+                    hideSubmit={hideSubmit}
                     onBack={onBack}
                 />
             </form>

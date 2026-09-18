@@ -185,10 +185,46 @@ export const formatProjectsCollection = (projectsList) => {
 };
 
 /**
+ * Formats a portfolio project together with its child individual projects into
+ * the custom JSON shape:
+ * {
+ *   projectName: "",
+ *   developer: "",
+ *   contact: { ... },
+ *   location: { ... },
+ *   brochures: [...],
+ *   legal: [...],
+ *   photos: { ... },
+ *   videos: { ... },
+ *   floorplans: { ... },
+ *   projects: {
+ *     p1: { <child project formatted data> },
+ *     p2: { ... },
+ *     ...
+ *   }
+ * }
+ */
+const formatPortfolioWithChildren = (portfolio, childProjects) => {
+  const basePortfolioData = formatProjectToCustomJson(portfolio);
+
+  // Embed child projects as { p1: {...}, p2: {...}, ... }
+  const childProjectsMap = {};
+  childProjects.forEach((child, idx) => {
+    const key = `p${idx + 1}`;
+    childProjectsMap[key] = formatProjectToCustomJson(child);
+  });
+
+  return {
+    ...basePortfolioData,
+    projects: childProjectsMap,
+  };
+};
+
+/**
  * Backs up all non-deleted projects to:
  * 1) Local-Backup/projects.json (full raw backup)
  * 2) Local-Backup/individual/Project-Data.json (formatted individual projects)
- * 3) Local-Backup/portfolio/Project-Data.json (formatted portfolio projects)
+ * 3) Local-Backup/portfolio/Project-Data.json (formatted portfolio projects with nested child projects)
  */
 export const backupProjects = async () => {
   try {
@@ -201,7 +237,7 @@ export const backupProjects = async () => {
     // 1. Full raw backup to preserve existing functionality
     await fs.writeFile(BACKUP_FILE, JSON.stringify(projects, null, 2));
 
-    // 2. Separate into individual and portfolio
+    // 2. Separate into individual (standalone) and portfolio (master) projects
     const individualProjects = projects.filter(
       (p) => p.projectCategory === "individual" || !p.projectCategory
     );
@@ -209,11 +245,25 @@ export const backupProjects = async () => {
       (p) => p.projectCategory === "portfolio"
     );
 
-    // 3. Format as specific custom JSON structure
+    // 3. Format standalone individual projects
     const individualFormatted = formatProjectsCollection(individualProjects);
-    const portfolioFormatted = formatProjectsCollection(portfolioProjects);
 
-    // 4. Save into 2 different folders
+    // 4. Format portfolio projects with their child projects properly embedded
+    const portfolioFormatted = {};
+    portfolioProjects.forEach((portfolio, idx) => {
+      const key = `p${idx + 1}`;
+
+      // Find all child individual projects that belong to this portfolio
+      const portfolioId = String(portfolio._id);
+      const childProjects = projects.filter((p) => {
+        if (!p.parentProject) return false;
+        return String(p.parentProject) === portfolioId;
+      });
+
+      portfolioFormatted[key] = formatPortfolioWithChildren(portfolio, childProjects);
+    });
+
+    // 5. Save into 2 different folders
     const individualFile = path.join(INDIVIDUAL_DIR, "Project-Data.json");
     const portfolioFile = path.join(PORTFOLIO_DIR, "Project-Data.json");
 

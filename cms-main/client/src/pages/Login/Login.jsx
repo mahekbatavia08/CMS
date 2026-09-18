@@ -45,7 +45,7 @@ const Login = () => {
 
             toast.success(response.message);
 
-            navigate(ROUTES.DASHBOARD);
+            navigate(ROUTES.PROJECTS_MASTER);
         } catch (error) {
             toast.error(
                 error?.response?.data?.message ||
@@ -64,7 +64,7 @@ const Login = () => {
 
             toast.success(response.message);
 
-            navigate(ROUTES.DASHBOARD);
+            navigate(ROUTES.PROJECTS_MASTER);
         } catch (error) {
             toast.error(
                 error?.response?.data?.message ||

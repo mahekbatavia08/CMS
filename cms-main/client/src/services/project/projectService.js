@@ -219,6 +219,27 @@ const projectService = {
     return data;
   },
   /**
+   * Upload RERA certificate
+   */
+  uploadReraCertificate: async (projectId, file) => {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const { data } = await api.post(
+      `/projects/${projectId}/media/rera`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    return data;
+  },
+
+  /**
    * Upload floor plan
    */
   uploadFloorPlan: async (projectId, file, title = "") => {

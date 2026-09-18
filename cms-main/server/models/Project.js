@@ -275,6 +275,12 @@ const specificationItemSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+
+    icon: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   { _id: false },
 );
@@ -322,6 +328,11 @@ const filtersSchema = new Schema(
       default: [],
     },
 
+    squareFoot: {
+      type: String,
+      trim: true,
+    },
+
     amenities: {
       type: [String],
       default: [],
@@ -330,6 +341,22 @@ const filtersSchema = new Schema(
     tags: {
       type: [String],
       default: [],
+    },
+  },
+  { _id: false },
+);
+
+const reraSchema = new Schema(
+  {
+    certificate: {
+      url: {
+        type: String,
+        trim: true,
+      },
+      name: {
+        type: String,
+        trim: true,
+      },
     },
   },
   { _id: false },
@@ -476,6 +503,11 @@ const projectSchema = new Schema(
 
     filters: {
       type: filtersSchema,
+      default: () => ({}),
+    },
+
+    rera: {
+      type: reraSchema,
       default: () => ({}),
     },
 

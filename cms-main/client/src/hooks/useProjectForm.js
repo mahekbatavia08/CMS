@@ -61,6 +61,7 @@ const useProjectForm = () => {
         possessionStatus: "",
         city: "",
         area: "",
+        squareFoot: "",
         status: "",
 
         amenities: [],
@@ -68,6 +69,13 @@ const useProjectForm = () => {
       },
 
       specifications: [],
+
+      /**
+       * RERA Certificate
+       */
+      rera: {
+        certificate: null,
+      },
 
       media: {
         coverImage: null,

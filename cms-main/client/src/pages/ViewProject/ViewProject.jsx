@@ -53,6 +53,14 @@ export default function ViewProject() {
 
   const isPortfolioTour = project?.projectCategory === "portfolio";
 
+  // Deterministic "back" destination based on the project's own category
+  // instead of browser history, which can land on an unrelated page.
+  const backLink = isPortfolioTour
+    ? ROUTES.PROJECTS_MASTER
+    : project?.parentProject
+      ? ROUTES.PROJECTS_PORTFOLIO_DETAIL.replace(":portfolioId", project.parentProject)
+      : ROUTES.PROJECTS_INDIVIDUAL;
+
   const { data: childProjectsData } = useQuery({
     queryKey: ["child-projects", id],
     queryFn: () => projectService.getProjects({ parentProject: id, limit: 100 }),
@@ -97,7 +105,7 @@ export default function ViewProject() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
+          <Button variant="outline" size="icon" onClick={() => navigate(backLink)}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>

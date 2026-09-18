@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -58,6 +58,67 @@ const EditProject = () => {
     fetchProject();
   }, [id, methods, navigate]);
 
+  const autosaveTimerRef = useRef(null);
+  const isAutosavingRef = useRef(false);
+  const hasPendingAutosaveRef = useRef(false);
+
+  useEffect(() => {
+    if (isLoading) return undefined;
+
+    const runAutosave = () => {
+      if (isAutosavingRef.current) return;
+
+      hasPendingAutosaveRef.current = false;
+      isAutosavingRef.current = true;
+      handleSave(methods.getValues(), { silent: true }).finally(() => {
+        isAutosavingRef.current = false;
+      });
+    };
+
+    const subscription = methods.watch((_value, { type }) => {
+      // Ignore emits from methods.reset() (no `type`), so the reset a
+      // save performs on itself doesn't immediately re-trigger autosave.
+      if (!type) return;
+
+      hasPendingAutosaveRef.current = true;
+
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+      }
+
+      autosaveTimerRef.current = setTimeout(runAutosave, 1200);
+    });
+
+    // Flush any pending debounced autosave immediately instead of losing it,
+    // e.g. when the user switches to another browser tab or navigates away
+    // before the debounce timer would have fired on its own.
+    const flushPendingAutosave = () => {
+      if (!hasPendingAutosaveRef.current) return;
+
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+        autosaveTimerRef.current = null;
+      }
+
+      runAutosave();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        flushPendingAutosave();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      subscription.unsubscribe();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      flushPendingAutosave();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
   useEffect(() => {
     if (!isLoading && sectionParam) {
       const section = Object.values(PROJECT_SECTIONS).find(
@@ -75,11 +136,13 @@ const EditProject = () => {
     }
   }, [isLoading, sectionParam]);
 
-  const handleSave = async (data, { navigateToMapSkin = false } = {}) => {
-    if (navigateToMapSkin) {
-      setIsNextSubmitting(true);
-    } else {
-      setIsSubmitting(true);
+  const handleSave = async (data, { navigateToMapSkin = false, silent = false } = {}) => {
+    if (!silent) {
+      if (navigateToMapSkin) {
+        setIsNextSubmitting(true);
+      } else {
+        setIsSubmitting(true);
+      }
     }
 
     try {
@@ -89,17 +152,20 @@ const EditProject = () => {
 
       // Gallery Albums
       const galleryAlbums = data.media?.gallery || [];
-      const cleanAlbums = galleryAlbums
-        .map((album) => ({
-          ...album,
-          images: (album.images || []).filter((img) => !img.file),
-        }))
-        .filter((album) => String(album.albumName || "").trim() !== "");
+      const cleanAlbums = galleryAlbums.map((album, albumIndex) => ({
+        ...album,
+        albumName: String(album.albumName || "").trim() || `Album ${albumIndex + 1}`,
+        images: (album.images || []).filter((img) => !img.file),
+      }));
 
       // Documents
       const brochures = data.brochures || [];
       const legalDocuments = data.legalDocuments || [];
       const floorPlans = data.floorPlans || [];
+
+      // RERA Certificate
+      const reraCertificateFile =
+        data.rera?.certificate instanceof File ? data.rera.certificate : null;
 
       // Filter out new file objects before sending JSON
       if (data.media) {
@@ -110,7 +176,14 @@ const EditProject = () => {
 
       data.brochures = brochures.filter((doc) => !doc.file && doc.url);
       data.legalDocuments = legalDocuments.filter((doc) => !doc.file && doc.url);
-      data.floorPlans = floorPlans.filter((doc) => !doc.file && doc.url);
+      // Floor plan items are stored with `originalPdf` (not `url`), unlike
+      // brochures/legal documents, so already-saved plans must be matched
+      // on that field or they get dropped from the array on every save.
+      data.floorPlans = floorPlans.filter((doc) => !doc.file && doc.originalPdf);
+
+      if (data.rera) {
+        data.rera.certificate = reraCertificateFile ? null : data.rera.certificate;
+      }
 
       // Intercept custom project type
       if (data.general?.projectType === "Custom" && data.general?.customProjectType) {
@@ -146,9 +219,8 @@ const EditProject = () => {
       }
 
       // Upload newly added gallery images inside albums
-      for (const album of galleryAlbums) {
-        const safeAlbumName = String(album.albumName || "").trim();
-        if (!safeAlbumName) continue;
+      for (const [albumIndex, album] of galleryAlbums.entries()) {
+        const safeAlbumName = String(album.albumName || "").trim() || `Album ${albumIndex + 1}`;
 
         const newImages = (album.images || []).filter((img) => img.file);
 
@@ -180,6 +252,11 @@ const EditProject = () => {
         )
       );
 
+      // Upload new RERA certificate
+      if (reraCertificateFile) {
+        await projectService.uploadReraCertificate(id, reraCertificateFile);
+      }
+
       // Upload new floor plans
       const newFloorPlans = floorPlans.filter((doc) => doc.file);
       await Promise.all(
@@ -191,7 +268,7 @@ const EditProject = () => {
       // Invalidate React Query caches so updated project appears everywhere
       await queryClient.invalidateQueries();
 
-      if (!navigateToMapSkin) {
+      if (!silent && !navigateToMapSkin) {
         toast.success(
           response.message ||
           "Project updated successfully."
@@ -200,44 +277,57 @@ const EditProject = () => {
 
       methods.reset({}, { keepValues: true });
 
-      if (navigateToMapSkin) {
-        navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", id));
-      } else {
-        navigate(ROUTES.PROJECTS);
+      if (!silent) {
+        if (navigateToMapSkin) {
+          navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", id));
+        } else {
+          navigate(ROUTES.PROJECTS);
+        }
       }
     } catch (error) {
-      const responseData = error?.response?.data;
-
-      if (responseData?.errors?.length) {
-        toast.error(
-          responseData.errors
-            .map(
-              (err) =>
-                `${err.field}: ${err.message}`
-            )
-            .join("\n")
-        );
+      if (silent) {
+        console.error("Autosave failed:", error);
       } else {
-        toast.error(
-          responseData?.message ||
-          error.message ||
-          "Failed to update project."
-        );
+        const responseData = error?.response?.data;
+
+        if (responseData?.errors?.length) {
+          toast.error(
+            responseData.errors
+              .map(
+                (err) =>
+                  `${err.field}: ${err.message}`
+              )
+              .join("\n")
+          );
+        } else {
+          toast.error(
+            responseData?.message ||
+            error.message ||
+            "Failed to update project."
+          );
+        }
       }
     } finally {
-      setIsSubmitting(false);
-      setIsNextSubmitting(false);
+      if (!silent) {
+        setIsSubmitting(false);
+        setIsNextSubmitting(false);
+      }
     }
   };
 
-  const onSubmit = (data) => handleSave(data, { navigateToMapSkin: false });
+  const onSubmit = (data) => handleSave(data, { silent: true });
   const onNext = (data) => handleSave(data, { navigateToMapSkin: true });
 
   const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
+    const category = methods.watch("projectCategory");
+    const parent = methods.watch("parentProject");
+
+    if (category === "portfolio") {
+      navigate(ROUTES.PROJECTS_MASTER);
+    } else if (parent) {
+      navigate(ROUTES.PROJECTS_PORTFOLIO_DETAIL.replace(":portfolioId", parent));
     } else {
-      navigate(ROUTES.PROJECTS);
+      navigate(ROUTES.PROJECTS_INDIVIDUAL);
     }
   };
 
@@ -267,6 +357,10 @@ const EditProject = () => {
     crumbLink = ROUTES.PROJECTS_INDIVIDUAL;
   }
 
+  // The master portfolio this project belongs to (itself, if it is one) so
+  // its breadcrumb name can jump back to the Master Projects list.
+  const masterProjectId = isPortfolioTour ? id : parentProjectId || null;
+
   const breadcrumb = (
     <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
       <Link to={crumbLink} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
@@ -274,7 +368,16 @@ const EditProject = () => {
       </Link>
       <span>/</span>
       <span className="text-slate-700 dark:text-slate-300 truncate max-w-[220px]">
-        {projectName}
+        {masterProjectId ? (
+          <Link
+            to={`${ROUTES.PROJECTS_MASTER}?highlight=${masterProjectId}`}
+            className="hover:text-slate-900 dark:hover:text-slate-100 hover:underline transition"
+          >
+            {projectName}
+          </Link>
+        ) : (
+          projectName
+        )}
       </span>
       <span>/</span>
       <span className="font-semibold text-slate-900 dark:text-slate-100">
@@ -292,6 +395,7 @@ const EditProject = () => {
           onSubmit={onSubmit}
           onBack={handleBack}
           isSubmitting={isSubmitting}
+          hideSubmit
         />
       </div>
     );

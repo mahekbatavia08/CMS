@@ -9,6 +9,7 @@ const StickyActionBar = ({
   onNext,
   nextButtonText = "Next →",
   isNextSubmitting = false,
+  hideSubmit = false,
 }) => {
   const isAnySubmitting = isSubmitting || isNextSubmitting;
 
@@ -40,19 +41,21 @@ const StickyActionBar = ({
           </button>
         )}
         
-        <button
-          type={onSubmit ? "button" : "submit"}
-          onClick={onSubmit}
-          disabled={isAnySubmitting}
-          className={
-            onNext
-              ? "flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 sm:px-6 py-2.5 font-medium text-slate-800 dark:text-slate-200 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
-              : "flex items-center gap-2 rounded-lg bg-black dark:bg-white px-6 sm:px-8 py-2.5 font-medium text-white dark:text-black transition-colors hover:bg-slate-800 dark:hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
-          }
-        >
-          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {isSubmitting ? "Saving..." : submitButtonText}
-        </button>
+        {!hideSubmit && (
+          <button
+            type={onSubmit ? "button" : "submit"}
+            onClick={onSubmit}
+            disabled={isAnySubmitting}
+            className={
+              onNext
+                ? "flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 sm:px-6 py-2.5 font-medium text-slate-800 dark:text-slate-200 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                : "flex items-center gap-2 rounded-lg bg-black dark:bg-white px-6 sm:px-8 py-2.5 font-medium text-white dark:text-black transition-colors hover:bg-slate-800 dark:hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            }
+          >
+            {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+            {isSubmitting ? "Saving..." : submitButtonText}
+          </button>
+        )}
 
         {onNext && (
           <button

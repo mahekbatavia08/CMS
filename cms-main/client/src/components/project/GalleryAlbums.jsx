@@ -51,7 +51,7 @@ const GalleryAlbums = () => {
         {fields.map((album, index) => (
           <div
             key={album.id}
-            className="space-y-5 rounded-xl border p-6"
+            className="space-y-5 border-b border-slate-200 pb-6 last:border-b-0 last:pb-0 dark:border-slate-800"
           >
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">

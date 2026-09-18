@@ -14,16 +14,8 @@ import { Label } from "@/components/ui/label";
 import {
   Phone,
   MessageCircle,
-  Mail,
   Globe,
-} from "lucide-react";
-
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaYoutube,
-} from "react-icons/fa";
+} from "lucide-react"
 
 const ContactInformationForm = () => {
   const {
@@ -59,10 +51,12 @@ const ContactInformationForm = () => {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid items-start gap-6 md:grid-cols-2">
 
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <div className="flex h-9 items-center justify-between">
+              <Label>Phone</Label>
+            </div>
 
             <div className="relative">
               <Phone
@@ -89,7 +83,7 @@ const ContactInformationForm = () => {
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex h-9 items-center justify-between">
               <Label>WhatsApp</Label>
 
               <Button
@@ -128,51 +122,13 @@ const ContactInformationForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label>Email</Label>
-
-            <div className="relative">
-              <Mail
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-
-              <Input
-                type="email"
-                className="pl-10"
-                placeholder="contact@example.com"
-                {...register("contact.email", {
-                  validate: (value) =>
-                    !value ||
-                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
-                    "Please enter a valid email address",
-                })}
-              />
-            </div>
-            {errors.contact?.email && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.email.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label>Website</Label>
-
-            <div className="relative">
-              <Globe
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-
-              <Input
-                className="pl-10"
-                placeholder="https://example.com"
-                {...register("contact.website", {
-                  validate: (value) =>
-                    !value || urlPattern.value.test(value) || urlPattern.message,
-                })}
-              />
-            </div>
+            <Label>Website Link</Label>
+            <Input
+              placeholder="https://..."
+              {...register("contact.website", {
+                pattern: urlPattern,
+              })}
+            />
             {errors.contact?.website && (
               <p className="text-xs text-red-500 font-medium mt-1">
                 {errors.contact.website.message}
@@ -181,42 +137,13 @@ const ContactInformationForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label>Facebook</Label>
-
-            <div className="relative">
-              <FaFacebook
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-600"
-              />
-
-              <Input
-                className="pl-10"
-                placeholder="https://facebook.com/yourpage"
-                {...register("contact.facebook", { pattern: urlPattern })}
-              />
-            </div>
-            {errors.contact?.facebook && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.facebook.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label>Instagram</Label>
-
-            <div className="relative">
-              <FaInstagram
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-600"
-              />
-
-              <Input
-                className="pl-10"
-                placeholder="https://instagram.com/yourpage"
-                {...register("contact.instagram", { pattern: urlPattern })}
-              />
-            </div>
+            <Label>Instagram Link</Label>
+            <Input
+              placeholder="https://instagram.com/..."
+              {...register("contact.instagram", {
+                pattern: urlPattern,
+              })}
+            />
             {errors.contact?.instagram && (
               <p className="text-xs text-red-500 font-medium mt-1">
                 {errors.contact.instagram.message}
@@ -225,42 +152,28 @@ const ContactInformationForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label>LinkedIn</Label>
-
-            <div className="relative">
-              <FaLinkedin
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-700"
-              />
-
-              <Input
-                className="pl-10"
-                placeholder="https://linkedin.com/company/yourcompany"
-                {...register("contact.linkedin", { pattern: urlPattern })}
-              />
-            </div>
-            {errors.contact?.linkedin && (
+            <Label>Facebook Link</Label>
+            <Input
+              placeholder="https://facebook.com/..."
+              {...register("contact.facebook", {
+                pattern: urlPattern,
+              })}
+            />
+            {errors.contact?.facebook && (
               <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.linkedin.message}
+                {errors.contact.facebook.message}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label>YouTube</Label>
-
-            <div className="relative">
-              <FaYoutube
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-red-600"
-              />
-
-              <Input
-                className="pl-10"
-                placeholder="https://youtube.com/@yourchannel"
-                {...register("contact.youtube", { pattern: urlPattern })}
-              />
-            </div>
+            <Label>YouTube Link</Label>
+            <Input
+              placeholder="https://youtube.com/..."
+              {...register("contact.youtube", {
+                pattern: urlPattern,
+              })}
+            />
             {errors.contact?.youtube && (
               <p className="text-xs text-red-500 font-medium mt-1">
                 {errors.contact.youtube.message}

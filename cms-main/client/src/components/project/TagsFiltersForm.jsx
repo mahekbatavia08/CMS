@@ -310,22 +310,14 @@ const TagsFiltersForm = () => {
                     />
                 </div>
 
-                {/* Amenities */}
+                {/* Square Foot */}
                 <div className="space-y-2">
-                    <Label>Amenities</Label>
-
-                    <Controller
-                        name="filters.amenities"
-                        control={control}
-                        render={({ field }) => (
-                            <AutocompleteField
-                                type="amenity"
-                                multiple
-                                value={field.value || []}
-                                onChange={field.onChange}
-                                placeholder="Select amenities"
-                            />
-                        )}
+                    <Label htmlFor="squareFoot">Square Foot</Label>
+                    <Input
+                        id="squareFoot"
+                        autoComplete="off"
+                        placeholder="e.g. 1200 sq.ft"
+                        {...register("filters.squareFoot")}
                     />
                 </div>
 

@@ -115,6 +115,9 @@
   }
   .about-social-btn svg { width: 18px; height: 18px; fill: #fff; }
   .about-social-btn:hover { background: #3D8EFF; border-color: #3D8EFF; }
+  .yt-modal-box { max-width: 720px; padding: 44px 16px 16px; }
+  .yt-modal-frame { position: relative; width: 100%; padding-top: 56.25%; }
+  .yt-modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 8px; }
 
   /* ============ GALLERY / MAP WRAPPER ============ */
   #galleryAndMap { width: 100%; height: 100%; position: relative; }
@@ -457,8 +460,18 @@
           <a id="aboutWebLink" href="#" class="about-social-btn" title="Website"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></a>
           <a id="aboutInstaLink" href="#" class="about-social-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></a>
           <a id="aboutFbLink" href="#" class="about-social-btn" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg></a>
+          <a id="aboutYtLink" href="#" class="about-social-btn" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.58 7.19a2.75 2.75 0 0 0-1.94-1.95C17.9 4.75 12 4.75 12 4.75s-5.9 0-7.64.49a2.75 2.75 0 0 0-1.94 1.95A28.8 28.8 0 0 0 2 12a28.8 28.8 0 0 0 .42 4.81 2.75 2.75 0 0 0 1.94 1.95c1.74.49 7.64.49 7.64.49s5.9 0 7.64-.49a2.75 2.75 0 0 0 1.94-1.95A28.8 28.8 0 0 0 22 12a28.8 28.8 0 0 0-.42-4.81zM10 15.02V8.98L15.5 12 10 15.02z"/></svg></a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="ytModal" class="aboutUs">
+    <div class="modal-box yt-modal-box">
+      <button id="ytModalCloseBtn" class="about-close-btn">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <div class="yt-modal-frame"><iframe id="ytModalFrame" src="" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe></div>
     </div>
   </div>
 
@@ -613,9 +626,9 @@
         <div class="us-island-badge AVAILABLE" id="us-island-badge">Available</div>
       </div>
       <div id="us-island-grid">
-        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-sqyd">—</span><span class="us-ig-lbl">Sq. Yds</span></div>
-        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-size">—</span><span class="us-ig-lbl">Length × Width</span></div>
-        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-facing">—</span><span class="us-ig-lbl">Facing</span></div>
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-sqyd">—</span><span class="us-ig-lbl" id="us-ig-sqyd-lbl">Sq. Yds</span></div>
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-size">—</span><span class="us-ig-lbl" id="us-ig-size-lbl">Length × Width</span></div>
+        <div class="us-ig-cell"><span class="us-ig-val" id="us-ig-facing">—</span><span class="us-ig-lbl" id="us-ig-facing-lbl">Facing</span></div>
       </div>
       <div id="us-island-bar" class="AVAILABLE"></div>
     </div>
@@ -891,6 +904,8 @@ function buildProjectsDataset(list) {
     }
     const primaryArea = areas[0] || city || '';
 
+    const squareFoot = (p.filters?.squareFoot && String(p.filters.squareFoot).trim()) || '';
+
     const builder = p.general?.builderName || p.general?.projectName || 'Developer';
     const desc = p.general?.description || '';
     
@@ -926,6 +941,7 @@ function buildProjectsDataset(list) {
       cities: cities,
       area: primaryArea,
       areas: areas,
+      squareFoot: squareFoot,
       builder: builder,
       desc: desc,
       img: img,
@@ -959,24 +975,28 @@ function updateHeaderAndAboutUs() {
     }
     if (masterProjectInfo.location?.address || masterProjectInfo.location?.city) {
       const fullAddr = [masterProjectInfo.location.address, masterProjectInfo.location.city, masterProjectInfo.location.state].filter(Boolean).join(', ');
-      document.getElementById('aboutAddress').innerHTML = fullAddr + '<br><a id="aboutMapLink" target="_blank" href="https://maps.google.com/?q=' + encodeURIComponent(fullAddr) + '">Open in Google</a>';
+      const mapHref = masterProjectInfo.location?.googleMaps || ('https://maps.google.com/?q=' + encodeURIComponent(fullAddr));
+      document.getElementById('aboutAddress').innerHTML = fullAddr + '<br><a id="aboutMapLink" target="_blank" href="' + mapHref + '">Open in Google</a>';
     }
-    if (masterProjectInfo.contact?.social?.website) {
-      document.getElementById('aboutWebLink').href = masterProjectInfo.contact.social.website;
+    if (masterProjectInfo.contact?.website) {
+      document.getElementById('aboutWebLink').href = masterProjectInfo.contact.website;
       document.getElementById('aboutWebLink').target = '_blank';
     }
-    if (masterProjectInfo.contact?.social?.instagram) {
-      document.getElementById('aboutInstaLink').href = masterProjectInfo.contact.social.instagram;
+    if (masterProjectInfo.contact?.instagram) {
+      document.getElementById('aboutInstaLink').href = masterProjectInfo.contact.instagram;
       document.getElementById('aboutInstaLink').target = '_blank';
     }
-    if (masterProjectInfo.contact?.social?.facebook) {
-      document.getElementById('aboutFbLink').href = masterProjectInfo.contact.social.facebook;
+    if (masterProjectInfo.contact?.facebook) {
+      document.getElementById('aboutFbLink').href = masterProjectInfo.contact.facebook;
       document.getElementById('aboutFbLink').target = '_blank';
     }
-    if (masterProjectInfo.media?.logoImage?.url) {
-      const logoUrl = masterProjectInfo.media.logoImage.url.startsWith('http')
-        ? masterProjectInfo.media.logoImage.url
-        : (cmsApiBase + '/' + masterProjectInfo.media.logoImage.url.replace(/^\//, ''));
+    if (masterProjectInfo.contact?.youtube) {
+      document.getElementById('aboutYtLink').dataset.youtubeUrl = masterProjectInfo.contact.youtube;
+    }
+    if (masterProjectInfo.media?.thumbnailImage?.url) {
+      const logoUrl = masterProjectInfo.media.thumbnailImage.url.startsWith('http')
+        ? masterProjectInfo.media.thumbnailImage.url
+        : (cmsApiBase + '/' + masterProjectInfo.media.thumbnailImage.url.replace(/^\//, ''));
       document.getElementById('topLogo').src = logoUrl;
       document.getElementById('aboutLogoImg').src = logoUrl;
     }
@@ -1361,6 +1381,34 @@ document.getElementById('showInstructionBtn').addEventListener('click', () => ab
 document.getElementById('aboutUsCloseBtn').addEventListener('click', () => aboutUs.classList.remove('open'));
 aboutUs.addEventListener('click', e => { if (e.target === aboutUs) aboutUs.classList.remove('open'); });
 
+/* YouTube link opens an embedded player in-page instead of leaving to the YouTube app/site */
+function toYouTubeEmbedUrl(url) {
+  try {
+    const absolute = /^https?:\/\//i.test(url) ? url : ('https://' + url.replace(/^\/\//, ''));
+    const u = new URL(absolute);
+    if (u.pathname.startsWith('/embed/')) return absolute;
+    let id = u.hostname.includes('youtu.be') ? u.pathname.slice(1) : (u.pathname.startsWith('/shorts/') ? u.pathname.split('/')[2] : u.searchParams.get('v'));
+    return id ? ('https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0') : absolute;
+  } catch (e) {
+    return url;
+  }
+}
+const ytModal = document.getElementById('ytModal');
+const ytModalFrame = document.getElementById('ytModalFrame');
+function closeYtModal() {
+  ytModal.classList.remove('open');
+  ytModalFrame.src = '';
+}
+document.getElementById('aboutYtLink').addEventListener('click', e => {
+  e.preventDefault();
+  const url = e.currentTarget.dataset.youtubeUrl;
+  if (!url) return;
+  ytModalFrame.src = toYouTubeEmbedUrl(url);
+  ytModal.classList.add('open');
+});
+document.getElementById('ytModalCloseBtn').addEventListener('click', closeYtModal);
+ytModal.addEventListener('click', e => { if (e.target === ytModal) closeYtModal(); });
+
 /* ============================================================
    PLOT STATUS MODE
    ============================================================ */
@@ -1375,10 +1423,16 @@ const closeOutsideBtn = document.getElementById('us-close-outside');
 function selectProject(p) {
   document.getElementById('us-proj-label').textContent = (p.name || '').toUpperCase();
   document.getElementById('us-island-plot-num').textContent = p.name;
-  document.getElementById('us-ig-sqyd').textContent = p.area || 'City Zone';
-  document.getElementById('us-ig-size').textContent = p.type || 'Open Plot';
+
+  document.getElementById('us-ig-sqyd-lbl').textContent = 'Square Ft';
+  document.getElementById('us-ig-sqyd').textContent = p.squareFoot || '—';
+
+  document.getElementById('us-ig-size-lbl').textContent = 'Area';
+  document.getElementById('us-ig-size').textContent = p.area || 'City Zone';
+
+  document.getElementById('us-ig-facing-lbl').textContent = 'Category';
   document.getElementById('us-ig-facing').textContent = p.category || 'Development';
-  
+
   const badge = document.getElementById('us-island-badge');
   badge.className = 'us-island-badge AVAILABLE';
   badge.textContent = p.possession || 'Ready';
@@ -1454,8 +1508,14 @@ setTimeout(() => movePillSlider(document.querySelector('.us-stat-pill.active')),
 function showUnitCard(unit) {
   const icons = { east: '→', west: '←', north: '↑', south: '↓' };
   document.getElementById('us-island-plot-num').textContent = `Plot #${unit.id}`;
+
+  document.getElementById('us-ig-sqyd-lbl').textContent = 'Sq. Yds';
   document.getElementById('us-ig-sqyd').textContent = unit.sqyd;
+
+  document.getElementById('us-ig-size-lbl').textContent = 'Length × Width';
   document.getElementById('us-ig-size').textContent = `${unit.length} × ${unit.width}`;
+
+  document.getElementById('us-ig-facing-lbl').textContent = 'Facing';
   document.getElementById('us-ig-facing').textContent = `${icons[unit.orientation]} ${unit.orientation[0].toUpperCase()}${unit.orientation.slice(1)}`;
   const badge = document.getElementById('us-island-badge');
   badge.className = `us-island-badge ${unit.status}`;

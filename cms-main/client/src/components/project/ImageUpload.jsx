@@ -219,11 +219,11 @@ const ImageUpload = ({
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
+                    <div className="group relative flex h-72 w-full items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
                         <img
                             src={preview}
                             alt="Preview"
-                            className="h-72 w-full object-cover transition duration-300 group-hover:scale-105"
+                            className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
                         />
 
                         <div

@@ -127,4 +127,25 @@
   html {
     @apply font-sans;
     }
+
+  /* Browser autofill (e.g. selecting from the native suggestion dropdown)
+     forces its own opaque background/text color via -webkit-autofill.
+     A transparent box-shadow can't hide that opaque paint, so repaint an
+     opaque color that matches each theme's real input background instead. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    -webkit-text-fill-color: var(--foreground);
+    caret-color: var(--foreground);
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill:active {
+    box-shadow: 0 0 0 1000px #1a2134 inset !important;
+  }
 }

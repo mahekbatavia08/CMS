@@ -15,7 +15,7 @@ const GuestRoute = ({ children }) => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to={ROUTES.DASHBOARD} replace />;
+    return <Navigate to={ROUTES.PROJECTS_MASTER} replace />;
   }
 
   return children;

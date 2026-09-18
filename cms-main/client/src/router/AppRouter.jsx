@@ -7,7 +7,6 @@ import AuthLayout from "@/layouts/AuthLayout";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
 const Login = lazy(() => import("@/pages/Login/Login"));
-const Dashboard = lazy(() => import("@/pages/Dashboard/Dashboard"));
 const Projects = lazy(() => import("@/pages/Projects/Projects"));
 const MasterProjects = lazy(() => import("@/pages/MasterProjects/MasterProjects"));
 const PortfolioProjects = lazy(() => import("@/pages/PortfolioProjects/PortfolioProjects"));
@@ -25,7 +24,7 @@ import RouteErrorBoundary from "@/components/common/RouteErrorBoundary";
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
-    element: <Navigate to={ROUTES.DASHBOARD} replace />,
+    element: <Navigate to={ROUTES.PROJECTS_MASTER} replace />,
   },
 
   {
@@ -48,17 +47,6 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     errorElement: <RouteErrorBoundary />,
     children: [
-      {
-        path: ROUTES.DASHBOARD,
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<div className="flex h-full w-full items-center justify-center p-8">Loading page...</div>}>
-              <Dashboard />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-
       {
         path: ROUTES.PROJECT_CREATE,
         element: (

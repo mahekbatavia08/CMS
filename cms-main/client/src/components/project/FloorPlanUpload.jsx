@@ -6,16 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const FloorPlanUpload = ({ value = [], onChange }) => {
-  const fileInputRefs = useRef({});
+  const fileInputRef = useRef(null);
 
-  const addFloorPlan = () => {
-    onChange([
-      ...value,
-      {
-        title: "",
-        file: null,
-      },
-    ]);
+  const addFiles = (files) => {
+    const newPlans = Array.from(files || []).map((file) => ({
+      title: file.name.replace(/\.[^/.]+$/, ""),
+      file,
+    }));
+
+    if (newPlans.length) {
+      onChange([...value, ...newPlans]);
+    }
   };
 
   const removeFloorPlan = (index) => {
@@ -24,13 +25,7 @@ const FloorPlanUpload = ({ value = [], onChange }) => {
 
   const updateTitle = (index, title) => {
     const updated = [...value];
-    updated[index].title = title;
-    onChange(updated);
-  };
-
-  const updateFile = (index, file) => {
-    const updated = [...value];
-    updated[index].file = file;
+    updated[index] = { ...updated[index], title };
     onChange(updated);
   };
 
@@ -43,11 +38,23 @@ const FloorPlanUpload = ({ value = [], onChange }) => {
           type="button"
           variant="outline"
           size="sm"
-          onClick={addFloorPlan}
+          onClick={() => fileInputRef.current?.click()}
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Floor Plan
+          Upload Floor Plans
         </Button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept="application/pdf, image/png, image/jpeg, image/jpg"
+          className="hidden"
+          onChange={(e) => {
+            addFiles(e.target.files);
+            e.target.value = "";
+          }}
+        />
       </div>
 
       {value.length === 0 && (
@@ -70,36 +77,12 @@ const FloorPlanUpload = ({ value = [], onChange }) => {
                 />
               </div>
 
-              <div>
-                <Label>Floor Plan File</Label>
-
-                <div className="mt-2 flex items-center gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRefs.current[index]?.click()}
-                  >
-                    Choose File
-                  </Button>
-
-                  <input
-                    ref={(el) => (fileInputRefs.current[index] = el)}
-                    type="file"
-                    accept="application/pdf, image/png, image/jpeg, image/jpg"
-                    className="hidden"
-                    onChange={(e) =>
-                      updateFile(index, e.target.files?.[0] || null)
-                    }
-                  />
-
-                  {floorPlan.file && (
-                    <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                      <FileText className="h-4 w-4" />
-                      <span>{floorPlan.file.name}</span>
-                    </div>
-                  )}
+              {floorPlan.file && (
+                <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <FileText className="h-4 w-4" />
+                  <span>{floorPlan.file.name}</span>
                 </div>
-              </div>
+              )}
             </div>
 
             <Button

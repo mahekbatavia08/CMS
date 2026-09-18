@@ -47,7 +47,7 @@ const saveLocalFallback = (localFilePath, folderName) => {
  * @param {string} folderName - Folder structure in Cloudinary
  * @returns {Promise<object|null>} Cloudinary upload response
  */
-const uploadOnCloudinary = async (localFilePath, folderName) => {
+const uploadOnCloudinary = async (localFilePath, folderName, resourceType = "auto") => {
   try {
     if (!localFilePath) return null;
 
@@ -60,10 +60,10 @@ const uploadOnCloudinary = async (localFilePath, folderName) => {
       console.warn("Cloudinary env vars not set. Saving file to local uploads...");
       return saveLocalFallback(localFilePath, folderName);
     }
-    
+
     // Upload the file on Cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto",
+      resource_type: resourceType,
       folder: folderName,
     });
     

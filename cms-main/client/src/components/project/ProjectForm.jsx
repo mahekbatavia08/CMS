@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useBlocker } from "react-router-dom";
 import { toast } from "sonner";
 import { PROJECT_SECTIONS } from "@/constants/projectSections";
 import { FormProvider } from "react-hook-form";
@@ -11,7 +9,6 @@ import ContactInformationForm from "./ContactInformationForm";
 import LocationInformationForm from "./LocationInformationForm";
 import MediaInformationForm from "./CoverImageForm";
 import VideoInformationForm from "./VideoInformationForm";
-import StatusInformationForm from "./StatusInformationForm";
 import StickyActionBar from "./StickyActionBar";
 
 const ProjectForm = ({
@@ -25,27 +22,6 @@ const ProjectForm = ({
   description = "Fill in the project details below.",
   submitButtonText = "Create Project",
 }) => {
-  const isDirty = methods.formState.isDirty;
-
-  const blocker = useBlocker(
-    ({ currentLocation, nextLocation }) =>
-      !isSubmitting &&
-      !isNextSubmitting &&
-      isDirty &&
-      currentLocation.pathname !== nextLocation.pathname
-  );
-
-  useEffect(() => {
-    if (blocker.state === "blocked") {
-      const confirm = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (confirm) {
-        blocker.proceed();
-      } else {
-        blocker.reset();
-      }
-    }
-  }, [blocker]);
-
   return (
     <FormProvider {...methods}>
       <form
@@ -86,27 +62,24 @@ const ProjectForm = ({
           <VideoInformationForm />
         </div>
 
-        <div id={PROJECT_SECTIONS.status.id}>
-          <StatusInformationForm />
-        </div>
-
-        <StickyActionBar 
-          isSubmitting={isSubmitting} 
-          submitButtonText={submitButtonText} 
-          onBack={onBack} 
+        <StickyActionBar
+          isSubmitting={isSubmitting}
+          submitButtonText={submitButtonText}
+          hideSubmit
+          onBack={onBack}
           onNext={
             onNext
               ? methods.handleSubmit(onNext, (errors) => {
-                  const errorMessages = [];
-                  if (errors?.general?.projectName) errorMessages.push("Project name is required");
-                  if (errors?.general?.builderName) errorMessages.push("Builder name is required");
-                  if (errors?.general?.slug) errorMessages.push("Slug is required");
-                  if (errorMessages.length > 0) {
-                    toast.error(errorMessages.join(". "));
-                  } else {
-                    toast.error("Please fill in all required fields before proceeding.");
-                  }
-                })
+                const errorMessages = [];
+                if (errors?.general?.projectName) errorMessages.push("Project name is required");
+                if (errors?.general?.builderName) errorMessages.push("Builder name is required");
+                if (errors?.general?.slug) errorMessages.push("Slug is required");
+                if (errorMessages.length > 0) {
+                  toast.error(errorMessages.join(". "));
+                } else {
+                  toast.error("Please fill in all required fields before proceeding.");
+                }
+              })
               : undefined
           }
           isNextSubmitting={isNextSubmitting}

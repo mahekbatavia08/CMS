@@ -208,7 +208,6 @@ const createProject = async (rawProjectData) => {
     if (projectData.contact) {
       delete projectData.contact.email;
       delete projectData.contact.whatsapp;
-      delete projectData.contact.youtube;
       delete projectData.contact.linkedin;
     }
     if (projectData.location) {
@@ -218,6 +217,7 @@ const createProject = async (rawProjectData) => {
     }
     projectData.specifications = [];
     projectData.filters = {};
+    projectData.rera = {};
     projectData.videos = [];
     projectData.brochures = [];
     projectData.legalDocuments = [];
@@ -635,7 +635,6 @@ const updateProject = async (id, rawUpdateData) => {
     if (project.contact) {
       project.contact.email = undefined;
       project.contact.whatsapp = undefined;
-      project.contact.youtube = undefined;
       project.contact.linkedin = undefined;
     }
     if (project.location) {
@@ -645,6 +644,7 @@ const updateProject = async (id, rawUpdateData) => {
     }
     project.specifications = [];
     project.filters = {};
+    project.rera = {};
     project.videos = [];
     project.brochures = [];
     project.legalDocuments = [];

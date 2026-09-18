@@ -7,6 +7,7 @@ import {
   uploadProjectFloorPlan,
   uploadProjectBrochure,
   uploadProjectLegal,
+  uploadProjectRera,
 } from "../controllers/mediaController.js";
 import {
   uploadImageSingle,
@@ -29,6 +30,12 @@ router.post(
   protect,
   uploadDocumentSingle("file"),
   uploadProjectLegal
+);
+router.post(
+  "/rera",
+  protect,
+  uploadDocumentSingle("file"),
+  uploadProjectRera
 );
 
 export default router;

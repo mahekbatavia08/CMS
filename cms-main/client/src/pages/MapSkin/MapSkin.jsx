@@ -177,14 +177,12 @@ const MapSkin = () => {
     }
   }, [id]);
 
-  const handleSaveAndContinue = async () => {
+  const persistMapSkin = async (skinValue) => {
     if (isSaving) return;
 
     setIsSaving(true);
     try {
-      await projectService.updateProject(id, { mapSkin: isSelected ? (selectedSkin || "default") : "" });
-      toast.success("Map skin saved successfully.");
-      navigate(ROUTES.PROJECTS);
+      await projectService.updateProject(id, { mapSkin: skinValue });
     } catch (error) {
       const responseData = error?.response?.data;
       const message =
@@ -211,14 +209,15 @@ const MapSkin = () => {
       if (next) {
         setSelectedSkin("default");
         toast.success("Default Map Skin selected.");
+        persistMapSkin("default");
       } else {
         setSelectedSkin("");
         toast.info("Map skin unselected.");
+        persistMapSkin("");
       }
       return next;
     });
   };
-
   if (isLoading) {
     return (
       <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-12 text-center text-slate-500 dark:text-slate-400">
@@ -327,8 +326,7 @@ const MapSkin = () => {
       {/* Sticky Bottom Actions */}
       <StickyActionBar
         onBack={handleBack}
-        onSubmit={handleSaveAndContinue}
-        submitButtonText="Save & Continue"
+        hideSubmit
         isSubmitting={isSaving}
       />
     </div>

@@ -204,17 +204,14 @@ export const buildPortfolioFolder = async (zipRoot, portfolio, childProjects) =>
         // Save project-data.json in { p1: { ... } } structure
         const singleProjectContainer = { [projectKey]: projectDataManifest };
         projectDataFolder.file("Project-Data.json", JSON.stringify(singleProjectContainer, null, 2));
-        projectDataFolder.file("project-data.json", JSON.stringify(singleProjectContainer, null, 2));
 
         projectManifestCounter++;
     }
 
-    // ---- Single portfolio manifest + all-projects-in-portfolio manifest ----
+    // ---- All-projects-in-portfolio manifest ----
     const portfolioManifest = buildBaseManifest(portfolio);
     const portfolioDataFolder = portfolioFolder.folder("portfolio-data");
-    portfolioDataFolder.file("portfolio-data.json", JSON.stringify(portfolioManifest, null, 2));
     portfolioDataFolder.file("Project-Data.json", JSON.stringify(portfolioProjectsManifest, null, 2));
-    portfolioDataFolder.file("all-projects-data.json", JSON.stringify(portfolioProjectsManifest, null, 2));
 
     return { portfolioFolderName, portfolioManifest, portfolioProjectsManifest };
 };

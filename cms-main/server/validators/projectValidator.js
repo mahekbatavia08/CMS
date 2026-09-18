@@ -175,6 +175,12 @@ const contactValidation = () => [
     .isURL()
     .withMessage("Instagram URL must be valid"),
 
+  body("contact.youtube")
+    .optional({ values: "falsy" })
+    .trim()
+    .isURL()
+    .withMessage("YouTube URL must be valid"),
+
   body("contact.linkedin")
     .optional({ values: "falsy" })
     .trim()

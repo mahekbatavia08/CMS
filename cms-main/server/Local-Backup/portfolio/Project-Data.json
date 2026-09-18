@@ -1,6 +1,6 @@
 {
   "p1": {
-    "projectName": "Copy Of Pramukh ABC Group Data For Filter",
+    "projectName": "Pramukh ABC Group Data",
     "developer": "Copy Of Pramukh ABC Group Data For Filter",
     "contact": {
       "phone": "",
@@ -20,7 +20,883 @@
     "legal": [],
     "photos": {},
     "videos": {},
-    "floorplans": {}
+    "floorplans": {},
+    "projects": {
+      "p1": {
+        "projectName": "Happiness Residency",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p2": {
+        "projectName": "Nena Bungalows",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p3": {
+        "projectName": "Pragati Eco Park",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p4": {
+        "projectName": "Pramukh ABC Bungalows",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p5": {
+        "projectName": "Pramukh ABC Bunglows Amroli",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p6": {
+        "projectName": "Pramukh ABC Embro Park",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p7": {
+        "projectName": "Pramukh ABC Embro Park 1",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p8": {
+        "projectName": "Pramukh ABC Embro Park 2",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p9": {
+        "projectName": "Pramukh ABC Embro Park 3",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p10": {
+        "projectName": "Pramukh ABC Embro Park 4",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p11": {
+        "projectName": "Pramukh ABC Embro Park 5",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p12": {
+        "projectName": "Pramukh ABC Embro Park 6",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p13": {
+        "projectName": "Pramukh ABC Embro Park 7",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p14": {
+        "projectName": "Pramukh ABC Embro Park 8",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p15": {
+        "projectName": "Pramukh ABC Embro Park 9",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p16": {
+        "projectName": "Pramukh ABC Embro Park 10",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p17": {
+        "projectName": "Pramukh ABC Embro Park 11",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p18": {
+        "projectName": "Pramukh ABC Embro Park 12",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p19": {
+        "projectName": "Pramukh ABC Embro Park 13",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p20": {
+        "projectName": "Pramukh ABC Techno park 14",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p21": {
+        "projectName": "Pramukh ABC Techno Park 15",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p22": {
+        "projectName": "Pramukh ABC Techno Park 16",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p23": {
+        "projectName": "Pramukh ABC Techno Park 17",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p24": {
+        "projectName": "Pramukh ABC Techno Park 18",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p25": {
+        "projectName": "Pramukh ABC Villa",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p26": {
+        "projectName": "Pramukh Avenue",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p27": {
+        "projectName": "Pramukh Heights",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p28": {
+        "projectName": "Pramukh Residency",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p29": {
+        "projectName": "Prem Majestica",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p30": {
+        "projectName": "Shree Ganesh Industries",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p31": {
+        "projectName": "Shree Hari Industries",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p32": {
+        "projectName": "Shree Ram Industries",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p33": {
+        "projectName": "Velvet Valley",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p34": {
+        "projectName": "Vista Velly",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p35": {
+        "projectName": "Pramukh Industrial Park 1",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p36": {
+        "projectName": "Pramukh Industrial Park 2",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p37": {
+        "projectName": "Pramukh Textile Park",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p38": {
+        "projectName": "Maroli Plotting Project",
+        "developer": "Copy Of Pramukh ABC Group Data For Filter",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      }
+    }
   },
   "p2": {
     "projectName": "Royal Ethics Data",
@@ -43,22 +919,346 @@
     "legal": [],
     "photos": {},
     "videos": {},
-    "floorplans": {}
+    "floorplans": {},
+    "projects": {
+      "p1": {
+        "projectName": "Royal Ethics Park 1",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p2": {
+        "projectName": "Royal Ethics Park 2",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p3": {
+        "projectName": "Royal Ethics Park 3",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p4": {
+        "projectName": "Royal Ethics Park  4",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p5": {
+        "projectName": "Royal Ethics Park  5-6",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p6": {
+        "projectName": "Royal Ethics Park 7",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p7": {
+        "projectName": "Royal Ethics Park 8",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p8": {
+        "projectName": "Royal Ethics Park 9",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p9": {
+        "projectName": "Royal Ethics Park 10",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p10": {
+        "projectName": "Royal Bunglows",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p11": {
+        "projectName": "Royal Ethics Bunglow",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p12": {
+        "projectName": "Royal Ethics Park",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p13": {
+        "projectName": "Royal Green",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "test",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      },
+      "p14": {
+        "projectName": "Royal Ethics Industrial Park",
+        "developer": "Royal Ethics Data",
+        "contact": {
+          "phone": "987456239",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [],
+        "legal": [],
+        "photos": {},
+        "videos": {},
+        "floorplans": {}
+      }
+    }
   },
   "p3": {
-    "projectName": "abc",
-    "developer": "abc",
+    "projectName": "Universal Reality",
+    "developer": "Universal Reality",
     "contact": {
-      "phone": "",
+      "phone": "704 66 77 666",
       "email": "",
       "social": {
         "facebook": "",
         "instagram": "",
-        "website": ""
+        "website": "https://universalrealty.co.in/"
       }
     },
     "location": {
-      "text": "",
+      "text": "Universal Trade Center, NR. Hari Om Circle, L.P. Savani Road,Adajan ,Surat",
       "googleMapLink": "",
       "mapEmbedUrl": ""
     },
@@ -66,29 +1266,76 @@
     "legal": [],
     "photos": {},
     "videos": {},
-    "floorplans": {}
-  },
-  "p4": {
-    "projectName": "Royal Ethics Data (1)",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
+    "floorplans": {},
+    "projects": {
+      "p1": {
+        "projectName": "Universal Commercial Capital",
+        "developer": "Universal Realty",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "Universal Trade Center, NR. Hari Om Circle, L.P. Savani Road,Adajan ,Surat",
+          "googleMapLink": "https://maps.app.goo.gl/25GuMzBN87LqYGjh8",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [
+          "/uploads/projects/6aab7f1ca0f09491a8fc80ad/brochures/1789624092602-f908a03bcb59.pdf"
+        ],
+        "legal": [],
+        "photos": {
+          "Album 1": [
+            "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709986-66649095325c.png",
+            "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709989-65f2896cdeb7.png",
+            "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710027-9d1373d9d357.png",
+            "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710029-de8edad94c58.png"
+          ]
+        },
+        "videos": {},
+        "floorplans": {}
+      },
+      "p2": {
+        "projectName": "Universal Homes",
+        "developer": "Universal Realty",
+        "contact": {
+          "phone": "",
+          "email": "",
+          "social": {
+            "facebook": "",
+            "instagram": "",
+            "website": ""
+          }
+        },
+        "location": {
+          "text": "",
+          "googleMapLink": "",
+          "mapEmbedUrl": ""
+        },
+        "brochures": [
+          "/uploads/projects/6aabc8f7a0f09491a8fc8a99/brochures/1789647715923-010620a10e21.pdf"
+        ],
+        "legal": [
+          "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187663-2c405a52e115.pdf",
+          "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187662-83edecb70c95.pdf",
+          "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187661-0f44528cd48a.pdf",
+          "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187667-67df28e4de75.pdf"
+        ],
+        "photos": {
+          "Album 1": []
+        },
+        "videos": {},
+        "floorplans": {
+          "2nd floor": [
+            "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png"
+          ]
+        }
       }
-    },
-    "location": {
-      "text": "test",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
+    }
   }
 }

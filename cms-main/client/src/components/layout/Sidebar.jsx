@@ -1,10 +1,9 @@
 ﻿import { NavLink, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  Layers, 
+import {
+  Layers,
   FileText,
-  Map, 
-  X 
+  Map,
+  X
 } from "lucide-react";
 
 import { ROUTES } from "@/constants/routes";
@@ -14,7 +13,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = location.pathname;
 
   const isMapSkinPage = pathname.includes("/map-skin");
-  const isDashboardActive = pathname === ROUTES.DASHBOARD;
   const isMasterProjectsActive = pathname === ROUTES.PROJECTS_MASTER || pathname.startsWith("/projects/master");
   const isIndividualProjectsActive = (pathname === ROUTES.PROJECTS_INDIVIDUAL || pathname === ROUTES.PROJECTS) && !isMapSkinPage;
 
@@ -49,19 +47,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
           {/* Nav Links */}
           <nav className="space-y-1">
-            <NavLink
-              to={ROUTES.DASHBOARD}
-              onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition ${
-                isDashboardActive
-                  ? "bg-black text-white dark:bg-white dark:text-black shadow-xs"
-                  : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-900"
-              }`}
-            >
-              <LayoutDashboard size={18} />
-              <span>Dashboard</span>
-            </NavLink>
-
             <NavLink
               to={ROUTES.PROJECTS_MASTER}
               onClick={() => setIsOpen(false)}

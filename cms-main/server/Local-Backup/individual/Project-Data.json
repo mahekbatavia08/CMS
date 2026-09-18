@@ -1162,7 +1162,7 @@
       }
     },
     "location": {
-      "text": "",
+      "text": "test",
       "googleMapLink": "",
       "mapEmbedUrl": ""
     },
@@ -1176,7 +1176,7 @@
     "projectName": "Royal Ethics Industrial Park",
     "developer": "Royal Ethics Data",
     "contact": {
-      "phone": "",
+      "phone": "987456239",
       "email": "",
       "social": {
         "facebook": "",
@@ -1196,8 +1196,8 @@
     "floorplans": {}
   },
   "p53": {
-    "projectName": "Upcoming Commercial Project",
-    "developer": "Royal Ethics Data",
+    "projectName": "Universal Commercial Capital",
+    "developer": "Universal Realty",
     "contact": {
       "phone": "",
       "email": "",
@@ -1208,19 +1208,28 @@
       }
     },
     "location": {
-      "text": "",
-      "googleMapLink": "",
+      "text": "Universal Trade Center, NR. Hari Om Circle, L.P. Savani Road,Adajan ,Surat",
+      "googleMapLink": "https://maps.app.goo.gl/25GuMzBN87LqYGjh8",
       "mapEmbedUrl": ""
     },
-    "brochures": [],
+    "brochures": [
+      "/uploads/projects/6aab7f1ca0f09491a8fc80ad/brochures/1789624092602-f908a03bcb59.pdf"
+    ],
     "legal": [],
-    "photos": {},
+    "photos": {
+      "Album 1": [
+        "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709986-66649095325c.png",
+        "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631709989-65f2896cdeb7.png",
+        "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710027-9d1373d9d357.png",
+        "/uploads/projects/6aab7f1ca0f09491a8fc80ad/gallery/1789631710029-de8edad94c58.png"
+      ]
+    },
     "videos": {},
     "floorplans": {}
   },
   "p54": {
-    "projectName": "1234",
-    "developer": "test",
+    "projectName": "Universal Homes",
+    "developer": "Universal Realty",
     "contact": {
       "phone": "",
       "email": "",
@@ -1235,401 +1244,23 @@
       "googleMapLink": "",
       "mapEmbedUrl": ""
     },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
+    "brochures": [
+      "/uploads/projects/6aabc8f7a0f09491a8fc8a99/brochures/1789647715923-010620a10e21.pdf"
+    ],
+    "legal": [
+      "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187663-2c405a52e115.pdf",
+      "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187662-83edecb70c95.pdf",
+      "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187661-0f44528cd48a.pdf",
+      "/uploads/projects/6aabc8f7a0f09491a8fc8a99/legal/1789647187667-67df28e4de75.pdf"
+    ],
+    "photos": {
+      "Album 1": []
+    },
     "videos": {},
-    "floorplans": {}
-  },
-  "p55": {
-    "projectName": "copy test",
-    "developer": "test123",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p56": {
-    "projectName": "test1",
-    "developer": "test123",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p57": {
-    "projectName": "Royal Ethics Park 1",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p58": {
-    "projectName": "Royal Ethics Park 2",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p59": {
-    "projectName": "Royal Ethics Park 3",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p60": {
-    "projectName": "Royal Ethics Park  4",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p61": {
-    "projectName": "Royal Ethics Park  5-6",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p62": {
-    "projectName": "Royal Ethics Park 7",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p63": {
-    "projectName": "Royal Ethics Park 8",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p64": {
-    "projectName": "Royal Ethics Park 9",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p65": {
-    "projectName": "Royal Ethics Park 10",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p66": {
-    "projectName": "Royal Bunglows",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p67": {
-    "projectName": "Royal Ethics Bunglow",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p68": {
-    "projectName": "Royal Ethics Park",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p69": {
-    "projectName": "Royal Green",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p70": {
-    "projectName": "Royal Ethics Industrial Park",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
-  },
-  "p71": {
-    "projectName": "Upcoming Commercial Project",
-    "developer": "Royal Ethics Data (1)",
-    "contact": {
-      "phone": "",
-      "email": "",
-      "social": {
-        "facebook": "",
-        "instagram": "",
-        "website": ""
-      }
-    },
-    "location": {
-      "text": "",
-      "googleMapLink": "",
-      "mapEmbedUrl": ""
-    },
-    "brochures": [],
-    "legal": [],
-    "photos": {},
-    "videos": {},
-    "floorplans": {}
+    "floorplans": {
+      "2nd floor": [
+        "uploads/floorplans/6aabc8f7a0f09491a8fc8a99/46898e1a-00b1-4c97-9371-3dccbad70ed0/original.png"
+      ]
+    }
   }
 }

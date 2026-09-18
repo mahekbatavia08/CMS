@@ -8,6 +8,7 @@ import {
   uploadFloorPlan,
   uploadBrochure,
   uploadLegalDocument,
+  uploadReraCertificate,
 } from "../services/mediaService.js";
 
 /**
@@ -144,6 +145,18 @@ const uploadProjectLegal = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @route   POST /api/projects/:id/media/rera
+ * @access  Private
+ */
+const uploadProjectRera = asyncHandler(async (req, res) => {
+  const project = await uploadReraCertificate(req.params.id, req.file);
+
+  sendSuccess(res, 200, "RERA certificate uploaded successfully", {
+    project,
+  });
+});
+
 export {
   uploadCover,
   uploadThumbnail,
@@ -152,4 +165,5 @@ export {
   uploadProjectFloorPlan,
   uploadProjectBrochure,
   uploadProjectLegal,
+  uploadProjectRera,
 };
