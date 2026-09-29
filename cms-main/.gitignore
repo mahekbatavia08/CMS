@@ -4,3 +4,4 @@ uploads/*
 server/uploads/*
 !server/uploads/.gitkeep
 npm-debug.log
+server/scripts/.media-map.json

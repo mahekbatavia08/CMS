@@ -18,7 +18,8 @@ const IndividualProjectForm = ({
   isSubmitting = false,
   isNextSubmitting = false,
 }) => {
-
+  const parentProjectId = methods.watch("parentProject");
+  const isMasterChildProject = Boolean(parentProjectId) && parentProjectId !== "none";
 
   return (
     <FormProvider {...methods}>
@@ -40,7 +41,7 @@ const IndividualProjectForm = ({
           <GeneralInformationForm projectType="individual" />
         </div>
 
-        <TagsFiltersForm />
+        {isMasterChildProject && <TagsFiltersForm />}
 
         <SpecificationsForm />
 

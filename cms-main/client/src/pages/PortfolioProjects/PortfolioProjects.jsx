@@ -1,15 +1,18 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { 
-  Plus, 
-  Search, 
-  Edit, 
+import {
+  Plus,
+  Search,
+  Edit,
   ArrowLeft,
   Loader2,
   FolderKanban,
   Star,
   Map,
-  BadgeCheck
+  BadgeCheck,
+  ShieldCheck,
+  ShieldOff,
+  Eye
 } from "lucide-react";
 
 import { ROUTES } from "@/constants/routes";
@@ -20,6 +23,42 @@ import DeleteProjectDialog from "@/components/project/DeleteProjectDialog";
 import { getImageUrl } from "@/lib/utils";
 import StatusCell from "@/components/dashboard/StatusCell";
 import CountCell from "@/components/dashboard/CountCell";
+import SkinPreviewMenu from "@/components/project/SkinPreviewMenu";
+
+/** RERA indicator: green shield when a RERA number or certificate is set. */
+const ReraCell = ({ rera }) => {
+  const number = rera?.number?.trim();
+  const hasCertificate = !!rera?.certificate?.url;
+
+  if (!number && !hasCertificate) {
+    return (
+      <div className="flex justify-center">
+        <ShieldOff className="h-4 w-4 text-slate-300 dark:text-slate-600" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex justify-center">
+      <ShieldCheck
+        className={`h-4 w-4 ${number && hasCertificate
+          ? "text-emerald-600 dark:text-emerald-400"
+          : "text-amber-500 dark:text-amber-400"
+          }`}
+      />
+    </div>
+  );
+};
+
+const reraTitle = (rera) => {
+  const number = rera?.number?.trim();
+  const hasCertificate = !!rera?.certificate?.url;
+  if (!number && !hasCertificate) return "No RERA details — click to add";
+  return [
+    number ? `RERA: ${number}` : "RERA number missing",
+    hasCertificate ? "Certificate uploaded" : "Certificate missing",
+  ].join("\n");
+};
 
 const statusStyles = {
   Published: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
@@ -75,9 +114,9 @@ const PortfolioProjects = () => {
       setPortfolio(portData);
 
       // 2. Fetch all child projects belonging to this portfolio
-      const projRes = await projectService.getProjects({ 
+      const projRes = await projectService.getProjects({
         parentProject: portfolioId,
-        limit: 1000 
+        limit: 1000
       });
       const projList = projRes.data?.items || projRes.data?.projects || projRes.items || projRes.projects || [];
       setProjects(projList);
@@ -174,6 +213,10 @@ const PortfolioProjects = () => {
     navigate(ROUTES.PROJECT_VIEW.replace(":id", id));
   };
 
+  const handleMapSkin = (id) => {
+    navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", id));
+  };
+
   const handleSectionClick = (id, sectionSlug) => {
     navigate(ROUTES.PROJECT_EDIT.replace(":id", id) + `?section=${sectionSlug}`);
   };
@@ -210,21 +253,22 @@ const PortfolioProjects = () => {
         </div>
 
         <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            onClick={() => navigate(ROUTES.PROJECT_EDIT.replace(":id", portfolioId))}
-            className="flex items-center gap-2 cursor-pointer"
-          >
-            <Edit size={16} />
-            <span>Edit Information</span>
-          </Button>
 
           <Button
             onClick={() => navigate(ROUTES.PROJECT_MAP_PREVIEW.replace(":id", portfolioId), { state: { from: ROUTES.PROJECTS_MASTER } })}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm cursor-pointer"
           >
+            <Eye size={16} />
+            <span>Preview</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => handleMapSkin(portfolioId)}
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <Map size={16} />
-            <span>Edit Map</span>
+            <span>Select Map Skin</span>
           </Button>
 
           <Link to={`${ROUTES.PROJECT_CREATE}?type=individual&portfolioId=${portfolioId}`}>
@@ -234,6 +278,18 @@ const PortfolioProjects = () => {
             </Button>
           </Link>
         </div>
+      </div>
+
+      {/* Edit Information — left, above search */}
+      <div className="flex justify-start">
+        <Button
+          variant="outline"
+          onClick={() => navigate(ROUTES.PROJECT_EDIT.replace(":id", portfolioId))}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <Edit size={16} />
+          <span>Edit Information</span>
+        </Button>
       </div>
 
       {/* Filter & Search Bar */}
@@ -335,8 +391,8 @@ const PortfolioProjects = () => {
           <p className="mt-2 text-slate-500 dark:text-slate-400">
             Try adjusting your search query or clear filters.
           </p>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="mt-4"
             onClick={() => {
               setSearch("");
@@ -353,13 +409,16 @@ const PortfolioProjects = () => {
           <table className="w-full text-left border-collapse">
             <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap sticky left-0 z-20 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-800">
+                  Edit / View
+                </th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Project</th>
-                <th className="px-4 py-2.5 whitespace-nowrap">Builder</th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Category</th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Property Type</th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Area</th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Status</th>
                 <th className="px-4 py-2.5 whitespace-nowrap">Updated</th>
+                <th className="px-4 py-2.5 text-center whitespace-nowrap">RERA</th>
                 <th className="px-4 py-2.5 text-center whitespace-nowrap">Cover</th>
                 <th className="px-4 py-2.5 text-center whitespace-nowrap">Gallery</th>
                 <th className="px-4 py-2.5 text-center whitespace-nowrap">Videos</th>
@@ -387,6 +446,22 @@ const PortfolioProjects = () => {
 
                 return (
                   <tr key={project._id} className="transition hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    {/* Edit + map view (pinned to the left so they're reachable without scrolling) */}
+                    <td className="px-4 py-2.5 sticky left-0 z-[5] bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <Button
+                          size="icon-sm"
+                          variant="outline"
+                          title="Edit Project"
+                          onClick={() => handleEdit(project._id)}
+                        >
+                          <Edit size={15} />
+                        </Button>
+
+                        <SkinPreviewMenu projectId={project._id} align="start" />
+                      </div>
+                    </td>
+
                     {/* Project Name & Thumbnail */}
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-3">
@@ -413,11 +488,6 @@ const PortfolioProjects = () => {
                           </p>
                         </div>
                       </div>
-                    </td>
-
-                    {/* Builder */}
-                    <td className="px-4 py-2.5 text-slate-600 dark:text-slate-300 font-medium text-xs whitespace-nowrap">
-                      {project.general?.builderName || project.general?.projectName || "—"}
                     </td>
 
                     {/* Category */}
@@ -475,6 +545,15 @@ const PortfolioProjects = () => {
                         month: "short",
                         year: "numeric",
                       })}
+                    </td>
+
+                    {/* RERA (number + certificate live in the Cover section) */}
+                    <td
+                      className="px-4 py-2.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      onClick={() => handleSectionClick(project._id, "cover")}
+                      title={reraTitle(project.rera)}
+                    >
+                      <ReraCell rera={project.rera} />
                     </td>
 
                     {/* Cover */}
@@ -546,23 +625,23 @@ const PortfolioProjects = () => {
                         <Button
                           size="icon-sm"
                           variant="outline"
-                          title="Edit Project"
-                          onClick={() => handleEdit(project._id)}
-                        >
-                          <Edit size={15} />
-                        </Button>
-
-                        <Button
-                          size="icon-sm"
-                          variant="outline"
                           title="View Project"
                           onClick={() => handleView(project._id)}
                         >
                           <BadgeCheck size={15} />
                         </Button>
 
-                        <DeleteProjectDialog 
-                          project={project} 
+                        <Button
+                          size="icon-sm"
+                          variant="outline"
+                          title="Select Map Skin"
+                          onClick={() => handleMapSkin(project._id)}
+                        >
+                          <Map size={15} />
+                        </Button>
+
+                        <DeleteProjectDialog
+                          project={project}
                           onDeleted={loadData}
                         />
                       </div>

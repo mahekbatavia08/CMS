@@ -86,7 +86,42 @@
     border: 1px solid rgba(255,255,255,0.1);
   }
   .modal-box h2 { margin-top: 0; margin-bottom: 6px; font-size: 1.5rem; font-weight: 600; }
-  .modal-box .tag { margin-bottom: 25px; color: #b9b9b9; line-height: 1.6; font-size: .85rem; }
+  .modal-box .tag {
+    margin-bottom: 20px;
+    color: #b9b9b9;
+    line-height: 1.6;
+    font-size: .85rem;
+    word-break: break-word;
+  }
+  .modal-box .tag.clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .modal-box .tag.expanded {
+    display: block;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 6px;
+    padding-right: 4px;
+  }
+  .about-read-more-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #3D8EFF;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 18px;
+    text-decoration: underline;
+  }
+  .about-read-more-btn:hover {
+    color: #60a5fa;
+  }
   .about-logo { width: 90px; height: auto; margin: 0 auto 16px; display: block; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); }
   .about-row {
     display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;
@@ -444,6 +479,7 @@
       <img class="about-logo" id="aboutLogoImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%233D8EFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>" alt="Logo">
       <h2 id="aboutTitle">360eye</h2>
       <p class="tag" id="aboutTagline">Immersive 360° virtual tours for real estate.</p>
+      <button id="aboutReadMore" class="about-read-more-btn" type="button">Read more</button>
 
       <div class="about-row">
         <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -471,7 +507,7 @@
       <button id="ytModalCloseBtn" class="about-close-btn">
         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
       </button>
-      <div class="yt-modal-frame"><iframe id="ytModalFrame" src="" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe></div>
+      <div class="yt-modal-frame"><iframe id="ytModalFrame" src="" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen frameborder="0"></iframe></div>
     </div>
   </div>
 
@@ -1007,6 +1043,15 @@ function updateHeaderAndAboutUs() {
    RENDER GALLERY
    ============================================================ */
 const galleryGrid = document.getElementById('galleryGrid');
+// Real CMS projects open their own individual map skin (the parent CMS page
+// navigates); demo/fallback entries have no skin and keep the old behaviour.
+function openProjectSkin(p) {
+  const isRealId = /^[a-f0-9]{24}$/i.test(String(p.id || ''));
+  if (!isRealId || window.parent === window) return false;
+  window.parent.postMessage({ type: 'OPEN_PROJECT', projectId: p.id }, '*');
+  return true;
+}
+
 function renderGallery() {
   galleryGrid.innerHTML = '';
   const list = activeProjects.length > 0 ? activeProjects : DEMO_PROJECTS;
@@ -1022,6 +1067,7 @@ function renderGallery() {
         <p>${p.category || ''} · ${p.area || ''}</p>
       </div>`;
     item.addEventListener('click', () => {
+      if (openProjectSkin(p)) return;
       selectProject(p);
       showMapBtn.click();
     });
@@ -1089,7 +1135,7 @@ function renderMapPins() {
     pin.dataset.area = p.area;
     const badgeHtml = p.area ? `<span class="demo-pin-badge">${p.area}</span>` : '';
     pin.innerHTML = `<div class="demo-pin-label"><span class="demo-pin-dot"></span><span>${p.name}</span>${badgeHtml}</div>`;
-    pin.addEventListener('click', () => selectProject(p));
+    pin.addEventListener('click', () => { if (!openProjectSkin(p)) selectProject(p); });
     mapEl.appendChild(pin);
   });
 }
@@ -1381,16 +1427,27 @@ document.getElementById('showInstructionBtn').addEventListener('click', () => ab
 document.getElementById('aboutUsCloseBtn').addEventListener('click', () => aboutUs.classList.remove('open'));
 aboutUs.addEventListener('click', e => { if (e.target === aboutUs) aboutUs.classList.remove('open'); });
 
-/* YouTube link opens an embedded player in-page instead of leaving to the YouTube app/site */
+/* YouTube link opens an embedded player in-page instead of leaving to the YouTube app/site.
+   Returns null when the link has no embeddable video (channel / user / @handle pages):
+   YouTube refuses to render those inside an iframe, which left a blank overlay. */
+function toYouTubeAbsoluteUrl(url) {
+  return /^https?:\/\//i.test(url) ? url : ('https://' + url.replace(/^\/\//, ''));
+}
 function toYouTubeEmbedUrl(url) {
   try {
-    const absolute = /^https?:\/\//i.test(url) ? url : ('https://' + url.replace(/^\/\//, ''));
+    const absolute = toYouTubeAbsoluteUrl(url);
     const u = new URL(absolute);
     if (u.pathname.startsWith('/embed/')) return absolute;
-    let id = u.hostname.includes('youtu.be') ? u.pathname.slice(1) : (u.pathname.startsWith('/shorts/') ? u.pathname.split('/')[2] : u.searchParams.get('v'));
-    return id ? ('https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0') : absolute;
+    const parts = u.pathname.split('/');
+    const id = u.hostname.includes('youtu.be')
+      ? parts[1]
+      : (['shorts', 'live', 'v'].includes(parts[1]) ? parts[2] : u.searchParams.get('v'));
+    if (id) return 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0';
+    const list = u.searchParams.get('list');
+    if (list) return 'https://www.youtube.com/embed/videoseries?list=' + encodeURIComponent(list) + '&autoplay=1&rel=0';
+    return null;
   } catch (e) {
-    return url;
+    return null;
   }
 }
 const ytModal = document.getElementById('ytModal');
@@ -1403,7 +1460,12 @@ document.getElementById('aboutYtLink').addEventListener('click', e => {
   e.preventDefault();
   const url = e.currentTarget.dataset.youtubeUrl;
   if (!url) return;
-  ytModalFrame.src = toYouTubeEmbedUrl(url);
+  const embedUrl = toYouTubeEmbedUrl(url);
+  if (!embedUrl) {
+    window.open(toYouTubeAbsoluteUrl(url), '_blank', 'noopener');
+    return;
+  }
+  ytModalFrame.src = embedUrl;
   ytModal.classList.add('open');
 });
 document.getElementById('ytModalCloseBtn').addEventListener('click', closeYtModal);

@@ -94,10 +94,10 @@ const SpecificationItem = ({
                             <button
                                 type="button"
                                 onClick={() => iconInputRef.current?.click()}
-                                className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800/60"
+                                className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800/60"
                             >
                                 {icon ? (
-                                    <img src={icon} alt="Icon" className="h-full w-full object-cover" />
+                                    <img src={icon} alt="Icon" className="h-full w-full object-contain" />
                                 ) : (
                                     <ImagePlus className="h-5 w-5 text-slate-400" />
                                 )}

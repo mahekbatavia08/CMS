@@ -1,0 +1,2479 @@
+﻿diff --git a/cms-main/client/public/map-template.html b/cms-main/client/public/map-template.html
+index 5d939ff..3a322c5 100644
+--- a/cms-main/client/public/map-template.html
++++ b/cms-main/client/public/map-template.html
+@@ -471,7 +471,7 @@
+       <button id="ytModalCloseBtn" class="about-close-btn">
+         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+       </button>
+-      <div class="yt-modal-frame"><iframe id="ytModalFrame" src="" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe></div>
++      <div class="yt-modal-frame"><iframe id="ytModalFrame" src="" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen frameborder="0"></iframe></div>
+     </div>
+   </div>
+ 
+@@ -1381,16 +1381,27 @@ document.getElementById('showInstructionBtn').addEventListener('click', () => ab
+ document.getElementById('aboutUsCloseBtn').addEventListener('click', () => aboutUs.classList.remove('open'));
+ aboutUs.addEventListener('click', e => { if (e.target === aboutUs) aboutUs.classList.remove('open'); });
+ 
+-/* YouTube link opens an embedded player in-page instead of leaving to the YouTube app/site */
++/* YouTube link opens an embedded player in-page instead of leaving to the YouTube app/site.
++   Returns null when the link has no embeddable video (channel / user / @handle pages):
++   YouTube refuses to render those inside an iframe, which left a blank overlay. */
++function toYouTubeAbsoluteUrl(url) {
++  return /^https?:\/\//i.test(url) ? url : ('https://' + url.replace(/^\/\//, ''));
++}
+ function toYouTubeEmbedUrl(url) {
+   try {
+-    const absolute = /^https?:\/\//i.test(url) ? url : ('https://' + url.replace(/^\/\//, ''));
++    const absolute = toYouTubeAbsoluteUrl(url);
+     const u = new URL(absolute);
+     if (u.pathname.startsWith('/embed/')) return absolute;
+-    let id = u.hostname.includes('youtu.be') ? u.pathname.slice(1) : (u.pathname.startsWith('/shorts/') ? u.pathname.split('/')[2] : u.searchParams.get('v'));
+-    return id ? ('https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0') : absolute;
++    const parts = u.pathname.split('/');
++    const id = u.hostname.includes('youtu.be')
++      ? parts[1]
++      : (['shorts', 'live', 'v'].includes(parts[1]) ? parts[2] : u.searchParams.get('v'));
++    if (id) return 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0';
++    const list = u.searchParams.get('list');
++    if (list) return 'https://www.youtube.com/embed/videoseries?list=' + encodeURIComponent(list) + '&autoplay=1&rel=0';
++    return null;
+   } catch (e) {
+-    return url;
++    return null;
+   }
+ }
+ const ytModal = document.getElementById('ytModal');
+@@ -1403,7 +1414,12 @@ document.getElementById('aboutYtLink').addEventListener('click', e => {
+   e.preventDefault();
+   const url = e.currentTarget.dataset.youtubeUrl;
+   if (!url) return;
+-  ytModalFrame.src = toYouTubeEmbedUrl(url);
++  const embedUrl = toYouTubeEmbedUrl(url);
++  if (!embedUrl) {
++    window.open(toYouTubeAbsoluteUrl(url), '_blank', 'noopener');
++    return;
++  }
++  ytModalFrame.src = embedUrl;
+   ytModal.classList.add('open');
+ });
+ document.getElementById('ytModalCloseBtn').addEventListener('click', closeYtModal);
+diff --git a/cms-main/client/src/components/layout/Sidebar.jsx b/cms-main/client/src/components/layout/Sidebar.jsx
+index 3a171e2..3dfb12d 100644
+--- a/cms-main/client/src/components/layout/Sidebar.jsx
++++ b/cms-main/client/src/components/layout/Sidebar.jsx
+@@ -2,7 +2,6 @@
+ import {
+   Layers,
+   FileText,
+-  Map,
+   X
+ } from "lucide-react";
+ 
+@@ -16,12 +15,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
+   const isMasterProjectsActive = pathname === ROUTES.PROJECTS_MASTER || pathname.startsWith("/projects/master");
+   const isIndividualProjectsActive = (pathname === ROUTES.PROJECTS_INDIVIDUAL || pathname === ROUTES.PROJECTS) && !isMapSkinPage;
+ 
+-  const projectMatch = pathname.match(/\/projects\/([^/]+)/);
+-  const currentProjectId =
+-    projectMatch && !["new", "master", "individual"].includes(projectMatch[1])
+-      ? projectMatch[1]
+-      : null;
+-
+   return (
+     <aside
+       className={`fixed top-0 left-0 z-40 h-screen w-64 border-r border-slate-200 bg-white transition-transform duration-200 ease-in-out dark:border-slate-800 dark:bg-slate-950 lg:translate-x-0 ${
+@@ -72,26 +65,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
+               <FileText size={18} />
+               <span>Individual</span>
+             </NavLink>
+-
+-            {/* Select Map Skin Contextual Item */}
+-            {(isMapSkinPage || currentProjectId) && (
+-              <NavLink
+-                to={
+-                  currentProjectId
+-                    ? ROUTES.PROJECT_MAP_SKIN.replace(":id", currentProjectId)
+-                    : ROUTES.PROJECTS_INDIVIDUAL
+-                }
+-                onClick={() => setIsOpen(false)}
+-                className={`flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition ${
+-                  isMapSkinPage
+-                    ? "bg-black text-white dark:bg-white dark:text-black shadow-xs"
+-                    : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-900"
+-                }`}
+-              >
+-                <Map size={18} />
+-                <span>Select Map Skin</span>
+-              </NavLink>
+-            )}
+           </nav>
+         </div>
+       </div>
+diff --git a/cms-main/client/src/components/project/ContactInformationForm.jsx b/cms-main/client/src/components/project/ContactInformationForm.jsx
+index bd5ae4f..ec6821d 100644
+--- a/cms-main/client/src/components/project/ContactInformationForm.jsx
++++ b/cms-main/client/src/components/project/ContactInformationForm.jsx
+@@ -26,6 +26,8 @@ const ContactInformationForm = () => {
+   } = useFormContext();
+ 
+   const phoneNumber = watch("contact.phone");
++  const parentProjectId = watch("parentProject");
++  const isMasterChildProject = Boolean(parentProjectId) && parentProjectId !== "none";
+ 
+   const copyPhoneToWhatsapp = () => {
+     setValue(
+@@ -136,50 +138,56 @@ const ContactInformationForm = () => {
+             )}
+           </div>
+ 
+-          <div className="space-y-2">
+-            <Label>Instagram Link</Label>
+-            <Input
+-              placeholder="https://instagram.com/..."
+-              {...register("contact.instagram", {
+-                pattern: urlPattern,
+-              })}
+-            />
+-            {errors.contact?.instagram && (
+-              <p className="text-xs text-red-500 font-medium mt-1">
+-                {errors.contact.instagram.message}
+-              </p>
+-            )}
+-          </div>
++          {!isMasterChildProject && (
++            <div className="space-y-2">
++              <Label>Instagram Link</Label>
++              <Input
++                placeholder="https://instagram.com/..."
++                {...register("contact.instagram", {
++                  pattern: urlPattern,
++                })}
++              />
++              {errors.contact?.instagram && (
++                <p className="text-xs text-red-500 font-medium mt-1">
++                  {errors.contact.instagram.message}
++                </p>
++              )}
++            </div>
++          )}
+ 
+-          <div className="space-y-2">
+-            <Label>Facebook Link</Label>
+-            <Input
+-              placeholder="https://facebook.com/..."
+-              {...register("contact.facebook", {
+-                pattern: urlPattern,
+-              })}
+-            />
+-            {errors.contact?.facebook && (
+-              <p className="text-xs text-red-500 font-medium mt-1">
+-                {errors.contact.facebook.message}
+-              </p>
+-            )}
+-          </div>
++          {!isMasterChildProject && (
++            <div className="space-y-2">
++              <Label>Facebook Link</Label>
++              <Input
++                placeholder="https://facebook.com/..."
++                {...register("contact.facebook", {
++                  pattern: urlPattern,
++                })}
++              />
++              {errors.contact?.facebook && (
++                <p className="text-xs text-red-500 font-medium mt-1">
++                  {errors.contact.facebook.message}
++                </p>
++              )}
++            </div>
++          )}
+ 
+-          <div className="space-y-2">
+-            <Label>YouTube Link</Label>
+-            <Input
+-              placeholder="https://youtube.com/..."
+-              {...register("contact.youtube", {
+-                pattern: urlPattern,
+-              })}
+-            />
+-            {errors.contact?.youtube && (
+-              <p className="text-xs text-red-500 font-medium mt-1">
+-                {errors.contact.youtube.message}
+-              </p>
+-            )}
+-          </div>
++          {!isMasterChildProject && (
++            <div className="space-y-2">
++              <Label>YouTube Link</Label>
++              <Input
++                placeholder="https://youtube.com/..."
++                {...register("contact.youtube", {
++                  pattern: urlPattern,
++                })}
++              />
++              {errors.contact?.youtube && (
++                <p className="text-xs text-red-500 font-medium mt-1">
++                  {errors.contact.youtube.message}
++                </p>
++              )}
++            </div>
++          )}
+ 
+         </div>
+       </CardContent>
+diff --git a/cms-main/client/src/components/project/CoverImageForm.jsx b/cms-main/client/src/components/project/CoverImageForm.jsx
+index c50ad18..f2b2034 100644
+--- a/cms-main/client/src/components/project/CoverImageForm.jsx
++++ b/cms-main/client/src/components/project/CoverImageForm.jsx
+@@ -11,6 +11,7 @@ import FloorPlanUpload from "./FloorPlanUpload";
+ import { Button } from "@/components/ui/button";
+ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+ import { PROJECT_SECTIONS } from "@/constants/projectSections";
++import { getImageUrl } from "@/lib/utils";
+ 
+ const MAX_RERA_SIZE = 20 * 1024 * 1024;
+ 
+@@ -85,10 +86,9 @@ const ReraCertificateUpload = ({ value, onChange }) => {
+         onDragLeave={handleDragLeave}
+         onDrop={handleDrop}
+         className={`flex h-56 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200
+-          ${
+-            isDragging
+-              ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+-              : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
++          ${isDragging
++            ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
++            : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+           }`}
+       >
+         <Upload
+@@ -142,7 +142,7 @@ const ReraCertificateUpload = ({ value, onChange }) => {
+             <FileText className="h-8 w-8 text-red-500" />
+ 
+             <a
+-              href={existing.url}
++              href={getImageUrl(existing.url)}
+               target="_blank"
+               rel="noreferrer"
+               className="font-medium text-slate-900 hover:underline dark:text-slate-100"
+@@ -174,8 +174,10 @@ const MediaInformationForm = ({
+   showFloorPlans = true,
+   showThumbnailImage = false,
+   showRera = true,
++  coverAspectRatio = "16/9",
++  thumbnailAspectRatio = "16/9",
+ }) => {
+-  const { control } = useFormContext();
++  const { control, register } = useFormContext();
+ 
+   return (
+     <Card>
+@@ -185,7 +187,7 @@ const MediaInformationForm = ({
+ 
+       <CardContent className="space-y-8">
+         {/* Cover Image */}
+-        <div id={PROJECT_SECTIONS.cover.id}>
++        <div id={PROJECT_SECTIONS.cover.id} className="max-w-sm">
+           <Controller
+             name="media.coverImage"
+             control={control}
+@@ -194,6 +196,7 @@ const MediaInformationForm = ({
+                 label={thumbnailLabel}
+                 value={field.value}
+                 onChange={field.onChange}
++                aspectRatio={coverAspectRatio}
+               />
+             )}
+           />
+@@ -209,6 +212,7 @@ const MediaInformationForm = ({
+                 label="Thumbnail Image"
+                 value={field.value}
+                 onChange={field.onChange}
++                aspectRatio={thumbnailAspectRatio}
+               />
+             )}
+           />
+@@ -253,6 +257,21 @@ const MediaInformationForm = ({
+           </div>
+         )}
+ 
++        {/* RERA Number */}
++        {showRera && (
++          <div className="space-y-2">
++            <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
++              RERA Number
++            </label>
++            <input
++              type="text"
++              placeholder="e.g. PR/GJ/SURAT/SURAT CITY/..."
++              {...register("rera.number")}
++              className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
++            />
++          </div>
++        )}
++
+         {/* RERA Certificate */}
+         {showRera && (
+           <Controller
+@@ -289,4 +308,4 @@ const MediaInformationForm = ({
+   );
+ };
+ 
+-export default MediaInformationForm;
++export default MediaInformationForm;
+\ No newline at end of file
+diff --git a/cms-main/client/src/components/project/FloorPlanUpload.jsx b/cms-main/client/src/components/project/FloorPlanUpload.jsx
+index ae0e443..be6dad5 100644
+--- a/cms-main/client/src/components/project/FloorPlanUpload.jsx
++++ b/cms-main/client/src/components/project/FloorPlanUpload.jsx
+@@ -1,9 +1,77 @@
+-import { useRef } from "react";
++import { useEffect, useMemo, useRef } from "react";
+ import { Plus, Trash2, FileText } from "lucide-react";
+ 
+ import { Button } from "@/components/ui/button";
+ import { Input } from "@/components/ui/input";
+ import { Label } from "@/components/ui/label";
++import { getImageUrl } from "@/lib/utils";
++
++const IMAGE_EXT = /\.(png|jpe?g|webp|gif)(\?.*)?$/i;
++
++/**
++ * Shows the actual floor plan file. A plan is either a freshly picked File
++ * (previewed through a temporary blob URL) or an already saved plan whose
++ * file lives on the server (`thumbnail` / `originalPdf`). Images render as a
++ * preview; PDFs render as a link that opens the real file in a new tab.
++ */
++const FloorPlanPreview = ({ floorPlan }) => {
++  const file = floorPlan.file instanceof File ? floorPlan.file : null;
++  const blobUrl = useMemo(() => (file ? URL.createObjectURL(file) : ""), [file]);
++
++  useEffect(() => {
++    return () => {
++      if (blobUrl) URL.revokeObjectURL(blobUrl);
++    };
++  }, [blobUrl]);
++
++  const savedPath = floorPlan.originalPdf || floorPlan.pages?.[0]?.url || "";
++  const openUrl = file ? blobUrl : getImageUrl(savedPath);
++  if (!openUrl) return null;
++
++  let previewSrc = "";
++  if (file) {
++    previewSrc = file.type.startsWith("image/") ? blobUrl : "";
++  } else if (IMAGE_EXT.test(floorPlan.thumbnail || "")) {
++    previewSrc = getImageUrl(floorPlan.thumbnail);
++  } else if (IMAGE_EXT.test(savedPath)) {
++    previewSrc = getImageUrl(savedPath);
++  }
++
++  let fileName = file ? file.name : savedPath.split("/").pop() || "";
++  if (!file) {
++    try {
++      fileName = decodeURIComponent(fileName);
++    } catch {
++      // Leave fileName as-is if it isn't a valid percent-encoded string
++    }
++  }
++
++  return (
++    <div className="space-y-2">
++      {previewSrc && (
++        <a href={openUrl} target="_blank" rel="noreferrer">
++          <img
++            src={previewSrc}
++            alt={floorPlan.title || fileName}
++            className="max-h-48 rounded-md border border-slate-200 bg-white object-contain dark:border-slate-700"
++          />
++        </a>
++      )}
++
++      <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
++        <FileText className="h-4 w-4" />
++        <a
++          href={openUrl}
++          target="_blank"
++          rel="noreferrer"
++          className="text-blue-600 hover:underline dark:text-blue-400"
++        >
++          {fileName}
++        </a>
++      </div>
++    </div>
++  );
++};
+ 
+ const FloorPlanUpload = ({ value = [], onChange }) => {
+   const fileInputRef = useRef(null);
+@@ -48,7 +116,7 @@ const FloorPlanUpload = ({ value = [], onChange }) => {
+           ref={fileInputRef}
+           type="file"
+           multiple
+-          accept="application/pdf, image/png, image/jpeg, image/jpg"
++          accept="application/pdf, image/png, image/jpeg, image/jpg, image/webp"
+           className="hidden"
+           onChange={(e) => {
+             addFiles(e.target.files);
+@@ -77,12 +145,7 @@ const FloorPlanUpload = ({ value = [], onChange }) => {
+                 />
+               </div>
+ 
+-              {floorPlan.file && (
+-                <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+-                  <FileText className="h-4 w-4" />
+-                  <span>{floorPlan.file.name}</span>
+-                </div>
+-              )}
++              <FloorPlanPreview floorPlan={floorPlan} />
+             </div>
+ 
+             <Button
+diff --git a/cms-main/client/src/components/project/GalleryImageUpload.jsx b/cms-main/client/src/components/project/GalleryImageUpload.jsx
+index 5d7e0b8..cb60def 100644
+--- a/cms-main/client/src/components/project/GalleryImageUpload.jsx
++++ b/cms-main/client/src/components/project/GalleryImageUpload.jsx
+@@ -121,7 +121,7 @@ const GalleryImageUpload = ({
+   };
+ 
+   return (
+-    <div className="space-y-4">
++    <div className="space-y-2">
+       <label className="text-sm font-medium text-slate-700 dark:text-slate-200">{label}</label>
+ 
+       <input
+@@ -133,80 +133,80 @@ const GalleryImageUpload = ({
+         onChange={handleChange}
+       />
+ 
+-      <div
+-        onClick={() => fileInputRef.current?.click()}
+-        onDragOver={handleDragOver}
+-        onDragLeave={handleDragLeave}
+-        onDrop={handleDrop}
+-        className={`
+-          flex
+-          h-48
+-          cursor-pointer
+-          flex-col
+-          items-center
+-          justify-center
+-          rounded-xl
+-          border-2
+-          border-dashed
+-          transition-all
+-
+-          ${
+-            isDragging
+-              ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+-              : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+-          }
+-        `}
+-      >
+-        <ImagePlus size={48} className="mb-3 text-slate-400 dark:text-slate-500" />
+-
+-        <p className="font-semibold text-slate-700 dark:text-slate-200">
+-          {isDragging
+-            ? "Drop images here"
+-            : "Click or Drag images here"}
+-        </p>
+-
+-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+-          JPG, JPEG, PNG, WEBP
+-        </p>
+-
+-        <p className="text-xs text-slate-400 dark:text-slate-500">
+-          Maximum size: 10 MB each
+-        </p>
+-      </div>
++      <div className="flex flex-wrap items-start gap-4">
++        {/* Drag/drop box, thumbnail sized (4:3) and always available so more
++            images can be added right beside the ones already uploaded. */}
++        <div
++          onClick={() => fileInputRef.current?.click()}
++          onDragOver={handleDragOver}
++          onDragLeave={handleDragLeave}
++          onDrop={handleDrop}
++          style={{ aspectRatio: "4/3" }}
++          className={`
++            flex
++            w-56
++            shrink-0
++            cursor-pointer
++            flex-col
++            items-center
++            justify-center
++            rounded-xl
++            border-2
++            border-dashed
++            p-2
++            text-center
++            transition-all
++
++            ${
++              isDragging
++                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
++                : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
++            }
++          `}
++        >
++          <ImagePlus size={24} className="mb-1.5 text-slate-400 dark:text-slate-500" />
++
++          <p className="text-xs font-semibold text-slate-700 dark:text-slate-200">
++            {isDragging ? "Drop here" : "Click or Drag"}
++          </p>
++        </div>
+ 
+-      {previews.length > 0 && (
+-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+-          {previews.map((preview, index) => (
+-            <div
+-              key={index}
+-              className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-800/60"
+-            >
+-              <img
+-                src={preview.src}
+-                alt=""
+-                className="h-40 w-full object-cover"
+-              />
+-
+-              <div className="space-y-2 p-3">
+-                <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+-                  {preview.name}
+-                </p>
+-
+-                <Button
+-                  type="button"
+-                  variant="destructive"
+-                  size="sm"
+-                  className="w-full"
+-                  onClick={() => removeImage(index)}
+-                >
+-                  <Trash2 className="mr-2 h-4 w-4" />
+-                  Remove
+-                </Button>
+-              </div>
++        {/* Uploaded images, shown beside the drag box instead of in a
++            separate section below it. */}
++        {previews.map((preview, index) => (
++          <div
++            key={index}
++            style={{ aspectRatio: "4/3" }}
++            className="group relative w-56 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900"
++          >
++            <img
++              src={preview.src}
++              alt=""
++              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
++            />
++
++            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
++              <Button
++                type="button"
++                size="icon-sm"
++                variant="destructive"
++                onClick={() => removeImage(index)}
++                title="Remove"
++              >
++                <Trash2 className="h-3.5 w-3.5" />
++              </Button>
+             </div>
+-          ))}
+-        </div>
+-      )}
++
++            <p className="absolute inset-x-0 bottom-0 truncate bg-black/60 px-2 py-1 text-xs text-white">
++              {preview.name}
++            </p>
++          </div>
++        ))}
++      </div>
++
++      <p className="text-xs text-slate-400 dark:text-slate-500">
++        JPG, JPEG, PNG, WEBP &middot; Maximum size: 10 MB each
++      </p>
+     </div>
+   );
+ };
+diff --git a/cms-main/client/src/components/project/GeneralInformationForm.jsx b/cms-main/client/src/components/project/GeneralInformationForm.jsx
+index 8f43459..ff57ef8 100644
+--- a/cms-main/client/src/components/project/GeneralInformationForm.jsx
++++ b/cms-main/client/src/components/project/GeneralInformationForm.jsx
+@@ -32,6 +32,7 @@ const GeneralInformationForm = ({ projectType }) => {
+   const projectName = watch("general.projectName");
+   const currentSlug = watch("general.slug");
+   const parentProject = watch("parentProject");
++  const isMasterChildProject = Boolean(parentProject) && parentProject !== "none";
+ 
+   useEffect(() => {
+     if (!projectName) return;
+@@ -67,24 +68,26 @@ const GeneralInformationForm = ({ projectType }) => {
+         </div>
+ 
+         {/* Builder Name & Slug */}
+-        <div className="grid gap-6 md:grid-cols-2">
+-          <div className="space-y-2">
+-            <Label htmlFor="builderName">
+-              Builder Name <span className="text-red-500">*</span>
+-            </Label>
+-            <Input
+-              id="builderName"
+-              placeholder="e.g. Skyline Developers"
+-              {...register("general.builderName", {
+-                required: "Builder Name is required",
+-              })}
+-            />
+-            {errors.general?.builderName && (
+-              <p className="text-xs text-red-500 font-medium mt-1">
+-                {errors.general.builderName.message}
+-              </p>
+-            )}
+-          </div>
++        <div className={`grid gap-6 ${isMasterChildProject ? "md:grid-cols-1" : "md:grid-cols-2"}`}>
++          {!isMasterChildProject && (
++            <div className="space-y-2">
++              <Label htmlFor="builderName">
++                Builder Name <span className="text-red-500">*</span>
++              </Label>
++              <Input
++                id="builderName"
++                placeholder="e.g. Skyline Developers"
++                {...register("general.builderName", {
++                  required: "Builder Name is required",
++                })}
++              />
++              {errors.general?.builderName && (
++                <p className="text-xs text-red-500 font-medium mt-1">
++                  {errors.general.builderName.message}
++                </p>
++              )}
++            </div>
++          )}
+ 
+           <div className="space-y-2">
+             <Label htmlFor="slug">
+diff --git a/cms-main/client/src/components/project/ImageUpload.jsx b/cms-main/client/src/components/project/ImageUpload.jsx
+index e9e96c6..6763d6c 100644
+--- a/cms-main/client/src/components/project/ImageUpload.jsx
++++ b/cms-main/client/src/components/project/ImageUpload.jsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useRef, useState } from "react";
+-import { ImagePlus, Trash2 } from "lucide-react";
++import { ImagePlus, Pencil, Trash2 } from "lucide-react";
+ import { toast } from "sonner";
+ 
+ import { Button } from "@/components/ui/button";
+@@ -51,6 +51,7 @@ const ImageUpload = ({
+     value,
+     accept = "image/*",
+     onChange,
++    aspectRatio,
+ }) => {
+     const [preview, setPreview] = useState(() => getInitialPreview(value));
+     const [isDragging, setIsDragging] = useState(false);
+@@ -159,8 +160,10 @@ const ImageUpload = ({
+         validateAndUpload(file);
+     };
+ 
++    const hasImage = Boolean(preview && value);
++
+     return (
+-        <div className="space-y-3">
++        <div className="space-y-2">
+             <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                 {label}
+             </label>
+@@ -173,15 +176,22 @@ const ImageUpload = ({
+                 onChange={handleChange}
+             />
+ 
+-            {!(preview && value) ? (
+-                <div
+-                    onClick={() => fileInputRef.current?.click()}
+-                    onDragOver={handleDragOver}
+-                    onDragLeave={handleDragLeave}
+-                    onDrop={handleDrop}
+-                    className={`
++            <div className="flex flex-wrap items-start gap-4">
++                {/* Drag/drop box — only shown until an image is uploaded,
++                    since only one thumbnail can be set at a time. Once an
++                    image exists, use the Change button on it instead. */}
++                {!hasImage && (
++                    <div
++                        onClick={() => fileInputRef.current?.click()}
++                        onDragOver={handleDragOver}
++                        onDragLeave={handleDragLeave}
++                        onDrop={handleDrop}
++                        style={aspectRatio ? { aspectRatio } : undefined}
++                        className={`
+             flex
+-            h-64
++            w-48
++            ${aspectRatio ? "" : "h-48"}
++            shrink-0
+             cursor-pointer
+             flex-col
+             items-center
+@@ -189,98 +199,88 @@ const ImageUpload = ({
+             rounded-xl
+             border-2
+             border-dashed
++            p-2
++            text-center
+             transition-all
+             duration-200
+ 
+             ${isDragging
+-                            ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+-                            : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+-                        }
++                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
++                                : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
++                            }
+           `}
+-                >
+-                    <ImagePlus
+-                        size={52}
+-                        className="mb-4 text-slate-400 dark:text-slate-500"
+-                    />
+-
+-                    <p className="font-semibold text-slate-700 dark:text-slate-200">
+-                        {isDragging
+-                            ? "Drop image here"
+-                            : "Click or Drag an image here"}
+-                    </p>
+-
+-                    <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+-                        JPG, JPEG, PNG, WEBP
+-                    </p>
+-
+-                    <p className="text-xs text-slate-400 dark:text-slate-500">
+-                        Maximum size: 10 MB
+-                    </p>
+-                </div>
+-            ) : (
+-                <div className="space-y-4">
+-                    <div className="group relative flex h-72 w-full items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
+-                        <img
+-                            src={preview}
+-                            alt="Preview"
+-                            className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
++                    >
++                        <ImagePlus
++                            size={24}
++                            className="mb-1.5 text-slate-400 dark:text-slate-500"
+                         />
+ 
++                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-200">
++                            {isDragging ? "Drop here" : "Click or Drag"}
++                        </p>
++                    </div>
++                )}
++
++                {/* Uploaded image */}
++                {hasImage && (
++                    <>
+                         <div
+-                            className="
+-                absolute
+-                inset-0
+-                flex
+-                items-center
+-                justify-center
+-                gap-3
+-                bg-black/50
+-                opacity-0
+-                transition-opacity
+-                duration-300
+-                group-hover:opacity-100
+-              "
++                            style={aspectRatio ? { aspectRatio } : undefined}
++                            className={`group relative w-48 ${aspectRatio ? "" : "h-48"} shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900`}
+                         >
+-                            <Button
+-                                type="button"
+-                                variant="secondary"
+-                                onClick={() => fileInputRef.current?.click()}
+-                            >
+-                                Change Image
+-                            </Button>
+-
+-                            <Button
+-                                type="button"
+-                                variant="destructive"
+-                                onClick={handleRemove}
+-                            >
+-                                <Trash2 className="mr-2 h-4 w-4" />
+-                                Remove
+-                            </Button>
++                            <img
++                                src={preview}
++                                alt="Preview"
++                                className={`h-full w-full ${aspectRatio ? "object-cover" : "object-contain"} transition duration-300 group-hover:scale-105`}
++                            />
++
++                            <div className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
++                                <Button
++                                    type="button"
++                                    size="icon-sm"
++                                    variant="secondary"
++                                    onClick={() => fileInputRef.current?.click()}
++                                    title="Change Image"
++                                >
++                                    <Pencil className="h-3.5 w-3.5" />
++                                </Button>
++
++                                <Button
++                                    type="button"
++                                    size="icon-sm"
++                                    variant="destructive"
++                                    onClick={handleRemove}
++                                    title="Remove"
++                                >
++                                    <Trash2 className="h-3.5 w-3.5" />
++                                </Button>
++                            </div>
+                         </div>
+-                    </div>
+ 
+-                    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/60">
+-                        <div>
+-                            <p className="max-w-xs truncate font-medium text-slate-900 dark:text-slate-100">
++                        <div className="flex min-w-[160px] flex-col justify-center gap-1">
++                            <p className="max-w-xs truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+                                 {value instanceof File
+                                     ? value.name
+                                     : "Current Thumbnail"}
+                             </p>
+ 
+-                            <p className="text-sm text-slate-500 dark:text-slate-400">
++                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                                 {value instanceof File
+                                     ? `${(value.size / 1024 / 1024).toFixed(2)} MB`
+                                     : "Already uploaded"}
+                             </p>
+-                        </div>
+ 
+-                        <div className="rounded-full bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-300 dark:border dark:border-green-800/60 px-3 py-1 text-xs font-semibold">
+-                            Ready
++                            <span className="w-fit rounded-full bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-300 dark:border dark:border-green-800/60 px-2.5 py-0.5 text-xs font-semibold">
++                                Ready
++                            </span>
+                         </div>
+-                    </div>
+-                </div>
+-            )}
++                    </>
++                )}
++            </div>
++
++            <p className="text-xs text-slate-400 dark:text-slate-500">
++                JPG, JPEG, PNG, WEBP &middot; Maximum size: 10 MB
++            </p>
+         </div>
+     );
+ };
+diff --git a/cms-main/client/src/components/project/PortfolioTourForm.jsx b/cms-main/client/src/components/project/PortfolioTourForm.jsx
+index 18b9413..001947f 100644
+--- a/cms-main/client/src/components/project/PortfolioTourForm.jsx
++++ b/cms-main/client/src/components/project/PortfolioTourForm.jsx
+@@ -1,17 +1,248 @@
+-import { useEffect, useRef } from "react";
+-import { ArrowLeft } from "lucide-react";
+-import { FormProvider, useFormContext } from "react-hook-form";
++import { useEffect, useRef, useState } from "react";
++import { ArrowLeft, Check, ChevronDown, Map, Plus, X } from "lucide-react";
++import { Controller, FormProvider, useFormContext } from "react-hook-form";
++import { useNavigate } from "react-router-dom";
++import { toast } from "sonner";
+ 
++import { Button } from "@/components/ui/button";
+ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+ import { Input } from "@/components/ui/input";
+ import { Label } from "@/components/ui/label";
+ import { Textarea } from "@/components/ui/textarea";
++import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
++import {
++    Select,
++    SelectContent,
++    SelectItem,
++    SelectTrigger,
++    SelectValue,
++} from "@/components/ui/select";
++import { cn } from "@/lib/utils";
+ 
++import AutocompleteField from "@/components/common/AutocompleteField";
++import projectService from "@/services/project/projectService";
+ import MediaInformationForm from "./CoverImageForm";
+ import VideoInformationForm from "./VideoInformationForm";
+ import SEOInformationForm from "./SEOInformationForm";
+ import StickyActionBar from "./StickyActionBar";
++import { CATEGORY_OPTIONS, POSSESSION_STATUS_OPTIONS } from "./TagsFiltersForm";
+ import { PROJECT_SECTIONS } from "@/constants/projectSections";
++import { ROUTES } from "@/constants/routes";
++
++// Saves a list (Areas / Category / Property Type) straight to the server on
++// every Add/Remove, instead of waiting on the big form's autosave/submit
++// cycle. This makes the save immediate and independently verifiable (toast +
++// network tab) rather than relying on the rest of the form to carry it along
++// correctly. fieldName is a "general.xxx" path; xxx is used as the key sent
++// in the PATCH body.
++const MasterChipListField = ({
++    control,
++    fieldName,
++    addPlaceholder = "Type a value...",
++    suggestions = [],
++    showAddButton = true,
++}) => {
++    const [inputValue, setInputValue] = useState("");
++
++    return (
++        <Controller
++            name={fieldName}
++            control={control}
++            render={({ field }) => {
++                const items = Array.isArray(field.value)
++                    ? field.value
++                    : (typeof field.value === "string" && field.value.trim()
++                        ? field.value.split(",").map((a) => a.trim()).filter(Boolean)
++                        : []);
++
++                const persist = (nextItems) => {
++                    // Just update form state — the page's normal Save button
++                    // (now fixed to actually report success/failure) persists
++                    // this along with the rest of the form, same as Tagline
++                    // and Description already do.
++                    field.onChange(nextItems);
++                };
++
++                const addItem = (value) => {
++                    const trimmed = (value ?? inputValue).trim();
++                    if (!trimmed || items.includes(trimmed)) {
++                        setInputValue("");
++                        return;
++                    }
++                    setInputValue("");
++                    persist([...items, trimmed]);
++                };
++
++                const removeItem = (item) => {
++                    persist(items.filter((a) => a !== item));
++                };
++
++                const handleKeyDown = (e) => {
++                    if (e.key === "Enter" || e.key === ",") {
++                        e.preventDefault();
++                        addItem();
++                    }
++                };
++
++                const remainingSuggestions = suggestions.filter((s) => !items.includes(s));
++
++                return (
++                    <div className="space-y-2">
++                        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-input bg-transparent p-2 min-h-[42px] dark:bg-input/30">
++                            {items.map((item) => (
++                                <span
++                                    key={item}
++                                    className="inline-flex items-center gap-1.5 rounded-md bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-sm text-slate-700 dark:text-slate-200"
++                                >
++                                    {item}
++                                    <button
++                                        type="button"
++                                        onClick={() => removeItem(item)}
++                                        className="text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
++                                        aria-label={`Remove ${item}`}
++                                    >
++                                        <X size={13} />
++                                    </button>
++                                </span>
++                            ))}
++
++                            <input
++                                type="text"
++                                value={inputValue}
++                                onChange={(e) => setInputValue(e.target.value)}
++                                onKeyDown={handleKeyDown}
++                                placeholder={items.length === 0 ? addPlaceholder : "Add another..."}
++                                className="flex-1 min-w-[140px] border-none bg-transparent text-sm outline-none placeholder:text-muted-foreground"
++                            />
++                        </div>
++
++                        <div className="flex flex-wrap items-center gap-2">
++                            {showAddButton && (
++                                <Button type="button" variant="outline" size="sm" onClick={() => addItem()}>
++                                    <Plus size={14} className="mr-1" />
++                                    Add Custom
++                                </Button>
++                            )}
++
++                            {remainingSuggestions.map((s) => (
++                                <button
++                                    key={s}
++                                    type="button"
++                                    onClick={() => addItem(s)}
++                                    className="text-xs px-2.5 py-1 rounded-md border border-dashed border-slate-300 dark:border-slate-700 text-slate-500 hover:border-blue-400 hover:text-blue-600 transition-colors cursor-pointer"
++                                >
++                                    + {s}
++                                </button>
++                            ))}
++                        </div>
++                    </div>
++                );
++            }}
++        />
++    );
++};
++
++// Same Category dropdown (and selection rules) individual projects used
++// before: Residential + Commercial can be combined, Industrial / Custom are
++// solo. The selection is stored in general.category and becomes the list of
++// Category options offered to the individual projects under this master.
++const MasterCategoryDropdown = ({ control }) => {
++    const [open, setOpen] = useState(false);
++
++    return (
++        <Controller
++            name="general.category"
++            control={control}
++            render={({ field }) => {
++                const selected = Array.isArray(field.value)
++                    ? field.value.filter(Boolean)
++                    : (typeof field.value === "string" && field.value.trim()
++                        ? field.value.split(",").map((c) => c.trim()).filter(Boolean)
++                        : []);
++
++                const primary = selected[0] || "";
++                const isCustomActive = selected.includes("Custom") || (
++                    selected.length === 1 && primary && !CATEGORY_OPTIONS.includes(primary)
++                );
++                const customValue = selected.length === 1 && !CATEGORY_OPTIONS.includes(primary) ? primary : "";
++
++                const toggle = (cat) => {
++                    let next;
++
++                    if (selected.includes(cat)) {
++                        next = cat === "Residential" || cat === "Commercial"
++                            ? selected.filter((c) => c !== cat)
++                            : [];
++                    } else if (cat === "Industrial") {
++                        next = ["Industrial"];
++                    } else if (cat === "Residential" || cat === "Commercial") {
++                        const multi = selected.filter((c) => c === "Residential" || c === "Commercial");
++                        next = [...multi, cat];
++                    } else {
++                        next = [cat];
++                    }
++
++                    field.onChange(next);
++                };
++
++                return (
++                    <>
++                        <Popover open={open} onOpenChange={setOpen}>
++                            <PopoverTrigger className="flex w-full h-10 items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 cursor-pointer dark:bg-input/30">
++                                <span className={cn("truncate text-left flex-1", selected.length === 0 ? "text-muted-foreground" : "text-foreground font-normal")}>
++                                    {selected.length === 0 ? "Select Category" : selected.join(", ")}
++                                </span>
++                                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
++                            </PopoverTrigger>
++
++                            <PopoverContent className="w-(--anchor-width) min-w-[240px] p-2 space-y-1" align="start">
++                                <div className="text-xs font-semibold text-slate-400 px-2 py-1 uppercase tracking-wider">
++                                    Select Categories
++                                </div>
++                                {CATEGORY_OPTIONS.map((cat) => {
++                                    const isChecked = selected.includes(cat);
++
++                                    return (
++                                        <div
++                                            key={cat}
++                                            onClick={() => {
++                                                toggle(cat);
++                                                setOpen(false);
++                                            }}
++                                            className={cn(
++                                                "flex items-center justify-between px-3 py-2 rounded-md cursor-pointer text-sm font-medium transition-colors select-none",
++                                                isChecked
++                                                    ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
++                                                    : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
++                                            )}
++                                        >
++                                            <span>{cat}</span>
++                                            {isChecked && (
++                                                <Check className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400 ml-2" />
++                                            )}
++                                        </div>
++                                    );
++                                })}
++                            </PopoverContent>
++                        </Popover>
++
++                        {isCustomActive && (
++                            <div className="pt-2 animate-in fade-in-50 duration-200">
++                                <Label className="text-xs text-slate-500">Custom Category Name</Label>
++                                <Input
++                                    placeholder="Enter custom category name..."
++                                    value={customValue}
++                                    onChange={(e) => field.onChange([e.target.value || "Custom"])}
++                                    className="mt-1"
++                                />
++                            </div>
++                        )}
++                    </>
++                );
++            }}
++        />
++    );
++};
+ 
+ const slugify = (text) =>
+     text
+@@ -21,8 +252,8 @@ const slugify = (text) =>
+         .replace(/\s+/g, "-")
+         .replace(/-+/g, "-");
+ 
+-const PortfolioTourFields = () => {
+-    const { register, watch, setValue, formState: { errors } } = useFormContext();
++const PortfolioTourFields = ({ projectId }) => {
++    const { register, control, watch, setValue, formState: { errors } } = useFormContext();
+     const slugEdited = useRef(false);
+     const projectName = watch("general.projectName");
+ 
+@@ -57,14 +288,6 @@ const PortfolioTourFields = () => {
+                             </p>
+                         )}
+                     </div>
+-                    <div className="space-y-2">
+-                        <Label htmlFor="tagline">Tagline</Label>
+-                        <Input
+-                            id="tagline"
+-                            autoComplete="off"
+-                            {...register("general.tagline")}
+-                        />
+-                    </div>
+                     <div className="space-y-2">
+                         <Label htmlFor="description">Description</Label>
+                         <Textarea
+@@ -77,6 +300,98 @@ const PortfolioTourFields = () => {
+                 </CardContent>
+             </Card>
+ 
++            <Card>
++                <CardHeader>
++                    <CardTitle>Tags &amp; Filters</CardTitle>
++                </CardHeader>
++                <CardContent className="grid gap-6 md:grid-cols-2">
++                    <div className="space-y-2 w-full">
++                        <Label>Category</Label>
++                        <MasterCategoryDropdown control={control} />
++                        <p className="text-xs text-slate-500">
++                            Select the category, then click "Save Configuration" below. These become the only Category options selectable on individual projects added under this master project.
++                        </p>
++                    </div>
++
++                    <div className="space-y-2">
++                        <Label>Possession Status</Label>
++                        <Controller
++                            name="general.possessionStatus"
++                            control={control}
++                            render={({ field }) => (
++                                <Select
++                                    value={field.value || ""}
++                                    onValueChange={field.onChange}
++                                >
++                                    <SelectTrigger className="w-full h-10">
++                                        <SelectValue placeholder="Select Possession Status" />
++                                    </SelectTrigger>
++
++                                    <SelectContent>
++                                        {POSSESSION_STATUS_OPTIONS.map((status) => (
++                                            <SelectItem key={status} value={status}>
++                                                {status}
++                                            </SelectItem>
++                                        ))}
++                                    </SelectContent>
++                                </Select>
++                            )}
++                        />
++                    </div>
++
++                    <div className="space-y-2 md:col-span-2">
++                        <Label>Property Type</Label>
++                        <MasterChipListField
++                            control={control}
++                            fieldName="general.propertyType"
++                            addPlaceholder="Type a custom property type..."
++                            suggestions={["2 BHK", "3 BHK", "4 BHK", "Penthouse", "Bungalow", "Villa", "Shop", "Office", "Plot"]}
++                        />
++                        <p className="text-xs text-slate-500">
++                            Pick a suggestion or add a custom one, then click "Save Configuration" below. These become the only Property Type options selectable on individual projects added under this master project.
++                        </p>
++                    </div>
++
++                    <div className="space-y-2">
++                        <Label>City</Label>
++                        <Controller
++                            name="general.city"
++                            control={control}
++                            render={({ field }) => (
++                                <AutocompleteField
++                                    type="city"
++                                    value={field.value || ""}
++                                    onChange={field.onChange}
++                                    placeholder="Select or create city"
++                                />
++                            )}
++                        />
++                    </div>
++
++                    <div className="space-y-2">
++                        <Label>Area</Label>
++                        <MasterChipListField
++                            control={control}
++                            fieldName="general.area"
++                            addPlaceholder="Type an area..."
++                            showAddButton={false}
++                        />
++                        <p className="text-xs text-slate-500">
++                            Click "Save Configuration" below to persist. These become the dropdown options for the Area field on individual projects added under this master project.
++                        </p>
++                    </div>
++
++                    <div className="space-y-2 md:col-span-2">
++                        <Label htmlFor="tagline">Tagline</Label>
++                        <Input
++                            id="tagline"
++                            autoComplete="off"
++                            {...register("general.tagline")}
++                        />
++                    </div>
++                </CardContent>
++            </Card>
++
+             <Card>
+                 <CardHeader>
+                     <CardTitle>Contact & Location Info</CardTitle>
+@@ -203,6 +518,7 @@ const PortfolioTourFields = () => {
+                 showFloorPlans={false}
+                 showThumbnailImage={true}
+                 showRera={false}
++                coverAspectRatio="1/1"
+             />
+ 
+             {/* Videos */}
+@@ -224,48 +540,70 @@ const PortfolioTourForm = ({
+     onBack,
+     isSubmitting = false,
+     hideSubmit = false,
++    projectId,
+ }) => {
++    const navigate = useNavigate();
++
++    // Inject default values for removed fields to satisfy backend schema
++    const applyDefaults = (data) => {
++        if (!data.general.builderName) {
++            data.general.builderName = data.general.projectName;
++        }
++        if (!data.general.projectType) {
++            data.general.projectType = "Commercial";
++        }
++        if (!data.status.status) {
++            data.status.status = "Published";
++            data.status.published = true;
++        }
++        return data;
++    };
++
+     return (
+         <FormProvider {...methods}>
+             <form
+                 onSubmit={methods.handleSubmit((data) => {
+-                    // Inject default values for removed fields to satisfy backend schema
+-                    if (!data.general.builderName) {
+-                        data.general.builderName = data.general.projectName;
+-                    }
+-                    if (!data.general.projectType) {
+-                        data.general.projectType = "Commercial";
+-                    }
+-                    if (!data.status.status) {
+-                        data.status.status = "Published";
+-                        data.status.published = true;
+-                    }
+-                    onSubmit(data);
++                    onSubmit(applyDefaults(data));
+                 })}
+                 className="space-y-8 pb-24"
+             >
+-                <div>
+-                    <div className="flex items-center gap-3">
+-                        {onBack && (
+-                            <button
+-                                type="button"
+-                                onClick={onBack}
+-                                className="flex items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+-                                title="Back"
+-                            >
+-                                <ArrowLeft className="h-5 w-5" />
+-                            </button>
+-                        )}
+-                        <h1 className="text-3xl font-bold dark:text-slate-50">
+-                            Portfolio Tour Configuration
+-                        </h1>
++                <div className="flex items-start justify-between gap-3 flex-wrap">
++                    <div>
++                        <div className="flex items-center gap-3">
++                            {onBack && (
++                                <button
++                                    type="button"
++                                    onClick={onBack}
++                                    className="flex items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
++                                    title="Back"
++                                >
++                                    <ArrowLeft className="h-5 w-5" />
++                                </button>
++                            )}
++                            <h1 className="text-3xl font-bold dark:text-slate-50">
++                                Portfolio Tour Configuration
++                            </h1>
++                        </div>
++                        <p className="mt-2 text-slate-500 dark:text-slate-400">
++                            Configure the modal popup for the portfolio tour.
++                        </p>
+                     </div>
+-                    <p className="mt-2 text-slate-500 dark:text-slate-400">
+-                        Configure the modal popup for the portfolio tour.
+-                    </p>
++
++                    {/* Standalone entry point into Map Skin selection — independent of
++                        the Save/Next flow, only shown once the master project exists. */}
++                    {projectId && (
++                        <Button
++                            type="button"
++                            onClick={() => navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", projectId))}
++                            className="flex items-center gap-2 cursor-pointer shrink-0"
++                        >
++                            <Map className="h-4 w-4" />
++                            <span>Select Map Skin</span>
++                        </Button>
++                    )}
+                 </div>
+ 
+-                <PortfolioTourFields />
++                <PortfolioTourFields projectId={projectId} />
+ 
+                 <StickyActionBar
+                     isSubmitting={isSubmitting}
+diff --git a/cms-main/client/src/components/project/ProjectForm.jsx b/cms-main/client/src/components/project/ProjectForm.jsx
+index e3c10c6..9b57cf1 100644
+--- a/cms-main/client/src/components/project/ProjectForm.jsx
++++ b/cms-main/client/src/components/project/ProjectForm.jsx
+@@ -1,4 +1,6 @@
+ import { toast } from "sonner";
++import { useNavigate } from "react-router-dom";
++import { Map } from "lucide-react";
+ import { PROJECT_SECTIONS } from "@/constants/projectSections";
+ import { FormProvider } from "react-hook-form";
+ 
+@@ -10,6 +12,8 @@ import LocationInformationForm from "./LocationInformationForm";
+ import MediaInformationForm from "./CoverImageForm";
+ import VideoInformationForm from "./VideoInformationForm";
+ import StickyActionBar from "./StickyActionBar";
++import { Button } from "@/components/ui/button";
++import { ROUTES } from "@/constants/routes";
+ 
+ const ProjectForm = ({
+   methods,
+@@ -21,21 +25,39 @@ const ProjectForm = ({
+   title = "Create Project",
+   description = "Fill in the project details below.",
+   submitButtonText = "Create Project",
++  projectId,
+ }) => {
++  const navigate = useNavigate();
++
+   return (
+     <FormProvider {...methods}>
+       <form
+         onSubmit={methods.handleSubmit(onSubmit)}
+         className="space-y-8 pb-24"
+       >
+-        <div>
+-          <h1 className="text-3xl font-bold dark:text-slate-50">
+-            {title}
+-          </h1>
++        <div className="flex items-start justify-between gap-3 flex-wrap">
++          <div>
++            <h1 className="text-3xl font-bold dark:text-slate-50">
++              {title}
++            </h1>
++
++            <p className="mt-2 text-slate-500 dark:text-slate-400">
++              {description}
++            </p>
++          </div>
+ 
+-          <p className="mt-2 text-slate-500 dark:text-slate-400">
+-            {description}
+-          </p>
++          {/* Standalone entry point into Map Skin selection — independent of
++              the Save/Next flow, only shown once the project exists. */}
++          {projectId && (
++            <Button
++              type="button"
++              onClick={() => navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", projectId))}
++              className="flex items-center gap-2 cursor-pointer shrink-0"
++            >
++              <Map className="h-4 w-4" />
++              <span>Select Map Skin</span>
++            </Button>
++          )}
+         </div>
+ 
+         <div id={PROJECT_SECTIONS.general.id}>
+@@ -65,7 +87,7 @@ const ProjectForm = ({
+         <StickyActionBar
+           isSubmitting={isSubmitting}
+           submitButtonText={submitButtonText}
+-          hideSubmit
++          hideSubmit={!!onNext}
+           onBack={onBack}
+           onNext={
+             onNext
+diff --git a/cms-main/client/src/components/project/SpecificationItem.jsx b/cms-main/client/src/components/project/SpecificationItem.jsx
+index 8126cf2..66d665b 100644
+--- a/cms-main/client/src/components/project/SpecificationItem.jsx
++++ b/cms-main/client/src/components/project/SpecificationItem.jsx
+@@ -94,10 +94,10 @@ const SpecificationItem = ({
+                             <button
+                                 type="button"
+                                 onClick={() => iconInputRef.current?.click()}
+-                                className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800/60"
++                                className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800/60"
+                             >
+                                 {icon ? (
+-                                    <img src={icon} alt="Icon" className="h-full w-full object-cover" />
++                                    <img src={icon} alt="Icon" className="h-full w-full object-contain" />
+                                 ) : (
+                                     <ImagePlus className="h-5 w-5 text-slate-400" />
+                                 )}
+diff --git a/cms-main/client/src/components/project/TagsFiltersForm.jsx b/cms-main/client/src/components/project/TagsFiltersForm.jsx
+index 5ecad17..c07a568 100644
+--- a/cms-main/client/src/components/project/TagsFiltersForm.jsx
++++ b/cms-main/client/src/components/project/TagsFiltersForm.jsx
+@@ -1,10 +1,10 @@
+-import { useMemo, useState } from "react";
++import { useEffect, useMemo, useState } from "react";
+ import { Controller, useFormContext } from "react-hook-form";
+ import { Check, ChevronDown } from "lucide-react";
+ 
+ import AutocompleteField from "@/components/common/AutocompleteField";
++import projectService from "@/services/project/projectService";
+ import { cn } from "@/lib/utils";
+-
+ import {
+     Card,
+     CardContent,
+@@ -69,7 +69,60 @@ export const getDynamicPropertyTypes = (selectedCategories = []) => {
+ const TagsFiltersForm = () => {
+     const { register, control, watch, setValue } = useFormContext();
+ 
++    const parentProjectId = watch("parentProject");
++    const isMasterChildProject = Boolean(parentProjectId) && parentProjectId !== "none";
++
+     const [categoryOpen, setCategoryOpen] = useState(false);
++
++    // When this project belongs to a master, load the master's Area,
++    // Category and Property Type lists so those fields below become
++    // dropdowns/chips restricted to only what the master defines.
++    const [masterAreaOptions, setMasterAreaOptions] = useState([]);
++    const [masterCategoryOptions, setMasterCategoryOptions] = useState([]);
++    const [masterPropertyTypeOptions, setMasterPropertyTypeOptions] = useState([]);
++
++    const toStringArray = (raw) => {
++        if (Array.isArray(raw)) return raw.filter(Boolean);
++        if (typeof raw === "string" && raw.trim()) {
++            return raw.split(",").map((a) => a.trim()).filter(Boolean);
++        }
++        return [];
++    };
++
++    useEffect(() => {
++        if (!isMasterChildProject || !parentProjectId) {
++            setMasterAreaOptions([]);
++            setMasterCategoryOptions([]);
++            setMasterPropertyTypeOptions([]);
++            return;
++        }
++
++        let cancelled = false;
++
++        (async () => {
++            try {
++                const res = await projectService.getProject(parentProjectId);
++                const masterProject = res.data?.project || res.project || res.data;
++
++                if (!cancelled) {
++                    setMasterAreaOptions(toStringArray(masterProject?.general?.area));
++                    setMasterCategoryOptions(toStringArray(masterProject?.general?.category));
++                    setMasterPropertyTypeOptions(toStringArray(masterProject?.general?.propertyType));
++                }
++            } catch (err) {
++                console.error("Failed to load master project options:", err);
++                if (!cancelled) {
++                    setMasterAreaOptions([]);
++                    setMasterCategoryOptions([]);
++                    setMasterPropertyTypeOptions([]);
++                }
++            }
++        })();
++
++        return () => {
++            cancelled = true;
++        };
++    }, [isMasterChildProject, parentProjectId]);
+     const rawCategory = watch("filters.category");
+     const selectedCategories = useMemo(() => {
+         if (Array.isArray(rawCategory)) return rawCategory.filter(Boolean);
+@@ -156,64 +209,102 @@ const TagsFiltersForm = () => {
+ 
+             <CardContent className="grid gap-6 md:grid-cols-2">
+ 
+-                {/* Category Multi-Select Dropdown */}
++                {/* Category */}
+                 <div className="space-y-2 w-full">
+                     <Label>Category</Label>
+ 
+-                    <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+-                        <PopoverTrigger className="flex w-full h-10 items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 cursor-pointer dark:bg-input/30">
+-                            <span className={cn("truncate text-left flex-1", selectedCategories.length === 0 ? "text-muted-foreground" : "text-foreground font-normal")}>
+-                                {selectedCategories.length === 0 ? "Select Category" : selectedCategories.join(", ")}
+-                            </span>
+-                            <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+-                        </PopoverTrigger>
+-
+-                        <PopoverContent className="w-(--anchor-width) min-w-[240px] p-2 space-y-1" align="start">
+-                            <div className="text-xs font-semibold text-slate-400 px-2 py-1 uppercase tracking-wider">
+-                                Select Categories
++                    {isMasterChildProject ? (
++                        masterCategoryOptions.length > 0 ? (
++                            <div className="flex flex-wrap gap-2.5">
++                                {masterCategoryOptions.map((cat) => {
++                                    const isSelected = selectedCategories.includes(cat);
++
++                                    return (
++                                        <button
++                                            key={cat}
++                                            type="button"
++                                            onClick={() => {
++                                                const newCategories = isSelected
++                                                    ? selectedCategories.filter((c) => c !== cat)
++                                                    : [...selectedCategories, cat];
++                                                setValue("filters.category", newCategories, { shouldDirty: true });
++                                            }}
++                                            className={cn(
++                                                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-all duration-150 select-none cursor-pointer",
++                                                isSelected
++                                                    ? "border-primary bg-primary text-primary-foreground shadow-xs"
++                                                    : "border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
++                                            )}
++                                        >
++                                            {isSelected && <Check className="size-3.5 shrink-0" />}
++                                            <span>{cat}</span>
++                                        </button>
++                                    );
++                                })}
+                             </div>
+-                            {CATEGORY_OPTIONS.map((cat) => {
+-                                const isChecked = selectedCategories.includes(cat);
+-
+-                                return (
+-                                    <div
+-                                        key={cat}
+-                                        onClick={() => {
+-                                            handleCategoryToggle(cat);
+-                                            setCategoryOpen(false);
+-                                        }}
+-                                        className={cn(
+-                                            "flex items-center justify-between px-3 py-2 rounded-md cursor-pointer text-sm font-medium transition-colors select-none",
+-                                            isChecked
+-                                                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
+-                                                : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
+-                                        )}
+-                                    >
+-                                        <span>{cat}</span>
+-                                        {isChecked && (
+-                                            <Check className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400 ml-2" />
+-                                        )}
++                        ) : (
++                            <p className="text-xs text-slate-400 italic">
++                                No categories configured on the master project yet.
++                            </p>
++                        )
++                    ) : (
++                        <>
++                            <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
++                                <PopoverTrigger className="flex w-full h-10 items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 cursor-pointer dark:bg-input/30">
++                                    <span className={cn("truncate text-left flex-1", selectedCategories.length === 0 ? "text-muted-foreground" : "text-foreground font-normal")}>
++                                        {selectedCategories.length === 0 ? "Select Category" : selectedCategories.join(", ")}
++                                    </span>
++                                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
++                                </PopoverTrigger>
++
++                                <PopoverContent className="w-(--anchor-width) min-w-[240px] p-2 space-y-1" align="start">
++                                    <div className="text-xs font-semibold text-slate-400 px-2 py-1 uppercase tracking-wider">
++                                        Select Categories
+                                     </div>
+-                                );
+-                            })}
+-                        </PopoverContent>
+-                    </Popover>
+-
+-                    {/* Custom Category Input Field */}
+-                    {isCustomActive && (
+-                        <div className="pt-2 animate-in fade-in-50 duration-200">
+-                            <Label className="text-xs text-slate-500">Custom Category Name</Label>
+-                            <Input
+-                                placeholder="Enter custom category name..."
+-                                value={customCategoryValue}
+-                                onChange={(e) => {
+-                                    const val = e.target.value;
+-                                    setValue("filters.customCategory", val, { shouldDirty: true });
+-                                    setValue("filters.category", [val || "Custom"], { shouldDirty: true });
+-                                }}
+-                                className="mt-1"
+-                            />
+-                        </div>
++                                    {CATEGORY_OPTIONS.map((cat) => {
++                                        const isChecked = selectedCategories.includes(cat);
++
++                                        return (
++                                            <div
++                                                key={cat}
++                                                onClick={() => {
++                                                    handleCategoryToggle(cat);
++                                                    setCategoryOpen(false);
++                                                }}
++                                                className={cn(
++                                                    "flex items-center justify-between px-3 py-2 rounded-md cursor-pointer text-sm font-medium transition-colors select-none",
++                                                    isChecked
++                                                        ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
++                                                        : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
++                                                )}
++                                            >
++                                                <span>{cat}</span>
++                                                {isChecked && (
++                                                    <Check className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400 ml-2" />
++                                                )}
++                                            </div>
++                                        );
++                                    })}
++                                </PopoverContent>
++                            </Popover>
++
++                            {/* Custom Category Input Field */}
++                            {isCustomActive && (
++                                <div className="pt-2 animate-in fade-in-50 duration-200">
++                                    <Label className="text-xs text-slate-500">Custom Category Name</Label>
++                                    <Input
++                                        placeholder="Enter custom category name..."
++                                        value={customCategoryValue}
++                                        onChange={(e) => {
++                                            const val = e.target.value;
++                                            setValue("filters.customCategory", val, { shouldDirty: true });
++                                            setValue("filters.category", [val || "Custom"], { shouldDirty: true });
++                                        }}
++                                        className="mt-1"
++                                    />
++                                </div>
++                            )}
++                        </>
+                     )}
+                 </div>
+ 
+@@ -245,33 +336,63 @@ const TagsFiltersForm = () => {
+                     />
+                 </div>
+ 
+-                {/* Property Type Chips (Visible when Category is selected) */}
+-                {selectedCategories.length > 0 && availablePropertyTypes.length > 0 && (
+-                    <div className="space-y-2 md:col-span-2">
+-                        <Label>Property Type</Label>
+-                        <div className="flex flex-wrap gap-2.5">
+-                            {availablePropertyTypes.map((type) => {
+-                                const isSelected = selectedPropertyTypes.includes(type);
+-
+-                                return (
+-                                    <button
+-                                        key={type}
+-                                        type="button"
+-                                        onClick={() => handlePropertyTypeToggle(type)}
+-                                        className={cn(
+-                                            "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-all duration-150 select-none cursor-pointer",
+-                                            isSelected
+-                                                ? "border-primary bg-primary text-primary-foreground shadow-xs"
+-                                                : "border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
+-                                        )}
+-                                    >
+-                                        {isSelected && <Check className="size-3.5 shrink-0" />}
+-                                        <span>{type}</span>
+-                                    </button>
+-                                );
+-                            })}
++                {/* Property Type Chips */}
++                {isMasterChildProject ? (
++                    masterPropertyTypeOptions.length > 0 && (
++                        <div className="space-y-2 md:col-span-2">
++                            <Label>Property Type</Label>
++                            <div className="flex flex-wrap gap-2.5">
++                                {masterPropertyTypeOptions.map((type) => {
++                                    const isSelected = selectedPropertyTypes.includes(type);
++
++                                    return (
++                                        <button
++                                            key={type}
++                                            type="button"
++                                            onClick={() => handlePropertyTypeToggle(type)}
++                                            className={cn(
++                                                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-all duration-150 select-none cursor-pointer",
++                                                isSelected
++                                                    ? "border-primary bg-primary text-primary-foreground shadow-xs"
++                                                    : "border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
++                                            )}
++                                        >
++                                            {isSelected && <Check className="size-3.5 shrink-0" />}
++                                            <span>{type}</span>
++                                        </button>
++                                    );
++                                })}
++                            </div>
+                         </div>
+-                    </div>
++                    )
++                ) : (
++                    selectedCategories.length > 0 && availablePropertyTypes.length > 0 && (
++                        <div className="space-y-2 md:col-span-2">
++                            <Label>Property Type</Label>
++                            <div className="flex flex-wrap gap-2.5">
++                                {availablePropertyTypes.map((type) => {
++                                    const isSelected = selectedPropertyTypes.includes(type);
++
++                                    return (
++                                        <button
++                                            key={type}
++                                            type="button"
++                                            onClick={() => handlePropertyTypeToggle(type)}
++                                            className={cn(
++                                                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-all duration-150 select-none cursor-pointer",
++                                                isSelected
++                                                    ? "border-primary bg-primary text-primary-foreground shadow-xs"
++                                                    : "border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
++                                            )}
++                                        >
++                                            {isSelected && <Check className="size-3.5 shrink-0" />}
++                                            <span>{type}</span>
++                                        </button>
++                                    );
++                                })}
++                            </div>
++                        </div>
++                    )
+                 )}
+ 
+                 {/* City */}
+@@ -292,63 +413,57 @@ const TagsFiltersForm = () => {
+                     />
+                 </div>
+ 
+-                {/* Area */}
+-                <div className="space-y-2">
+-                    <Label>Area</Label>
+-
+-                    <Controller
+-                        name="filters.area"
+-                        control={control}
+-                        render={({ field }) => (
+-                            <AutocompleteField
+-                                type="area"
+-                                value={field.value || ""}
+-                                onChange={field.onChange}
+-                                placeholder="Select or create area"
++                {/* Area (master's-child projects only — standalone individual
++                    projects don't expose this field) */}
++                {isMasterChildProject && (
++                    <div className="space-y-2">
++                        <Label>Area</Label>
++
++                        {masterAreaOptions.length > 0 ? (
++                            <Controller
++                                name="filters.area"
++                                control={control}
++                                render={({ field }) => (
++                                    <Select
++                                        value={field.value || ""}
++                                        onValueChange={field.onChange}
++                                    >
++                                        <SelectTrigger className="w-full h-10">
++                                            <SelectValue placeholder="Select area" />
++                                        </SelectTrigger>
++
++                                        <SelectContent>
++                                            {masterAreaOptions.map((area) => (
++                                                <SelectItem key={area} value={area}>
++                                                    {area}
++                                                </SelectItem>
++                                            ))}
++                                        </SelectContent>
++                                    </Select>
++                                )}
+                             />
++                        ) : (
++                            <p className="text-xs text-slate-400 italic">
++                                No areas configured on the master project yet.
++                            </p>
+                         )}
+-                    />
+-                </div>
++                    </div>
++                )}
+ 
+-                {/* Square Foot */}
+-                <div className="space-y-2">
+-                    <Label htmlFor="squareFoot">Square Foot</Label>
+-                    <Input
+-                        id="squareFoot"
+-                        autoComplete="off"
+-                        placeholder="e.g. 1200 sq.ft"
+-                        {...register("filters.squareFoot")}
+-                    />
+-                </div>
+ 
+-                {/* Tags */}
+-                <div className="space-y-2">
+-                    <Label>Tags</Label>
+ 
+-                    <Controller
+-                        name="filters.tags"
+-                        control={control}
+-                        render={({ field }) => (
+-                            <AutocompleteField
+-                                type="tag"
+-                                multiple
+-                                value={field.value || []}
+-                                onChange={field.onChange}
+-                                placeholder="Select tags"
+-                            />
+-                        )}
+-                    />
+-                </div>
+ 
+                 {/* Tagline */}
+-                <div className="space-y-2 md:col-span-2">
+-                    <Label htmlFor="tagline">Tagline</Label>
+-                    <Input
+-                        id="tagline"
+-                        autoComplete="off"
+-                        {...register("general.tagline")}
+-                    />
+-                </div>
++                {!isMasterChildProject && (
++                    <div className="space-y-2 md:col-span-2">
++                        <Label htmlFor="tagline">Tagline</Label>
++                        <Input
++                            id="tagline"
++                            autoComplete="off"
++                            {...register("general.tagline")}
++                        />
++                    </div>
++                )}
+ 
+             </CardContent>
+         </Card>
+diff --git a/cms-main/client/src/components/project/VideoInformationForm.jsx b/cms-main/client/src/components/project/VideoInformationForm.jsx
+index b477a1c..252587d 100644
+--- a/cms-main/client/src/components/project/VideoInformationForm.jsx
++++ b/cms-main/client/src/components/project/VideoInformationForm.jsx
+@@ -65,7 +65,7 @@ const VideoInformationForm = () => {
+             </h3>
+ 
+             <p className="mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
+-              Store Google Drive video links instead
++              Store YouTube video links instead
+               of uploading video files to the server.
+             </p>
+ 
+@@ -132,11 +132,11 @@ const VideoInformationForm = () => {
+ 
+                   <div className="space-y-2 md:col-span-2">
+                     <Label className="text-slate-700 dark:text-slate-300">
+-                      Google Drive Video URL
++                      YouTube Video URL
+                     </Label>
+ 
+                     <Input
+-                      placeholder="https://drive.google.com/file/d/..."
++                      placeholder="https://www.youtube.com/watch?v=..."
+                       {...register(
+                         `videos.${index}.url`
+                       )}
+@@ -144,7 +144,7 @@ const VideoInformationForm = () => {
+ 
+                     <p className="text-xs text-slate-500 dark:text-slate-400">
+                       Example:
+-                      https://drive.google.com/file/d/FILE_ID/view
++                      https://www.youtube.com/watch?v=VIDEO_ID
+                     </p>
+                   </div>
+ 
+diff --git a/cms-main/client/src/hooks/useProjectForm.js b/cms-main/client/src/hooks/useProjectForm.js
+index 781e167..472205a 100644
+--- a/cms-main/client/src/hooks/useProjectForm.js
++++ b/cms-main/client/src/hooks/useProjectForm.js
+@@ -10,8 +10,8 @@ const useProjectForm = () => {
+         slug: "",
+         tagline: "",
+         description: "",
++        area: [],
+       },
+-
+       /************************************************
+        * portfolio  = Portfolio Tour
+        * individual = Individual Project
+@@ -71,10 +71,11 @@ const useProjectForm = () => {
+       specifications: [],
+ 
+       /**
+-       * RERA Certificate
+-       */
++ * RERA Certificate
++ */
+       rera: {
+         certificate: null,
++        number: "",
+       },
+ 
+       media: {
+diff --git a/cms-main/client/src/pages/CreateProject/CreateProject.jsx b/cms-main/client/src/pages/CreateProject/CreateProject.jsx
+index 8b2ebca..f9786a1 100644
+--- a/cms-main/client/src/pages/CreateProject/CreateProject.jsx
++++ b/cms-main/client/src/pages/CreateProject/CreateProject.jsx
+@@ -88,18 +88,25 @@ const CreateProject = () => {
+         delete data.general.customProjectType;
+       }
+ 
++      // Builder Name is hidden for master-child individual projects, so it's
++      // never filled in; default it so the required-field validator passes.
++      if (data.general && !data.general.builderName) {
++        data.general.builderName = data.general.projectName;
++      }
++
+       // Intercept custom category
+       if (data.filters?.customCategory) {
+         data.filters.category = [data.filters.customCategory];
+         delete data.filters.customCategory;
+       }
+ 
+-      // If an autosaved draft already exists for this individual project,
+-      // update it instead of creating a duplicate record.
+-      const response = individualProjectId
+-        ? await projectService.updateProject(individualProjectId, data)
++      // If an autosaved draft already exists for this project, update it
++      // instead of creating a duplicate record.
++      const draftId = selectedType === "portfolio" ? portfolioProjectId : individualProjectId;
++      const response = draftId
++        ? await projectService.updateProject(draftId, data)
+         : await projectService.createProject(data);
+-      const project = response.data?.project || (individualProjectId ? { _id: individualProjectId } : undefined);
++      const project = response.data?.project || (draftId ? { _id: draftId } : undefined);
+ 
+       // Upload cover image
+       if (coverImage) {
+@@ -164,7 +171,7 @@ const CreateProject = () => {
+       if (!navigateToMapSkin) {
+         toast.success(response.message || "Project created successfully.");
+       }
+-      const createdId = project?._id || response.data?.project?._id || response.data?._id || individualProjectId;
++      const createdId = project?._id || response.data?.project?._id || response.data?._id || draftId;
+       methods.reset({}, { keepValues: true });
+ 
+       const targetPortfolio = portfolioId || data.parentProject;
+@@ -462,6 +469,12 @@ const CreateProject = () => {
+         delete data.general.customProjectType;
+       }
+ 
++      // Builder Name is hidden for master-child individual projects, so it's
++      // never filled in; default it so the required-field validator passes.
++      if (data.general && !data.general.builderName) {
++        data.general.builderName = data.general.projectName;
++      }
++
+       if (data.filters?.customCategory) {
+         data.filters = { ...data.filters, category: [data.filters.customCategory] };
+         delete data.filters.customCategory;
+@@ -601,9 +614,8 @@ const CreateProject = () => {
+         {breadcrumb}
+         <PortfolioTourForm
+           methods={methods}
+-          onSubmit={() => { }}
++          onSubmit={onSubmit}
+           isSubmitting={isSubmitting}
+-          hideSubmit
+         />
+       </div>
+     );
+diff --git a/cms-main/client/src/pages/EditProject/EditProject.jsx b/cms-main/client/src/pages/EditProject/EditProject.jsx
+index 4969fe9..7fba3e8 100644
+--- a/cms-main/client/src/pages/EditProject/EditProject.jsx
++++ b/cms-main/client/src/pages/EditProject/EditProject.jsx
+@@ -146,6 +146,18 @@ const EditProject = () => {
+     }
+ 
+     try {
++      // getValues() hands out the live form sections by reference, and the
++      // media / rera sections are modified below to strip out files that are
++      // uploaded separately. Work on copies so the form keeps showing the
++      // images the user just picked instead of having them wiped mid-upload.
++      const formMedia = data.media;
++      const formRera = data.rera;
++      data = {
++        ...data,
++        media: data.media ? { ...data.media } : data.media,
++        rera: data.rera ? { ...data.rera } : data.rera,
++      };
++
+       // Thumbnail & Cover
+       const coverImage = data.media?.coverImage instanceof File ? data.media.coverImage : (data.media?.coverImage?.file instanceof File ? data.media.coverImage.file : null);
+       const thumbnailImage = data.media?.thumbnailImage instanceof File ? data.media.thumbnailImage : (data.media?.thumbnailImage?.file instanceof File ? data.media.thumbnailImage.file : null);
+@@ -224,16 +236,16 @@ const EditProject = () => {
+ 
+         const newImages = (album.images || []).filter((img) => img.file);
+ 
+-        await Promise.all(
+-          newImages.map((image, index) =>
+-            projectService.uploadGalleryImage(id, image.file, {
+-              albumName: safeAlbumName,
+-              caption: image.caption || "",
+-              alt: image.alt || "",
+-              displayOrder: index,
+-            })
+-          )
+-        );
++        // One at a time: each upload read-modify-saves the same project
++        // document, so parallel uploads overwrite each other and drop images.
++        for (const [index, image] of newImages.entries()) {
++          await projectService.uploadGalleryImage(id, image.file, {
++            albumName: safeAlbumName,
++            caption: image.caption || "",
++            alt: image.alt || "",
++            displayOrder: index,
++          });
++        }
+       }
+ 
+       // Upload new brochures
+@@ -265,6 +277,34 @@ const EditProject = () => {
+         )
+       );
+ 
++      // Swap the just-uploaded files in the form for their saved server
++      // copies, so the images stay visible and are not re-uploaded by the
++      // next autosave. Skipped for any field the user has changed meanwhile.
++      const hasUploadedGallery = galleryAlbums.some((album) =>
++        (album.images || []).some((img) => img.file)
++      );
++      if (coverImage || thumbnailImage || hasUploadedGallery || reraCertificateFile) {
++        try {
++          const savedRes = await projectService.getProject(id);
++          const saved = savedRes.data.project;
++
++          if (coverImage && methods.getValues("media.coverImage") === formMedia?.coverImage) {
++            methods.setValue("media.coverImage", saved.media?.coverImage ?? null);
++          }
++          if (thumbnailImage && methods.getValues("media.thumbnailImage") === formMedia?.thumbnailImage) {
++            methods.setValue("media.thumbnailImage", saved.media?.thumbnailImage ?? null);
++          }
++          if (hasUploadedGallery && methods.getValues("media.gallery") === formMedia?.gallery) {
++            methods.setValue("media.gallery", saved.media?.gallery || []);
++          }
++          if (reraCertificateFile && methods.getValues("rera.certificate") === formRera?.certificate) {
++            methods.setValue("rera.certificate", saved.rera?.certificate ?? null);
++          }
++        } catch (syncError) {
++          console.error("Failed to refresh uploaded images:", syncError);
++        }
++      }
++
+       // Invalidate React Query caches so updated project appears everywhere
+       await queryClient.invalidateQueries();
+ 
+@@ -315,7 +355,7 @@ const EditProject = () => {
+     }
+   };
+ 
+-  const onSubmit = (data) => handleSave(data, { silent: true });
++  const onSubmit = (data) => handleSave(data);
+   const onNext = (data) => handleSave(data, { navigateToMapSkin: true });
+ 
+   const handleBack = () => {
+@@ -395,7 +435,7 @@ const EditProject = () => {
+           onSubmit={onSubmit}
+           onBack={handleBack}
+           isSubmitting={isSubmitting}
+-          hideSubmit
++          projectId={id}
+         />
+       </div>
+     );
+@@ -407,13 +447,14 @@ const EditProject = () => {
+       <ProjectForm
+         methods={methods}
+         onSubmit={onSubmit}
+-        onNext={onNext}
++        onNext={parentProjectId ? undefined : onNext}
+         onBack={handleBack}
+         isSubmitting={isSubmitting}
+         isNextSubmitting={isNextSubmitting}
+         title="Edit Project"
+         description="Update the project details below."
+         submitButtonText="Save Changes"
++        projectId={parentProjectId ? undefined : id}
+       />
+     </div>
+   );
+diff --git a/cms-main/client/src/pages/MapPreview/MapPreview.jsx b/cms-main/client/src/pages/MapPreview/MapPreview.jsx
+index 825e861..5b1fde4 100644
+--- a/cms-main/client/src/pages/MapPreview/MapPreview.jsx
++++ b/cms-main/client/src/pages/MapPreview/MapPreview.jsx
+@@ -59,7 +59,16 @@ export default function MapPreview() {
+ 
+                   projectData = {
+                     ...projectData,
+-                    contact: fallback(projectData.contact, parent.contact),
++                    contact: {
++                      ...fallback(projectData.contact, parent.contact),
++                      // The YouTube link is portfolio-level branding (edited on the
++                      // master project only), not a per-project value, so always use
++                      // the parent's current link instead of an individual project's
++                      // own copy, which can be a stale value left over from import.
++                      ...(parent.contact?.youtube
++                        ? { youtube: parent.contact.youtube }
++                        : {}),
++                    },
+                     location: fallback(projectData.location, parent.location),
+                     media: {
+                       ...projectData.media,
+diff --git a/cms-main/client/src/pages/MapSkin/MapSkin.jsx b/cms-main/client/src/pages/MapSkin/MapSkin.jsx
+index e73b4d5..e25f108 100644
+--- a/cms-main/client/src/pages/MapSkin/MapSkin.jsx
++++ b/cms-main/client/src/pages/MapSkin/MapSkin.jsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useState } from "react";
+-import { useNavigate, useParams } from "react-router-dom";
++import { useNavigate, useParams, Link } from "react-router-dom";
+ import { Check, ArrowLeft, Loader2, MapPin } from "lucide-react";
+ import { toast } from "sonner";
+ 
+@@ -238,8 +238,44 @@ const MapSkin = () => {
+     );
+   }
+ 
++  const projectName = project?.general?.projectName || "Untitled Project";
++  const isPortfolioTour = project?.projectCategory === "portfolio";
++  const parentProjectId = project?.parentProject;
++
++  let crumbLabel = "Projects";
++  let crumbLink = ROUTES.PROJECTS;
++
++  if (isPortfolioTour) {
++    crumbLabel = "Master Project";
++    crumbLink = ROUTES.PROJECTS_MASTER;
++  } else if (parentProjectId) {
++    crumbLabel = "Master Project";
++    crumbLink = ROUTES.PROJECTS_PORTFOLIO_DETAIL.replace(":portfolioId", parentProjectId);
++  } else {
++    crumbLabel = "Projects";
++    crumbLink = ROUTES.PROJECTS_INDIVIDUAL;
++  }
++
++  const breadcrumb = (
++    <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
++      <Link to={crumbLink} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
++        {crumbLabel}
++      </Link>
++      <span>/</span>
++      <span className="text-slate-700 dark:text-slate-300 truncate max-w-[220px]">
++        {projectName}
++      </span>
++      <span>/</span>
++      <span className="font-semibold text-slate-900 dark:text-slate-100">
++        Select Map Skin
++      </span>
++    </nav>
++  );
++
+   return (
+     <div className="space-y-8 pb-28">
++      {breadcrumb}
++
+       {/* Header */}
+       <div className="flex items-center gap-3">
+         <Button
+diff --git a/cms-main/client/src/pages/MasterProjects/MasterProjects.jsx b/cms-main/client/src/pages/MasterProjects/MasterProjects.jsx
+index 9544f27..56147b3 100644
+--- a/cms-main/client/src/pages/MasterProjects/MasterProjects.jsx
++++ b/cms-main/client/src/pages/MasterProjects/MasterProjects.jsx
+@@ -209,12 +209,8 @@ const MasterProjects = () => {
+ 
+   return (
+     <div className="space-y-8 pb-12">
+-      {/* Breadcrumb & Header */}
++      {/* Header */}
+       <div>
+-        <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+-          <span className="font-semibold text-slate-900 dark:text-slate-100">Master Project</span>
+-        </nav>
+-
+         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+           <div>
+             <h1 className="text-3xl font-bold dark:text-slate-50">Master Projects</h1>
+diff --git a/cms-main/client/src/pages/PortfolioProjects/PortfolioProjects.jsx b/cms-main/client/src/pages/PortfolioProjects/PortfolioProjects.jsx
+index 5fc8000..5ecd5cc 100644
+--- a/cms-main/client/src/pages/PortfolioProjects/PortfolioProjects.jsx
++++ b/cms-main/client/src/pages/PortfolioProjects/PortfolioProjects.jsx
+@@ -1,9 +1,9 @@
+ import React, { useState, useMemo, useEffect } from "react";
+ import { useParams, Link, useNavigate } from "react-router-dom";
+-import { 
+-  Plus, 
+-  Search, 
+-  Edit, 
++import {
++  Plus,
++  Search,
++  Edit,
+   ArrowLeft,
+   Loader2,
+   FolderKanban,
+@@ -20,7 +20,6 @@ import DeleteProjectDialog from "@/components/project/DeleteProjectDialog";
+ import { getImageUrl } from "@/lib/utils";
+ import StatusCell from "@/components/dashboard/StatusCell";
+ import CountCell from "@/components/dashboard/CountCell";
+-
+ const statusStyles = {
+   Published: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
+   Draft: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800",
+@@ -75,9 +74,9 @@ const PortfolioProjects = () => {
+       setPortfolio(portData);
+ 
+       // 2. Fetch all child projects belonging to this portfolio
+-      const projRes = await projectService.getProjects({ 
++      const projRes = await projectService.getProjects({
+         parentProject: portfolioId,
+-        limit: 1000 
++        limit: 1000
+       });
+       const projList = projRes.data?.items || projRes.data?.projects || projRes.items || projRes.projects || [];
+       setProjects(projList);
+@@ -174,6 +173,10 @@ const PortfolioProjects = () => {
+     navigate(ROUTES.PROJECT_VIEW.replace(":id", id));
+   };
+ 
++  const handleMapSkin = (id) => {
++    navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", id));
++  };
++
+   const handleSectionClick = (id, sectionSlug) => {
+     navigate(ROUTES.PROJECT_EDIT.replace(":id", id) + `?section=${sectionSlug}`);
+   };
+@@ -219,6 +222,15 @@ const PortfolioProjects = () => {
+             <span>Edit Information</span>
+           </Button>
+ 
++          <Button
++            variant="outline"
++            onClick={() => handleMapSkin(portfolioId)}
++            className="flex items-center gap-2 cursor-pointer"
++          >
++            <Map size={16} />
++            <span>Select Map Skin</span>
++          </Button>
++
+           <Button
+             onClick={() => navigate(ROUTES.PROJECT_MAP_PREVIEW.replace(":id", portfolioId), { state: { from: ROUTES.PROJECTS_MASTER } })}
+             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm cursor-pointer"
+@@ -335,8 +347,8 @@ const PortfolioProjects = () => {
+           <p className="mt-2 text-slate-500 dark:text-slate-400">
+             Try adjusting your search query or clear filters.
+           </p>
+-          <Button 
+-            variant="outline" 
++          <Button
++            variant="outline"
+             className="mt-4"
+             onClick={() => {
+               setSearch("");
+@@ -353,8 +365,10 @@ const PortfolioProjects = () => {
+           <table className="w-full text-left border-collapse">
+             <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+               <tr>
++                <th className="px-4 py-2.5 text-center whitespace-nowrap sticky left-0 z-20 bg-slate-50 dark:bg-slate-800/60 border-r border-slate-200 dark:border-slate-800">
++                  Edit
++                </th>
+                 <th className="px-4 py-2.5 whitespace-nowrap">Project</th>
+-                <th className="px-4 py-2.5 whitespace-nowrap">Builder</th>
+                 <th className="px-4 py-2.5 whitespace-nowrap">Category</th>
+                 <th className="px-4 py-2.5 whitespace-nowrap">Property Type</th>
+                 <th className="px-4 py-2.5 whitespace-nowrap">Area</th>
+@@ -387,6 +401,18 @@ const PortfolioProjects = () => {
+ 
+                 return (
+                   <tr key={project._id} className="transition hover:bg-slate-50 dark:hover:bg-slate-800/40">
++                    {/* Edit (pinned to the left so it's reachable without scrolling) */}
++                    <td className="px-4 py-2.5 sticky left-0 z-[5] bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800">
++                      <Button
++                        size="icon-sm"
++                        variant="outline"
++                        title="Edit Project"
++                        onClick={() => handleEdit(project._id)}
++                      >
++                        <Edit size={15} />
++                      </Button>
++                    </td>
++
+                     {/* Project Name & Thumbnail */}
+                     <td className="px-4 py-2.5">
+                       <div className="flex items-center gap-3">
+@@ -415,11 +441,6 @@ const PortfolioProjects = () => {
+                       </div>
+                     </td>
+ 
+-                    {/* Builder */}
+-                    <td className="px-4 py-2.5 text-slate-600 dark:text-slate-300 font-medium text-xs whitespace-nowrap">
+-                      {project.general?.builderName || project.general?.projectName || "—"}
+-                    </td>
+-
+                     {/* Category */}
+                     <td className="px-4 py-2.5">
+                       <div className="flex flex-wrap gap-1">
+@@ -546,23 +567,23 @@ const PortfolioProjects = () => {
+                         <Button
+                           size="icon-sm"
+                           variant="outline"
+-                          title="Edit Project"
+-                          onClick={() => handleEdit(project._id)}
++                          title="View Project"
++                          onClick={() => handleView(project._id)}
+                         >
+-                          <Edit size={15} />
++                          <BadgeCheck size={15} />
+                         </Button>
+ 
+                         <Button
+                           size="icon-sm"
+                           variant="outline"
+-                          title="View Project"
+-                          onClick={() => handleView(project._id)}
++                          title="Select Map Skin"
++                          onClick={() => handleMapSkin(project._id)}
+                         >
+-                          <BadgeCheck size={15} />
++                          <Map size={15} />
+                         </Button>
+ 
+-                        <DeleteProjectDialog 
+-                          project={project} 
++                        <DeleteProjectDialog
++                          project={project}
+                           onDeleted={loadData}
+                         />
+                       </div>
+@@ -610,4 +631,4 @@ const PortfolioProjects = () => {
+   );
+ };
+ 
+-export default PortfolioProjects;
++export default PortfolioProjects;
+\ No newline at end of file
+diff --git a/cms-main/server/middlewares/uploadFloorPlan.js b/cms-main/server/middlewares/uploadFloorPlan.js
+index 1546c97..3cc54f6 100644
+--- a/cms-main/server/middlewares/uploadFloorPlan.js
++++ b/cms-main/server/middlewares/uploadFloorPlan.js
+@@ -19,9 +19,9 @@ const storage = multer.diskStorage({
+ });
+ 
+ const fileFilter = (req, file, cb) => {
+-  const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
++  const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg", "image/webp"];
+   if (!allowedTypes.includes(file.mimetype)) {
+-    return cb(new Error("Only PDF, PNG, and JPEG files are allowed for floor plans."));
++    return cb(new Error("Only PDF, PNG, JPEG, and WEBP files are allowed for floor plans."));
+   }
+ 
+   cb(null, true);
+diff --git a/cms-main/server/models/Project.js b/cms-main/server/models/Project.js
+index 1018c1a..0c944b7 100644
+--- a/cms-main/server/models/Project.js
++++ b/cms-main/server/models/Project.js
+@@ -188,6 +188,22 @@ const generalSchema = new Schema(
+     area: {
+       type: Schema.Types.Mixed,
+     },
++    category: {
++      type: Schema.Types.Mixed,
++      default: [],
++    },
++    propertyType: {
++      type: Schema.Types.Mixed,
++      default: [],
++    },
++    possessionStatus: {
++      type: String,
++      trim: true,
++    },
++    city: {
++      type: String,
++      trim: true,
++    },
+   },
+   { _id: false },
+ );
+@@ -348,6 +364,10 @@ const filtersSchema = new Schema(
+ 
+ const reraSchema = new Schema(
+   {
++    number: {
++      type: String,
++      trim: true,
++    },
+     certificate: {
+       url: {
+         type: String,
+diff --git a/cms-main/server/services/floorPlanService.js b/cms-main/server/services/floorPlanService.js
+index 872221f..e46db7f 100644
+--- a/cms-main/server/services/floorPlanService.js
++++ b/cms-main/server/services/floorPlanService.js
+@@ -33,9 +33,9 @@ class FloorPlanService {
+ 
+     await fs.mkdir(outputDir, { recursive: true });
+ 
+-    // Handle images (PNG/JPEG)
+-    if (mimetype === "image/png" || mimetype === "image/jpeg" || mimetype === "image/jpg") {
+-      const ext = path.extname(originalname) || (mimetype === "image/png" ? ".png" : ".jpg");
++    // Handle images (PNG/JPEG/WEBP)
++    if (mimetype === "image/png" || mimetype === "image/jpeg" || mimetype === "image/jpg" || mimetype === "image/webp") {
++      const ext = path.extname(originalname) || (mimetype === "image/png" ? ".png" : mimetype === "image/webp" ? ".webp" : ".jpg");
+       const originalFile = path.join(outputDir, `original${ext}`);
+ 
+       await fs.rename(tempFilePath, originalFile);
+diff --git a/cms-main/server/validators/projectValidator.js b/cms-main/server/validators/projectValidator.js
+index 01fc82c..9793ab5 100644
+--- a/cms-main/server/validators/projectValidator.js
++++ b/cms-main/server/validators/projectValidator.js
+@@ -5,6 +5,7 @@ const PROJECT_TYPES = [
+   "Commercial",
+   "Industrial",
+   "Mixed Use",
++  "Portfolio",
+ ];
+ 
+ const PROJECT_STATUSES = [

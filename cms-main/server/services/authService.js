@@ -1,7 +1,11 @@
-import Admin from "../models/Admin.js";
+import {
+  findAdminByEmail,
+  findAdminById,
+  comparePassword,
+  toAdminJSON,
+} from "../models/Admin.js";
 import ApiError from "../utils/ApiError.js";
 import { generateToken } from "../utils/jwt.js";
-import mongoose from "mongoose";
 
 /**
  * Authenticates an admin by email and password, and returns a signed JWT
@@ -12,9 +16,7 @@ import mongoose from "mongoose";
  * @returns {Promise<{ token: string, admin: object }>}
  */
 const loginAdmin = async (email, password) => {
-  const admin = await Admin.findOne({
-    email: email.toLowerCase(),
-  }).select("+password");
+  const admin = await findAdminByEmail(email, { withPassword: true });
 
   if (!admin) {
     throw new ApiError(401, "Invalid email or password");
@@ -24,15 +26,15 @@ const loginAdmin = async (email, password) => {
     throw new ApiError(403, "This account has been deactivated");
   }
 
-  const isPasswordValid = await admin.comparePassword(password);
+  const isPasswordValid = await comparePassword(admin, password);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid email or password");
   }
 
-  const token = generateToken(admin._id.toString());
+  const token = generateToken(String(admin._id));
 
-  const adminData = admin.toJSON();
+  const adminData = toAdminJSON(admin);
 
   return { token, admin: adminData };
 };
@@ -44,13 +46,13 @@ const loginAdmin = async (email, password) => {
  * @returns {Promise<object>} Admin profile (password excluded)
  */
 const getAdminById = async (adminId) => {
-  const admin = await Admin.findById(adminId);
+  const admin = await findAdminById(adminId);
 
   if (!admin) {
     throw new ApiError(404, "Admin not found");
   }
 
-  return admin.toJSON();
+  return toAdminJSON(admin);
 };
 
 export { loginAdmin, getAdminById };

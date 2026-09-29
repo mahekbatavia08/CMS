@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import app from "./app.js";
-import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import { backupProjects } from "./utils/databaseBackup.js";
 
@@ -34,10 +33,7 @@ const gracefulShutdown = (signal) => {
   if (server) {
     server.close(() => {
       console.log("HTTP server closed.");
-      mongoose.connection.close(false, () => {
-        console.log("MongoDB connection closed.");
-        process.exit(0);
-      });
+      process.exit(0);
     });
   } else {
     process.exit(0);

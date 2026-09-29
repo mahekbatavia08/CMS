@@ -121,7 +121,7 @@ export default function ViewProject() {
           onClick={() => navigate(ROUTES.PROJECT_EDIT.replace(":id", id))}
         >
           <Pencil className="mr-2 h-4 w-4" />
-          {isPortfolioTour ? "Edit Portfolio Tour" : "Edit Full Project"}
+          {isPortfolioTour ? "Edit Master Project" : "Edit Full Project"}
         </Button>
       </div>
 
@@ -167,7 +167,7 @@ export default function ViewProject() {
               <span className="font-medium text-muted-foreground">
                 Category:
               </span>{" "}
-              {isPortfolioTour ? "Portfolio Tour" : "Individual Project"}
+              {isPortfolioTour ? "Master Project" : "Individual Project"}
             </div>
             <div>
               <span className="font-medium text-muted-foreground">

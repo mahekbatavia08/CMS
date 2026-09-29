@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import {
   Phone,
   MessageCircle,
+  Mail,
   Globe,
 } from "lucide-react"
 
@@ -26,6 +27,8 @@ const ContactInformationForm = () => {
   } = useFormContext();
 
   const phoneNumber = watch("contact.phone");
+  const parentProjectId = watch("parentProject");
+  const isMasterChildProject = Boolean(parentProjectId) && parentProjectId !== "none";
 
   const copyPhoneToWhatsapp = () => {
     setValue(
@@ -44,7 +47,25 @@ const ContactInformationForm = () => {
     message: "Please enter a valid URL",
   };
 
+  const websiteField = (
+    <div className="space-y-2">
+      <Label>Website Link</Label>
+      <Input
+        placeholder="https://..."
+        {...register("contact.website", {
+          pattern: urlPattern,
+        })}
+      />
+      {errors.contact?.website && (
+        <p className="text-xs text-red-500 font-medium mt-1">
+          {errors.contact.website.message}
+        </p>
+      )}
+    </div>
+  );
+
   return (
+    <div className="space-y-8">
     <Card>
       <CardHeader>
         <CardTitle>Contact Information</CardTitle>
@@ -122,68 +143,106 @@ const ContactInformationForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label>Website Link</Label>
-            <Input
-              placeholder="https://..."
-              {...register("contact.website", {
-                pattern: urlPattern,
-              })}
-            />
-            {errors.contact?.website && (
+            <Label>Email ID</Label>
+
+            <div className="relative">
+              <Mail
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+              />
+
+              <Input
+                type="email"
+                className="pl-10"
+                placeholder="name@example.com"
+                {...register("contact.email", {
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+              />
+            </div>
+            {errors.contact?.email && (
               <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.website.message}
+                {errors.contact.email.message}
               </p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label>Instagram Link</Label>
-            <Input
-              placeholder="https://instagram.com/..."
-              {...register("contact.instagram", {
-                pattern: urlPattern,
-              })}
-            />
-            {errors.contact?.instagram && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.instagram.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label>Facebook Link</Label>
-            <Input
-              placeholder="https://facebook.com/..."
-              {...register("contact.facebook", {
-                pattern: urlPattern,
-              })}
-            />
-            {errors.contact?.facebook && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.facebook.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label>YouTube Link</Label>
-            <Input
-              placeholder="https://youtube.com/..."
-              {...register("contact.youtube", {
-                pattern: urlPattern,
-              })}
-            />
-            {errors.contact?.youtube && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.contact.youtube.message}
-              </p>
-            )}
-          </div>
+          {isMasterChildProject && websiteField}
 
         </div>
       </CardContent>
     </Card>
+
+    {!isMasterChildProject && (
+    <Card>
+      <CardHeader>
+        <CardTitle>Social Links</CardTitle>
+      </CardHeader>
+
+      <CardContent className="space-y-6">
+        <div className="grid items-start gap-6 md:grid-cols-2">
+
+          {websiteField}
+
+          {!isMasterChildProject && (
+            <div className="space-y-2">
+              <Label>Instagram Link</Label>
+              <Input
+                placeholder="https://instagram.com/..."
+                {...register("contact.instagram", {
+                  pattern: urlPattern,
+                })}
+              />
+              {errors.contact?.instagram && (
+                <p className="text-xs text-red-500 font-medium mt-1">
+                  {errors.contact.instagram.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {!isMasterChildProject && (
+            <div className="space-y-2">
+              <Label>Facebook Link</Label>
+              <Input
+                placeholder="https://facebook.com/..."
+                {...register("contact.facebook", {
+                  pattern: urlPattern,
+                })}
+              />
+              {errors.contact?.facebook && (
+                <p className="text-xs text-red-500 font-medium mt-1">
+                  {errors.contact.facebook.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {!isMasterChildProject && (
+            <div className="space-y-2">
+              <Label>YouTube Link</Label>
+              <Input
+                placeholder="https://youtube.com/..."
+                {...register("contact.youtube", {
+                  pattern: urlPattern,
+                })}
+              />
+              {errors.contact?.youtube && (
+                <p className="text-xs text-red-500 font-medium mt-1">
+                  {errors.contact.youtube.message}
+                </p>
+              )}
+            </div>
+          )}
+
+        </div>
+      </CardContent>
+    </Card>
+    )}
+    </div>
   );
 };
 

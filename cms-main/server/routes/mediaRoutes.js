@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   uploadCover,
   uploadThumbnail,
+  uploadLogo,
   uploadGallery,
   uploadProjectVideo,
   uploadProjectFloorPlan,
@@ -21,6 +22,7 @@ const router = Router({ mergeParams: true });
 
 router.post("/cover", protect, uploadImageSingle("file"), uploadCover);
 router.post("/thumbnail", protect, uploadImageSingle("file"), uploadThumbnail);
+router.post("/logo", protect, uploadImageSingle("file"), uploadLogo);
 router.post("/gallery", protect, uploadImageSingle("file"), uploadGallery);
 router.post("/video", protect, uploadVideoSingle("file"), uploadProjectVideo);
 router.post("/floorplan", protect, uploadImageSingle("file"), uploadProjectFloorPlan);

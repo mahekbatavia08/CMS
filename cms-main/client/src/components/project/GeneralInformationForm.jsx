@@ -32,6 +32,7 @@ const GeneralInformationForm = ({ projectType }) => {
   const projectName = watch("general.projectName");
   const currentSlug = watch("general.slug");
   const parentProject = watch("parentProject");
+  const isMasterChildProject = Boolean(parentProject) && parentProject !== "none";
 
   useEffect(() => {
     if (!projectName) return;
@@ -67,24 +68,26 @@ const GeneralInformationForm = ({ projectType }) => {
         </div>
 
         {/* Builder Name & Slug */}
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="builderName">
-              Builder Name <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="builderName"
-              placeholder="e.g. Skyline Developers"
-              {...register("general.builderName", {
-                required: "Builder Name is required",
-              })}
-            />
-            {errors.general?.builderName && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {errors.general.builderName.message}
-              </p>
-            )}
-          </div>
+        <div className={`grid gap-6 ${isMasterChildProject ? "md:grid-cols-1" : "md:grid-cols-2"}`}>
+          {!isMasterChildProject && (
+            <div className="space-y-2">
+              <Label htmlFor="builderName">
+                Builder Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="builderName"
+                placeholder="e.g. Skyline Developers"
+                {...register("general.builderName", {
+                  required: "Builder Name is required",
+                })}
+              />
+              {errors.general?.builderName && (
+                <p className="text-xs text-red-500 font-medium mt-1">
+                  {errors.general.builderName.message}
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="slug">
@@ -137,7 +140,7 @@ const GeneralInformationForm = ({ projectType }) => {
 
             <p className="text-xs text-slate-500">
               If checked, this project will also show up in the standalone
-              "Individual" projects list, in addition to its Portfolio Tour.
+              "Individual" projects list, in addition to its Master Project.
             </p>
           </div>
         )}

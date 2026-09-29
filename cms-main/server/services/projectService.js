@@ -1,19 +1,26 @@
-import mongoose from "mongoose";
-import Project from "../models/Project.js";
+import {
+  findProjectById,
+  createProjectDoc,
+  saveProject,
+  slugExists,
+  findAllProjectTags,
+  findDeletedPortfolioIds,
+  softDeleteProjects,
+  listProjects,
+} from "../models/Project.js";
+import { isValidObjectId } from "../utils/objectId.js";
 import ApiError from "../utils/ApiError.js";
 import { syncProjectFilters } from "./filterService.js";
-import path from "path";
 import floorPlanService, { deleteFloorPlanFiles } from "./floorPlanService.js";
 import { backupProjects } from "../utils/databaseBackup.js";
-import { escapeRegex } from "../utils/escapeRegex.js";
 
 /**
  * Throws a 400 ApiError if the given id is not a well-formed ObjectId,
  * so malformed ids fail cleanly instead of crashing with an uncaught
- * Mongoose CastError.
+ * database error.
  */
 const assertValidObjectId = (id, label = "id") => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!isValidObjectId(String(id))) {
     throw new ApiError(400, `Invalid ${label}`);
   }
 };
@@ -33,70 +40,18 @@ const buildProjectFilter = ({
   parentProject,
   includeSubProjects,
 } = {}) => {
-  const filter = {
-    "status.isDeleted": { $ne: true },
+  // Soft-deleted projects are always excluded inside the list_projects RPC.
+  return {
+    search: search ? String(search) : null,
+    status: status || null,
+    featured:
+      featured !== undefined ? featured === true || featured === "true" : null,
+    projectCategory: projectCategory || null,
+    parentProject: parentProject || null,
+    includeSubProjects:
+      includeSubProjects === "true" || includeSubProjects === true,
+    excludeParentIds: null,
   };
-
-  const andConditions = [];
-
-  if (search) {
-    const searchRegex = new RegExp(escapeRegex(search), "i");
-
-    andConditions.push({
-      $or: [
-        { "general.projectName": searchRegex },
-        { "general.builderName": searchRegex },
-      ],
-    });
-  }
-
-  if (status) {
-    filter["status.status"] = status;
-  }
-
-  if (featured !== undefined) {
-    filter["status.featured"] = featured === true || featured === "true";
-  }
-
-  if (projectCategory === "individual") {
-    // Individual project tab:
-    // Remove portfolio project type (portfolio tours),
-    // but include projects that are in both portfolio and individual project (alsoShowAsIndividual: true)
-    andConditions.push({
-      $or: [
-        { projectCategory: "individual" },
-        { alsoShowAsIndividual: true },
-      ],
-    });
-    andConditions.push({
-      $or: [
-        { projectCategory: { $ne: "portfolio" } },
-        { alsoShowAsIndividual: true },
-      ],
-    });
-  } else if (projectCategory) {
-    filter.projectCategory = projectCategory;
-  }
-
-  if (parentProject) {
-    filter.parentProject = parentProject;
-  } else if (includeSubProjects !== "true" && includeSubProjects !== true) {
-    // Default: hide individual projects that are part of a portfolio tour
-    // unless the project owner opted in via "alsoShowAsIndividual" so it also
-    // appears in the standalone Individual listing.
-    andConditions.push({
-      $or: [
-        { parentProject: null },
-        { alsoShowAsIndividual: true },
-      ],
-    });
-  }
-
-  if (andConditions.length > 0) {
-    filter.$and = andConditions;
-  }
-
-  return filter;
 };
 
 const normalizeProjectPayload = (data = {}) => {
@@ -183,11 +138,7 @@ const ensureUniqueSlug = async (baseSlug, excludeId = null) => {
   let counter = 1;
 
   while (true) {
-    const query = { "general.slug": slug };
-    if (excludeId) {
-      query._id = { $ne: excludeId };
-    }
-    const existing = await Project.findOne(query);
+    const existing = await slugExists(slug, excludeId);
     if (!existing) {
       return slug;
     }
@@ -238,7 +189,7 @@ const createProject = async (rawProjectData) => {
 
   // Generate Project Tag safely if not provided
   if (!projectData.projectTag || !String(projectData.projectTag).trim()) {
-    const existingProjects = await Project.find({}, { projectTag: 1 });
+    const existingProjects = await findAllProjectTags();
     let maxNum = 0;
     for (const p of existingProjects) {
       if (p.projectTag) {
@@ -255,7 +206,7 @@ const createProject = async (rawProjectData) => {
     projectData.projectTag = `P${String(nextNumber).padStart(4, "0")}`;
   }
 
-  const project = await Project.create(projectData);
+  const project = await createProjectDoc(projectData);
 
   // Sync autocomplete values
   await syncProjectFilters(project);
@@ -274,34 +225,15 @@ const createProject = async (rawProjectData) => {
  * @returns {Promise<{ items: object[], totalItems: number, totalPages: number, currentPage: number }>}
  */
 /**
- * Builds the MongoDB filter used across project listing APIs.
+ * Builds the filter params used across project listing APIs (list_projects RPC).
  */
 
 /**
- * Builds Mongo sort object.
+ * Normalizes the sort key.
  */
 const buildProjectSort = (sort = "newest") => {
-  switch (sort) {
-    case "oldest":
-      return {
-        createdAt: 1,
-      };
-
-    case "name-asc":
-      return {
-        "general.projectName": 1,
-      };
-
-    case "name-desc":
-      return {
-        "general.projectName": -1,
-      };
-
-    default:
-      return {
-        createdAt: -1,
-      };
-  }
+  // Sorting is applied inside the list_projects RPC.
+  return ["oldest", "name-asc", "name-desc"].includes(sort) ? sort : "newest";
 };
 
 const buildProjectOverview = (project) => {
@@ -453,14 +385,14 @@ const getProjects = async (queryParams) => {
 
   const sortOption = buildProjectSort(sort);
 
-  const totalItems = await Project.countDocuments(filter);
+  const { items, totalItems } = await listProjects({
+    ...filter,
+    sort: sortOption,
+    limit: pageSize,
+    offset: (currentPage - 1) * pageSize,
+  });
 
   const totalPages = Math.ceil(totalItems / pageSize) || 0;
-
-  const items = await Project.find(filter)
-    .sort(sortOption)
-    .skip((currentPage - 1) * pageSize)
-    .limit(pageSize);
 
   return {
     items,
@@ -487,16 +419,10 @@ const getProjectOverview = async (queryParams) => {
   const currentPage = Math.max(parseInt(page, 10) || 1, 1);
   const pageSize = Math.max(parseInt(limit, 10) || 25, 1);
 
-  const deletedPortfolioIds = await Project.find({
-    projectCategory: "portfolio",
-    "status.isDeleted": true,
-  }).distinct("_id");
+  const deletedPortfolioIds = await findDeletedPortfolioIds();
 
   if (deletedPortfolioIds.length > 0) {
-    await Project.updateMany(
-      { parentProject: { $in: deletedPortfolioIds }, "status.isDeleted": { $ne: true } },
-      { $set: { "status.isDeleted": true } }
-    );
+    await softDeleteProjects({ parentIds: deletedPortfolioIds });
   }
 
   const filter = buildProjectFilter({
@@ -508,23 +434,19 @@ const getProjectOverview = async (queryParams) => {
   });
 
   if (deletedPortfolioIds.length > 0) {
-    if (!filter.$and) filter.$and = [];
-    filter.$and.push({
-      parentProject: { $nin: deletedPortfolioIds },
-    });
+    filter.excludeParentIds = deletedPortfolioIds;
   }
 
   const sortOption = buildProjectSort(sort);
 
-  const totalItems = await Project.countDocuments(filter);
+  const { items: projects, totalItems } = await listProjects({
+    ...filter,
+    sort: sortOption,
+    limit: pageSize,
+    offset: (currentPage - 1) * pageSize,
+  });
 
   const totalPages = Math.ceil(totalItems / pageSize) || 0;
-
-  const projects = await Project.find(filter)
-    .sort(sortOption)
-    .skip((currentPage - 1) * pageSize)
-    .limit(pageSize)
-    .lean();
 
   const items = projects.map(buildProjectOverview);
 
@@ -545,7 +467,7 @@ const getProjectOverview = async (queryParams) => {
 const getProjectById = async (id) => {
   assertValidObjectId(id, "project id");
 
-  const project = await Project.findById(id);
+  const project = await findProjectById(id);
 
   if (!project) {
     throw new ApiError(404, "Project not found");
@@ -594,7 +516,7 @@ const updateProject = async (id, rawUpdateData) => {
     updateData.parentProject = null;
   }
 
-  const project = await Project.findById(id);
+  let project = await findProjectById(id);
 
   if (!project) {
     throw new ApiError(404, "Project not found");
@@ -606,7 +528,7 @@ const updateProject = async (id, rawUpdateData) => {
     updateData.general.slug = await ensureUniqueSlug(newSlug, id);
   }
 
-  // Strip system/immutable fields so they don't corrupt Mongoose versioning
+  // Strip system/immutable fields
   delete updateData._id;
   delete updateData.__v;
   delete updateData.createdAt;
@@ -660,7 +582,7 @@ const updateProject = async (id, rawUpdateData) => {
     project.status.isDeleted = false;
   }
 
-  await project.save();
+  project = await saveProject(project);
 
   // Sync autocomplete values
   await syncProjectFilters(project);
@@ -684,7 +606,7 @@ const deleteProject = async (id) => {
 
   assertValidObjectId(resolvedId, "project id");
 
-  const project = await Project.findById(resolvedId);
+  const project = await findProjectById(resolvedId);
 
   if (!project) {
     throw new ApiError(404, "Project not found");
@@ -695,17 +617,11 @@ const deleteProject = async (id) => {
     return project;
   }
 
-  await Project.updateOne(
-    { _id: resolvedId },
-    { $set: { "status.isDeleted": true } }
-  );
+  await softDeleteProjects({ ids: [String(resolvedId)] });
 
   // If soft-deleting a portfolio, also soft-delete its child sub-projects
   if (project.projectCategory === "portfolio") {
-    await Project.updateMany(
-      { parentProject: resolvedId },
-      { $set: { "status.isDeleted": true } }
-    );
+    await softDeleteProjects({ parentIds: [String(resolvedId)] });
   }
 
   // Backup database locally
@@ -721,7 +637,7 @@ export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) =>
     throw new ApiError(400, "Floor plan file is required.");
   }
 
-  const project = await Project.findById(projectId);
+  let project = await findProjectById(projectId);
 
   if (!project) {
     throw new ApiError(404, "Project not found.");
@@ -729,7 +645,7 @@ export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) =>
 
   // Process uploaded file (move, convert if PDF, etc.)
   const processedFloorPlan = await floorPlanService.processFloorPlan(
-    project._id.toString(),
+    String(project._id),
     floorPlanFile.path,
     floorPlanFile.mimetype,
     floorPlanFile.originalname
@@ -738,22 +654,23 @@ export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) =>
   project.floorPlans.push({
     title: title?.trim() || "Untitled Floor Plan",
 
-    originalPdf: path.relative(process.cwd(), processedFloorPlan.originalPdf).replace(/\\/g, "/"),
+    // Public Supabase Storage URLs
+    originalPdf: processedFloorPlan.originalPdf,
 
-    thumbnail: path.relative(process.cwd(), processedFloorPlan.thumbnail).replace(/\\/g, "/"),
+    thumbnail: processedFloorPlan.thumbnail,
 
     pageCount: processedFloorPlan.pageCount,
 
     pages: (processedFloorPlan.pages || []).map((page) => ({
       pageNumber: page.pageNumber || 1,
-      dziPath: page.dziPath ? path.relative(process.cwd(), page.dziPath).replace(/\\/g, "/") : "",
-      url: page.url ? path.relative(process.cwd(), page.url).replace(/\\/g, "/") : "",
+      dziPath: page.dziPath || "",
+      url: page.url || "",
     })),
 
     displayOrder: project.floorPlans.length,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -761,30 +678,32 @@ export const uploadProjectFloorPlan = async (projectId, title, floorPlanFile) =>
 export const deleteProjectFloorPlan = async (projectId, floorPlanId) => {
   assertValidObjectId(projectId, "project id");
 
-  const project = await Project.findById(projectId);
+  let project = await findProjectById(projectId);
 
   if (!project) {
     throw new ApiError(404, "Project not found.");
   }
 
-  const floorPlan = project.floorPlans.id(floorPlanId);
+  const floorPlan = project.floorPlans.find(
+    (item) => String(item._id) === String(floorPlanId),
+  );
 
   if (!floorPlan) {
     throw new ApiError(404, "Floor plan not found.");
   }
 
-  // Delete all files from disk
+  // Delete all files from storage
   await deleteFloorPlanFiles(floorPlan.originalPdf);
 
-  // Remove from MongoDB document
-  floorPlan.deleteOne();
+  // Remove from the project document
+  project.floorPlans = project.floorPlans.filter((item) => item !== floorPlan);
 
   // Recalculate display order
   project.floorPlans.forEach((item, index) => {
     item.displayOrder = index;
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -797,13 +716,15 @@ export const replaceProjectFloorPlan = async (
 ) => {
   assertValidObjectId(projectId, "project id");
 
-  const project = await Project.findById(projectId);
+  let project = await findProjectById(projectId);
 
   if (!project) {
     throw new ApiError(404, "Project not found.");
   }
 
-  const floorPlan = project.floorPlans.id(floorPlanId);
+  const floorPlan = project.floorPlans.find(
+    (item) => String(item._id) === String(floorPlanId),
+  );
 
   if (!floorPlan) {
     throw new ApiError(404, "Floor plan not found.");
@@ -815,13 +736,13 @@ export const replaceProjectFloorPlan = async (
       floorPlan.title = title.trim();
     }
 
-    await project.save();
+    project = await saveProject(project);
 
     return project;
   }
   // Replace the existing floor plan with the new file.
   const newFloorPlan = await floorPlanService.replaceFloorPlan(
-    project._id.toString(),
+    String(project._id),
     floorPlanFile.path,
     floorPlan.originalPdf,
     floorPlanFile.mimetype,
@@ -830,19 +751,16 @@ export const replaceProjectFloorPlan = async (
 
   // Update metadata.
   floorPlan.title = title?.trim() || floorPlan.title;
-  floorPlan.originalPdf = path.relative(
-    process.cwd(),
-    newFloorPlan.originalPdf,
-  ).replace(/\\/g, "/");
-  floorPlan.thumbnail = path.relative(process.cwd(), newFloorPlan.thumbnail).replace(/\\/g, "/");
+  floorPlan.originalPdf = newFloorPlan.originalPdf;
+  floorPlan.thumbnail = newFloorPlan.thumbnail;
   floorPlan.pageCount = newFloorPlan.pageCount;
   floorPlan.pages = (newFloorPlan.pages || []).map((page) => ({
     pageNumber: page.pageNumber || 1,
-    dziPath: page.dziPath ? path.relative(process.cwd(), page.dziPath).replace(/\\/g, "/") : "",
-    url: page.url ? path.relative(process.cwd(), page.url).replace(/\\/g, "/") : "",
+    dziPath: page.dziPath || "",
+    url: page.url || "",
   }));
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };

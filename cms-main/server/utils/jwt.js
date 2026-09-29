@@ -5,7 +5,7 @@ const JWT_EXPIRES_IN = "7d";
 /**
  * Signs a new JWT for a given admin's id.
  *
- * @param {string} adminId - MongoDB ObjectId of the admin, as a string
+ * @param {string} adminId - Admin id (24-char hex string)
  * @returns {string} Signed JWT
  */
 const generateToken = (adminId) => {

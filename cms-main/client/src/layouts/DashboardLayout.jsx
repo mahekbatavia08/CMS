@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-slate-100 dark:bg-slate-950 dark:text-slate-50 overflow-hidden relative">
+    <div className="flex h-dvh bg-slate-100 dark:bg-slate-950 dark:text-slate-50 overflow-hidden relative">
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
@@ -19,10 +19,10 @@ const DashboardLayout = () => {
 
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      <div className="flex flex-1 flex-col min-w-0 lg:pl-64">
+      <div className="flex flex-1 flex-col min-w-0 min-h-0 lg:pl-64">
         <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main id="main-scroll-container" className="flex-1 px-4 sm:px-6 pb-4 sm:pb-6 overflow-auto relative">
+        <main id="main-scroll-container" className="flex-1 min-h-0 px-4 sm:px-6 pb-4 sm:pb-6 overflow-auto relative">
           <Outlet />
         </main>
       </div>

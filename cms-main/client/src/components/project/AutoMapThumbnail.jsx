@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Loader2, MapPin } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
 
 const AutoMapThumbnail = ({ project }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const projectName = project?.general?.projectName || "Sample Project";
   const city = project?.location?.city || "Ahmedabad";
+  const thumbnailUrl = project?.media?.thumbnailImage?.url
+    ? getImageUrl(project.media.thumbnailImage.url)
+    : null;
 
   useEffect(() => {
     // Smooth transition from loading to ready
@@ -132,11 +136,34 @@ const AutoMapThumbnail = ({ project }) => {
           <div className="absolute bottom-10 right-16 text-sm drop-shadow">🏥</div>
           <div className="absolute top-10 right-20 text-sm drop-shadow">🛍️</div>
 
-          {/* Top Left Floating Badge */}
+          {/* Top Left Floating Badge - shows thumbnail as logo */}
           <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 rounded-md bg-black/80 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-md border border-white/15">
-            <MapPin className="h-3 w-3 text-[#3D8EFF]" />
+            {thumbnailUrl ? (
+              <img
+                src={thumbnailUrl}
+                alt="Project Thumbnail"
+                className="h-7 w-7 rounded object-cover flex-shrink-0 ring-1 ring-white/20"
+              />
+            ) : (
+              <MapPin className="h-3 w-3 text-[#3D8EFF]" />
+            )}
             <span>Map Preview</span>
           </div>
+
+          {/* About Us panel - mirrors actual map template's about section */}
+          {thumbnailUrl && (
+            <div className="absolute bottom-8 right-2.5 z-10 flex items-center gap-2 rounded-lg bg-black/80 backdrop-blur-md px-2.5 py-1.5 border border-white/15 shadow-lg">
+              <img
+                src={thumbnailUrl}
+                alt="About Us Logo"
+                className="h-8 w-8 rounded object-cover flex-shrink-0 ring-1 ring-white/20"
+              />
+              <div className="leading-tight">
+                <p className="text-[10px] font-bold text-white whitespace-nowrap max-w-[80px] truncate">{projectName}</p>
+                <p className="text-[9px] text-white/50">About Us</p>
+              </div>
+            </div>
+          )}
 
           {/* Bottom View Toolbar Preview */}
           <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15 text-[10px] text-white/80">

@@ -1,6 +1,6 @@
-import Project from "../models/Project.js";
+import { findProjectById, saveProject } from "../models/Project.js";
 import ApiError from "../utils/ApiError.js";
-import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+import { uploadOnStorage, deleteFromStorage, isStorageUrl } from "../utils/storage.js";
 import { deleteFile } from "../utils/fileHelpers.js";
 
 /**
@@ -17,7 +17,7 @@ import { deleteFile } from "../utils/fileHelpers.js";
  * @returns {Promise<object>} The project document
  */
 const getProjectOrThrow = async (projectId, file) => {
-  const project = await Project.findOne({ _id: projectId, "status.isDeleted": { $ne: true } });
+  const project = await findProjectById(projectId, { excludeDeleted: true });
 
   if (!project) {
     if (file?.path) {
@@ -31,7 +31,7 @@ const getProjectOrThrow = async (projectId, file) => {
 
 /**
  * Uploads (and replaces) a project's cover image.
- * The previous cover image file, if any, is deleted from Cloudinary.
+ * The previous cover image file, if any, is deleted from storage.
  *
  * @param {string} projectId
  * @param {object} file - Multer file object (from uploads/temp/)
@@ -43,22 +43,22 @@ const uploadCoverImage = async (projectId, file, alt) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/cover`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/cover`, file.mimetype);
   
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload image to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload image to storage");
   }
 
   const previousCoverUrl = project.media?.coverImage?.url;
 
   if (!project.media) project.media = {};
-  project.media.coverImage = { url: cloudinaryResponse.secure_url, alt: alt || "" };
-  await project.save();
+  project.media.coverImage = { url: storageResponse.secure_url, alt: alt || "" };
+  project = await saveProject(project);
 
-  if (previousCoverUrl && previousCoverUrl.includes("cloudinary.com")) {
-    await deleteFromCloudinary(previousCoverUrl, "image");
+  if (previousCoverUrl && isStorageUrl(previousCoverUrl)) {
+    await deleteFromStorage(previousCoverUrl);
   }
 
   return project;
@@ -66,9 +66,9 @@ const uploadCoverImage = async (projectId, file, alt) => {
 
 /**
  * Uploads (and replaces) a project's thumbnail image.
- * If an old thumbnail image exists, it is deleted from Cloudinary.
+ * If an old thumbnail image exists, it is deleted from storage.
  *
- * @param {string} projectId - MongoDB _id of the project
+ * @param {string} projectId - _id of the project
  * @param {object} file - Multer file object
  * @param {string} [alt] - Optional alt text
  * @returns {Promise<object>} The updated project document
@@ -78,22 +78,57 @@ const uploadThumbnailImage = async (projectId, file, alt) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/thumbnail`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/thumbnail`, file.mimetype);
   
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload image to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload image to storage");
   }
 
   const previousThumbnailUrl = project.media?.thumbnailImage?.url;
 
   if (!project.media) project.media = {};
-  project.media.thumbnailImage = { url: cloudinaryResponse.secure_url, alt: alt || "" };
-  await project.save();
+  project.media.thumbnailImage = { url: storageResponse.secure_url, alt: alt || "" };
+  project = await saveProject(project);
 
-  if (previousThumbnailUrl && previousThumbnailUrl.includes("cloudinary.com")) {
-    await deleteFromCloudinary(previousThumbnailUrl, "image");
+  if (previousThumbnailUrl && isStorageUrl(previousThumbnailUrl)) {
+    await deleteFromStorage(previousThumbnailUrl);
+  }
+
+  return project;
+};
+
+/**
+ * Uploads (and replaces) a project's logo image.
+ * The previous logo, if any, is deleted from storage.
+ *
+ * @param {string} projectId
+ * @param {object} file - Multer file object
+ * @param {string} [alt] - Optional alt text
+ * @returns {Promise<object>} The updated project document
+ */
+const uploadLogoImage = async (projectId, file, alt) => {
+  if (!file) {
+    throw new ApiError(400, "No file was uploaded");
+  }
+
+  let project = await getProjectOrThrow(projectId, file);
+
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/logo`, file.mimetype);
+
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload image to storage");
+  }
+
+  const previousLogoUrl = project.media?.logoImage?.url;
+
+  if (!project.media) project.media = {};
+  project.media.logoImage = { url: storageResponse.secure_url, alt: alt || "" };
+  project = await saveProject(project);
+
+  if (previousLogoUrl && isStorageUrl(previousLogoUrl)) {
+    await deleteFromStorage(previousLogoUrl);
   }
 
   return project;
@@ -113,12 +148,12 @@ const uploadGalleryImage = async (projectId, file, meta = {}) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/gallery`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/gallery`, file.mimetype);
   
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload image to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload image to storage");
   }
 
   // Find existing album
@@ -136,14 +171,10 @@ const uploadGalleryImage = async (projectId, file, meta = {}) => {
 
     project.media.gallery.push(album);
 
-    // Re-fetch the newly added album as a Mongoose subdocument
-    album = project.media.gallery.find(
-      (a) => a.albumName === meta.albumName
-    );
   }
 
   album.images.push({
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
     alt: meta.alt || "",
     caption: meta.caption || "",
     displayOrder:
@@ -152,7 +183,7 @@ const uploadGalleryImage = async (projectId, file, meta = {}) => {
         : album.images.length,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -171,22 +202,22 @@ const uploadVideo = async (projectId, file, meta = {}) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/videos`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/videos`, file.mimetype);
   
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload video to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload video to storage");
   }
 
   project.videos.push({
     title: meta.title || "",
     type: "upload",
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
     displayOrder: meta.displayOrder !== undefined ? Number(meta.displayOrder) : project.videos.length,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -205,21 +236,21 @@ const uploadFloorPlan = async (projectId, file, meta = {}) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/floorplans`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/floorplans`, file.mimetype);
   
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload floor plan to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload floor plan to storage");
   }
 
   project.floorPlans.push({
     title: meta.title || "",
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
     displayOrder: meta.displayOrder !== undefined ? Number(meta.displayOrder) : project.floorPlans.length,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -237,20 +268,20 @@ const uploadBrochure = async (projectId, file, title) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/brochures`);
-  
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload brochure to Cloudinary");
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/brochures`, file.mimetype);
+
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload brochure to storage");
   }
 
   project.brochures.push({
     title: title || "",
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
@@ -269,30 +300,27 @@ const uploadLegalDocument = async (projectId, file, title) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  // Uploaded as "raw" (not "auto") because Cloudinary resolves PDFs under
-  // "auto" to an image-delivery resource, which its PDF/ZIP access
-  // restrictions block from being viewed directly.
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/legal`, "raw");
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/legal`, file.mimetype);
 
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload legal document to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload legal document to storage");
   }
 
   project.legalDocuments.push({
     title: title || "",
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
   });
 
-  await project.save();
+  project = await saveProject(project);
 
   return project;
 };
 
 /**
  * Uploads (and replaces) a project's RERA certificate.
- * The previous certificate file, if any, is deleted from Cloudinary.
+ * The previous certificate file, if any, is deleted from storage.
  *
  * @param {string} projectId
  * @param {object} file - Multer file object (from uploads/temp/)
@@ -303,25 +331,25 @@ const uploadReraCertificate = async (projectId, file) => {
     throw new ApiError(400, "No file was uploaded");
   }
 
-  const project = await getProjectOrThrow(projectId, file);
+  let project = await getProjectOrThrow(projectId, file);
 
-  const cloudinaryResponse = await uploadOnCloudinary(file.path, `portfolio-cms/projects/${projectId}/rera`);
+  const storageResponse = await uploadOnStorage(file.path, `projects/${projectId}/rera`, file.mimetype);
 
-  if (!cloudinaryResponse) {
-    throw new ApiError(500, "Failed to upload RERA certificate to Cloudinary");
+  if (!storageResponse) {
+    throw new ApiError(500, "Failed to upload RERA certificate to storage");
   }
 
   const previousCertificateUrl = project.rera?.certificate?.url;
 
   if (!project.rera) project.rera = {};
   project.rera.certificate = {
-    url: cloudinaryResponse.secure_url,
+    url: storageResponse.secure_url,
     name: file.originalname || "",
   };
-  await project.save();
+  project = await saveProject(project);
 
-  if (previousCertificateUrl && previousCertificateUrl.includes("cloudinary.com")) {
-    await deleteFromCloudinary(previousCertificateUrl, "image");
+  if (previousCertificateUrl && isStorageUrl(previousCertificateUrl)) {
+    await deleteFromStorage(previousCertificateUrl);
   }
 
   return project;
@@ -330,6 +358,7 @@ const uploadReraCertificate = async (projectId, file) => {
 export {
   uploadCoverImage,
   uploadThumbnailImage,
+  uploadLogoImage,
   uploadGalleryImage,
   uploadVideo,
   uploadFloorPlan,

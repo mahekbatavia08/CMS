@@ -2,9 +2,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import mongoose from "mongoose";
 import connectDB from "../config/db.js";
-import Admin from "../models/Admin.js";
+import { findAdminByEmail, createAdmin } from "../models/Admin.js";
 
 /**
  * One-time seed script to create the first admin user.
@@ -35,14 +34,14 @@ const seedAdmin = async () => {
       );
     }
 
-    const existingAdmin = await Admin.findOne({ email: email.toLowerCase() });
+    const existingAdmin = await findAdminByEmail(email);
 
     if (existingAdmin) {
       console.log(`Admin with email "${email}" already exists. No changes made.`);
       process.exit(0);
     }
 
-    const admin = await Admin.create({ name, email, password });
+    const admin = await createAdmin({ name, email, password });
 
     console.log("Admin user created successfully:");
     console.log(`  Name:  ${admin.name}`);
@@ -50,8 +49,6 @@ const seedAdmin = async () => {
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;
-  } finally {
-    await mongoose.connection.close();
   }
 };
 

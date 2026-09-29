@@ -9,7 +9,8 @@
     "routes",
     "services",
     "utils",
-    "validators"
+    "validators",
+    "supabase"
   ],
   "ignore": [
     "uploads/**",

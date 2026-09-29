@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { FileText, Trash2, Upload } from "lucide-react";
+import { Eye, FileText, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import DocumentUpload from "./DocumentUpload";
@@ -11,6 +11,7 @@ import FloorPlanUpload from "./FloorPlanUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PROJECT_SECTIONS } from "@/constants/projectSections";
+import { getImageUrl } from "@/lib/utils";
 
 const MAX_RERA_SIZE = 20 * 1024 * 1024;
 
@@ -20,6 +21,13 @@ const ReraCertificateUpload = ({ value, onChange }) => {
 
   const existing = value && !(value instanceof File) ? value : null;
   const selectedFile = value instanceof File ? value : null;
+
+  const blobUrl = useMemo(() => (selectedFile ? URL.createObjectURL(selectedFile) : ""), [selectedFile]);
+  useEffect(() => {
+    return () => {
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, [blobUrl]);
 
   const validateAndSet = (file) => {
     if (!file) return;
@@ -85,10 +93,9 @@ const ReraCertificateUpload = ({ value, onChange }) => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`flex h-56 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200
-          ${
-            isDragging
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
-              : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+          ${isDragging
+            ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+            : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800"
           }`}
       >
         <Upload
@@ -125,14 +132,25 @@ const ReraCertificateUpload = ({ value, onChange }) => {
             </div>
           </div>
 
-          <Button
-            type="button"
-            variant="destructive"
-            size="icon"
-            onClick={handleRemove}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              title="View"
+              render={<a href={blobUrl} target="_blank" rel="noopener noreferrer" />}
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              onClick={handleRemove}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
 
@@ -141,24 +159,30 @@ const ReraCertificateUpload = ({ value, onChange }) => {
           <div className="flex items-center gap-3">
             <FileText className="h-8 w-8 text-red-500" />
 
-            <a
-              href={existing.url}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium text-slate-900 hover:underline dark:text-slate-100"
-            >
-              {existing.name || "View uploaded RERA certificate"}
-            </a>
+            <p className="font-medium text-slate-900 dark:text-slate-100">
+              {existing.name || "RERA certificate"}
+            </p>
           </div>
 
-          <Button
-            type="button"
-            variant="destructive"
-            size="icon"
-            onClick={handleRemove}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              title="View"
+              render={<a href={getImageUrl(existing.url)} target="_blank" rel="noopener noreferrer" />}
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              onClick={handleRemove}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
     </div>
@@ -174,8 +198,10 @@ const MediaInformationForm = ({
   showFloorPlans = true,
   showThumbnailImage = false,
   showRera = true,
+  coverAspectRatio = "16/9",
+  thumbnailAspectRatio = "16/9",
 }) => {
-  const { control } = useFormContext();
+  const { control, register } = useFormContext();
 
   return (
     <Card>
@@ -185,7 +211,7 @@ const MediaInformationForm = ({
 
       <CardContent className="space-y-8">
         {/* Cover Image */}
-        <div id={PROJECT_SECTIONS.cover.id}>
+        <div id={PROJECT_SECTIONS.cover.id} className="max-w-sm">
           <Controller
             name="media.coverImage"
             control={control}
@@ -194,6 +220,7 @@ const MediaInformationForm = ({
                 label={thumbnailLabel}
                 value={field.value}
                 onChange={field.onChange}
+                aspectRatio={coverAspectRatio}
               />
             )}
           />
@@ -209,6 +236,7 @@ const MediaInformationForm = ({
                 label="Thumbnail Image"
                 value={field.value}
                 onChange={field.onChange}
+                aspectRatio={thumbnailAspectRatio}
               />
             )}
           />
@@ -249,6 +277,21 @@ const MediaInformationForm = ({
               render={({ field }) => (
                 <FloorPlanUpload value={field.value} onChange={field.onChange} />
               )}
+            />
+          </div>
+        )}
+
+        {/* RERA Number */}
+        {showRera && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              RERA Number
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. PR/GJ/SURAT/SURAT CITY/..."
+              {...register("rera.number")}
+              className="flex h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
             />
           </div>
         )}

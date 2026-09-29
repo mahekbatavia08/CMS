@@ -60,12 +60,21 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+// Uploaded PDFs are shown inside the map skin's iframe (client origin), so
+// drop helmet's anti-framing headers for static upload files only.
+const allowFraming = (req, res, next) => {
+  res.removeHeader("X-Frame-Options");
+  res.removeHeader("Content-Security-Policy");
+  next();
+};
 app.use(
   "/projects",
+  allowFraming,
   express.static(path.join(process.cwd(), "uploads", "projects")),
 );
 app.use(
   "/uploads",
+  allowFraming,
   express.static(path.join(process.cwd(), "uploads")),
 );
 

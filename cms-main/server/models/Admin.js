@@ -1,73 +1,88 @@
-import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import supabase, { unwrap } from "../config/supabase.js";
+import { newObjectId, isValidObjectId } from "../utils/objectId.js";
 
-const { Schema, model } = mongoose;
-
-const adminSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-      minlength: 6,
-      select: false, // Never return password by default in queries
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  {
-    timestamps: true,
-  },
-);
+const TABLE = "admins";
 
 /**
- * Hash the password before saving, but only if it was modified
- * (prevents re-hashing an already-hashed password on unrelated updates).
+ * Row (snake_case) -> API shape (same keys the Mongoose model returned).
+ * Password is only included when `withPassword` is true.
  */
-adminSchema.pre("save", async function hashPassword(next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
+const toAdmin = (row, withPassword = false) => {
+  if (!row) return null;
+  const admin = {
+    _id: row.id,
+    name: row.name,
+    email: row.email,
+    isActive: row.is_active,
+    createdAt: row.created_at ? new Date(row.created_at).toISOString() : undefined,
+    updatedAt: row.updated_at ? new Date(row.updated_at).toISOString() : undefined,
+  };
+  if (withPassword) admin.password = row.password;
+  return admin;
+};
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+/** Strips the password (replacement for the old toJSON transform). */
+const toAdminJSON = (admin) => {
+  if (!admin) return admin;
+  const { password, ...rest } = admin;
+  return rest;
+};
 
-/**
- * Compares a plaintext candidate password against the stored hashed password.
- *
- * @param {string} candidatePassword - Plaintext password to verify
- * @returns {Promise<boolean>} Whether the password matches
- */
-adminSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+const findAdminByEmail = async (email, { withPassword = false } = {}) => {
+  const row = unwrap(
+    await supabase
+      .from(TABLE)
+      .select("*")
+      .eq("email", String(email).toLowerCase().trim())
+      .maybeSingle(),
+  );
+  return toAdmin(row, withPassword);
+};
+
+const findAdminById = async (id) => {
+  if (!isValidObjectId(String(id))) return null;
+  const row = unwrap(
+    await supabase.from(TABLE).select("*").eq("id", String(id)).maybeSingle(),
+  );
+  return toAdmin(row);
 };
 
 /**
- * Ensures the password field never leaks even if a query explicitly
- * selects it, by stripping it out whenever the document is serialized.
+ * Creates an admin, hashing the password (replacement for the pre("save") hook).
  */
-adminSchema.set("toJSON", {
-  transform: (doc, ret) => {
-    delete ret.password;
-    return ret;
-  },
-});
+const createAdmin = async ({ name, email, password, isActive = true }) => {
+  if (!name || !String(name).trim()) throw new Error("Name is required");
+  if (!email || !String(email).trim()) throw new Error("Email is required");
+  if (!password) throw new Error("Password is required");
+  if (String(password).length < 6) {
+    throw new Error("Password must be at least 6 characters");
+  }
 
-const Admin = model("Admin", adminSchema);
+  const salt = await bcrypt.genSalt(10);
+  const hashed = await bcrypt.hash(String(password), salt);
 
-export default Admin;
+  const row = unwrap(
+    await supabase
+      .from(TABLE)
+      .insert({
+        id: newObjectId(),
+        name: String(name).trim(),
+        email: String(email).toLowerCase().trim(),
+        password: hashed,
+        is_active: isActive,
+      })
+      .select("*")
+      .single(),
+  );
+  return toAdmin(row);
+};
+
+/**
+ * Compares a plaintext candidate password against the stored hash.
+ * `admin` must have been loaded with { withPassword: true }.
+ */
+const comparePassword = async (admin, candidatePassword) =>
+  bcrypt.compare(candidatePassword, admin.password);
+
+export { findAdminByEmail, findAdminById, createAdmin, comparePassword, toAdminJSON };

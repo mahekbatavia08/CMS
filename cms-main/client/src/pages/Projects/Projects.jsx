@@ -92,20 +92,8 @@ const Projects = () => {
     const endItem = Math.min(currentPage * limit, totalItems);
 
     return (
-        <div className="space-y-8 pb-12">
+        <div className="flex h-full flex-col gap-8">
             <div>
-                <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                    <Link to={ROUTES.PROJECTS} className="hover:text-slate-900 dark:hover:text-slate-100 transition">
-                        Projects
-                    </Link>
-                    {isIndividualRoute && (
-                        <>
-                            <span>/</span>
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">Individual Project</span>
-                        </>
-                    )}
-                </nav>
-
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold dark:text-slate-50">
@@ -115,7 +103,7 @@ const Projects = () => {
                         <p className="mt-1 text-slate-500 dark:text-slate-400">
                             {isIndividualRoute
                                 ? "Manage standalone individual projects."
-                                : "Manage all projects and portfolio tours."}
+                                : "Manage all individual projects and master projects."}
                         </p>
                     </div>
 
@@ -185,7 +173,7 @@ const Projects = () => {
                             </SelectItem>
 
                             <SelectItem value="portfolio">
-                                Portfolio Tours
+                                Master Projects
                             </SelectItem>
 
                             <SelectItem value="individual">
@@ -278,10 +266,11 @@ const Projects = () => {
                     </Link>
                 </div>
             ) : (
-                <>
-                    <ProjectTable projects={projects} />
+                <div className="flex min-h-0 flex-1 flex-col gap-6">
+                    {/* The table scrolls inside itself (both axes), so the page doesn't need a second scrollbar */}
+                    <ProjectTable projects={projects} className="flex-1 min-h-80" />
 
-                    <div className="mt-6 flex flex-col md:flex-row items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 gap-4 shadow-sm transition-colors">
+                    <div className="flex shrink-0 flex-col md:flex-row items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 gap-4 shadow-sm transition-colors">
                         <div className="text-sm text-slate-600 dark:text-slate-300 text-center md:text-left">
                             Showing <strong className="font-semibold text-slate-900 dark:text-slate-100">{startItem}</strong> -{" "}
                             <strong className="font-semibold text-slate-900 dark:text-slate-100">{endItem}</strong> of{" "}
@@ -337,7 +326,7 @@ const Projects = () => {
                             </Button>
                         </div>
                     </div>
-                </>
+                </div>
             )}
         </div>
     );

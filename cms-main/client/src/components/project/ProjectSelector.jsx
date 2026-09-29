@@ -56,11 +56,11 @@ const ProjectSelector = ({ onContinue }) => {
                   <Layers className="h-4 w-4" />
                 </div>
                 <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">
-                  Master Project (Portfolio)
+                  Master Project
                 </h3>
               </div>
               <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Create a Master Project / Portfolio that groups and showcases multiple developments in an interactive Map &amp; Gallery.
+                Create a Master Project that groups and showcases multiple developments in an interactive Map &amp; Gallery.
               </p>
             </div>
           </div>

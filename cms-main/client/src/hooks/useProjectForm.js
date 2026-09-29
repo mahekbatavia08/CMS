@@ -10,8 +10,8 @@ const useProjectForm = () => {
         slug: "",
         tagline: "",
         description: "",
+        area: [],
       },
-
       /************************************************
        * portfolio  = Portfolio Tour
        * individual = Individual Project
@@ -71,10 +71,11 @@ const useProjectForm = () => {
       specifications: [],
 
       /**
-       * RERA Certificate
-       */
+ * RERA Certificate
+ */
       rera: {
         certificate: null,
+        number: "",
       },
 
       media: {

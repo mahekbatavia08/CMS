@@ -1,4 +1,6 @@
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { Map } from "lucide-react";
 import { PROJECT_SECTIONS } from "@/constants/projectSections";
 import { FormProvider } from "react-hook-form";
 
@@ -10,6 +12,8 @@ import LocationInformationForm from "./LocationInformationForm";
 import MediaInformationForm from "./CoverImageForm";
 import VideoInformationForm from "./VideoInformationForm";
 import StickyActionBar from "./StickyActionBar";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
 
 const ProjectForm = ({
   methods,
@@ -21,28 +25,48 @@ const ProjectForm = ({
   title = "Create Project",
   description = "Fill in the project details below.",
   submitButtonText = "Create Project",
+  projectId,
 }) => {
+  const navigate = useNavigate();
+  const parentProjectId = methods.watch("parentProject");
+  const isMasterChildProject = Boolean(parentProjectId) && parentProjectId !== "none";
+
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
         className="space-y-8 pb-24"
       >
-        <div>
-          <h1 className="text-3xl font-bold dark:text-slate-50">
-            {title}
-          </h1>
+        <div className="sticky top-0 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 flex items-start justify-between gap-3 flex-wrap bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <h1 className="text-3xl font-bold dark:text-slate-50">
+              {title}
+            </h1>
 
-          <p className="mt-2 text-slate-500 dark:text-slate-400">
-            {description}
-          </p>
+            <p className="mt-2 text-slate-500 dark:text-slate-400">
+              {description}
+            </p>
+          </div>
+
+          {/* Standalone entry point into Map Skin selection — independent of
+              the Save/Next flow, only shown once the project exists. */}
+          {projectId && (
+            <Button
+              type="button"
+              onClick={() => navigate(ROUTES.PROJECT_MAP_SKIN.replace(":id", projectId))}
+              className="flex items-center gap-2 cursor-pointer shrink-0"
+            >
+              <Map className="h-4 w-4" />
+              <span>Select Map Skin</span>
+            </Button>
+          )}
         </div>
 
         <div id={PROJECT_SECTIONS.general.id}>
           <GeneralInformationForm />
         </div>
 
-        <TagsFiltersForm />
+        {isMasterChildProject && <TagsFiltersForm />}
 
         <SpecificationsForm />
 
@@ -65,7 +89,7 @@ const ProjectForm = ({
         <StickyActionBar
           isSubmitting={isSubmitting}
           submitButtonText={submitButtonText}
-          hideSubmit
+          hideSubmit={!!onNext}
           onBack={onBack}
           onNext={
             onNext

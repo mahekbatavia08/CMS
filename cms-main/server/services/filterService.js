@@ -1,5 +1,4 @@
-import FilterValue from "../models/FilterValue.js";
-import { escapeRegex } from "../utils/escapeRegex.js";
+import { findSuggestions, incrementValue } from "../models/FilterValue.js";
 
 
 /**
@@ -9,29 +8,7 @@ import { escapeRegex } from "../utils/escapeRegex.js";
  * Get autocomplete suggestions
  */
 export const getSuggestions = async (type, query = "") => {
-    const filters = { type };
-
-    if (query.trim()) {
-        filters.value = {
-            $regex: escapeRegex(query.trim()),
-            $options: "i",
-        };
-    }
-
-    const suggestions = await FilterValue.find(filters)
-        .sort({
-            usageCount: -1,
-            value: 1,
-        })
-        .limit(10)
-        .select({
-            _id: 0,
-            value: 1,
-            usageCount: 1,
-        })
-        .lean();
-
-    return suggestions;
+    return findSuggestions(type, query.trim());
 };
 
 /**
@@ -50,22 +27,7 @@ export const syncFilterValues = async (type, values) => {
 
         if (!cleanedValue) continue;
 
-        await FilterValue.findOneAndUpdate(
-            {
-                type,
-                value: cleanedValue,
-            },
-            {
-                $inc: {
-                    usageCount: 1,
-                },
-            },
-            {
-                upsert: true,
-                new: true,
-                setDefaultsOnInsert: true,
-            }
-        );
+        await incrementValue(type, cleanedValue);
     }
 };
 

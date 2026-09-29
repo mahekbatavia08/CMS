@@ -65,7 +65,7 @@ const VideoInformationForm = () => {
             </h3>
 
             <p className="mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
-              Store Google Drive video links instead
+              Store YouTube video links instead
               of uploading video files to the server.
             </p>
 
@@ -132,11 +132,11 @@ const VideoInformationForm = () => {
 
                   <div className="space-y-2 md:col-span-2">
                     <Label className="text-slate-700 dark:text-slate-300">
-                      Google Drive Video URL
+                      YouTube Video URL
                     </Label>
 
                     <Input
-                      placeholder="https://drive.google.com/file/d/..."
+                      placeholder="https://www.youtube.com/watch?v=..."
                       {...register(
                         `videos.${index}.url`
                       )}
@@ -144,7 +144,7 @@ const VideoInformationForm = () => {
 
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       Example:
-                      https://drive.google.com/file/d/FILE_ID/view
+                      https://www.youtube.com/watch?v=VIDEO_ID
                     </p>
                   </div>
 

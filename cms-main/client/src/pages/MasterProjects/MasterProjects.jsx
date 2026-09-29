@@ -11,7 +11,7 @@ import {
   Building2,
   Calendar,
   Loader2,
-  Map,
+  Eye,
   Share2,
   Search,
 } from "lucide-react";
@@ -41,7 +41,7 @@ const DeletePortfolioButton = ({ portfolio }) => {
       project={portfolio}
       isPortfolio={true}
       onDeleted={handleDeleted}
-      triggerClassName="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/15 hover:bg-red-500/80 text-white/80 hover:text-white backdrop-blur-sm border border-white/20 transition-all duration-150 cursor-pointer shrink-0"
+      triggerClassName="inline-flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400 transition-all duration-150 cursor-pointer shrink-0"
     />
   );
 };
@@ -209,12 +209,8 @@ const MasterProjects = () => {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* Breadcrumb & Header */}
+      {/* Header */}
       <div>
-        <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-          <span className="font-semibold text-slate-900 dark:text-slate-100">Master Project</span>
-        </nav>
-
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold dark:text-slate-50">Master Projects</h1>
@@ -229,7 +225,7 @@ const MasterProjects = () => {
             <Link to={`${ROUTES.PROJECT_CREATE}?type=portfolio`}>
               <Button className="flex items-center gap-2 bg-black hover:bg-slate-800 text-white dark:bg-white dark:text-black dark:hover:bg-slate-200">
                 <Plus size={18} />
-                <span>Create Project</span>
+                <span>Create Master Project</span>
               </Button>
             </Link>
           </div>
@@ -263,10 +259,10 @@ const MasterProjects = () => {
           <Layers className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
           <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-200">No Portfolios Found</h2>
           <p className="mt-2 text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            Create your first Master Project / Portfolio Tour to start organizing projects into structured portfolios.
+            Create your first Master Project to start organizing projects into structured portfolios.
           </p>
           <Link to={ROUTES.PROJECT_CREATE} className="mt-6 inline-block">
-            <Button>Create Master Portfolio</Button>
+            <Button>Create Master Project</Button>
           </Link>
         </div>
       ) : filteredPortfolios.length === 0 ? (
@@ -354,12 +350,9 @@ const MasterProjects = () => {
 
                     {/* Project name overlay */}
                     <div className="absolute bottom-3 right-3" style={{ left: resolvedLogo ? "52px" : "12px" }}>
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow">
-                          {portfolio.general?.projectName || "Untitled Portfolio"}
-                        </h3>
-                        <DeletePortfolioButton portfolio={portfolio} />
-                      </div>
+                      <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow">
+                        {portfolio.general?.projectName || "Untitled Portfolio"}
+                      </h3>
                       {(portfolio.general?.builderName || portfolio.general?.projectName) && (
                         <p className="text-white/70 text-xs mt-0.5 flex items-center gap-1">
                           <Building2 className="h-3 w-3 shrink-0" />
@@ -378,7 +371,9 @@ const MasterProjects = () => {
                     )}
 
                     {/* Date Bar */}
-                    <div className="flex items-center justify-end text-xs text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                      <DeletePortfolioButton portfolio={portfolio} />
+
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>
@@ -397,15 +392,15 @@ const MasterProjects = () => {
                         className="w-full flex items-center justify-center gap-1 text-xs font-semibold cursor-pointer"
                         variant="outline"
                       >
-                        <Map className="h-3.5 w-3.5" />
-                        <span>Edit Project</span>
+                        <FolderKanban className="h-3.5 w-3.5" />
+                        <span>View Projects</span>
                       </Button>
 
                       <Button
                         onClick={() => navigate(ROUTES.PROJECT_MAP_PREVIEW.replace(":id", portfolio._id), { state: { from: ROUTES.PROJECTS_MASTER } })}
                         className="w-full flex items-center justify-center gap-1 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white cursor-pointer shadow-sm px-2"
                       >
-                        <Map className="h-3.5 w-3.5" />
+                        <Eye className="h-3.5 w-3.5" />
                         <span>Preview</span>
                       </Button>
                     </div>

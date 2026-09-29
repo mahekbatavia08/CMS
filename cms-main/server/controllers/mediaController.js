@@ -3,6 +3,7 @@ import sendSuccess from "../utils/apiResponse.js";
 import {
   uploadCoverImage,
   uploadThumbnailImage,
+  uploadLogoImage,
   uploadGalleryImage,
   uploadVideo,
   uploadFloorPlan,
@@ -39,6 +40,22 @@ const uploadThumbnail = asyncHandler(async (req, res) => {
   );
 
   sendSuccess(res, 200, "Thumbnail image uploaded successfully", {
+    project,
+  });
+});
+
+/**
+ * @route   POST /api/projects/:id/media/logo
+ * @access  Private
+ */
+const uploadLogo = asyncHandler(async (req, res) => {
+  const project = await uploadLogoImage(
+    req.params.id,
+    req.file,
+    req.body.alt
+  );
+
+  sendSuccess(res, 200, "Logo image uploaded successfully", {
     project,
   });
 });
@@ -160,6 +177,7 @@ const uploadProjectRera = asyncHandler(async (req, res) => {
 export {
   uploadCover,
   uploadThumbnail,
+  uploadLogo,
   uploadGallery,
   uploadProjectVideo,
   uploadProjectFloorPlan,

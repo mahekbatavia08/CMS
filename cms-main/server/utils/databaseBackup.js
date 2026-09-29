@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import Project from "../models/Project.js";
+import { findAllActiveProjects } from "../models/Project.js";
 
 const BACKUP_DIR = path.join(process.cwd(), "Local-Backup");
 const BACKUP_FILE = path.join(BACKUP_DIR, "projects.json");
@@ -232,7 +232,7 @@ export const backupProjects = async () => {
     await fs.mkdir(INDIVIDUAL_DIR, { recursive: true });
     await fs.mkdir(PORTFOLIO_DIR, { recursive: true });
 
-    const projects = await Project.find({ "status.isDeleted": { $ne: true } }).lean();
+    const projects = await findAllActiveProjects();
 
     // 1. Full raw backup to preserve existing functionality
     await fs.writeFile(BACKUP_FILE, JSON.stringify(projects, null, 2));

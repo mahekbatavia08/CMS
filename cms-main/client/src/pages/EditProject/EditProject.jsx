@@ -146,6 +146,21 @@ const EditProject = () => {
     }
 
     try {
+      // getValues() hands out the live form sections by reference, and the
+      // media / rera sections are modified below to strip out files that are
+      // uploaded separately. Work on copies so the form keeps showing the
+      // images the user just picked instead of having them wiped mid-upload.
+      const formMedia = data.media;
+      const formRera = data.rera;
+      const formBrochures = data.brochures;
+      const formLegalDocuments = data.legalDocuments;
+      const formFloorPlans = data.floorPlans;
+      data = {
+        ...data,
+        media: data.media ? { ...data.media } : data.media,
+        rera: data.rera ? { ...data.rera } : data.rera,
+      };
+
       // Thumbnail & Cover
       const coverImage = data.media?.coverImage instanceof File ? data.media.coverImage : (data.media?.coverImage?.file instanceof File ? data.media.coverImage.file : null);
       const thumbnailImage = data.media?.thumbnailImage instanceof File ? data.media.thumbnailImage : (data.media?.thumbnailImage?.file instanceof File ? data.media.thumbnailImage.file : null);
@@ -224,46 +239,83 @@ const EditProject = () => {
 
         const newImages = (album.images || []).filter((img) => img.file);
 
-        await Promise.all(
-          newImages.map((image, index) =>
-            projectService.uploadGalleryImage(id, image.file, {
-              albumName: safeAlbumName,
-              caption: image.caption || "",
-              alt: image.alt || "",
-              displayOrder: index,
-            })
-          )
-        );
+        // One at a time: each upload read-modify-saves the same project
+        // document, so parallel uploads overwrite each other and drop images.
+        for (const [index, image] of newImages.entries()) {
+          await projectService.uploadGalleryImage(id, image.file, {
+            albumName: safeAlbumName,
+            caption: image.caption || "",
+            alt: image.alt || "",
+            displayOrder: index,
+          });
+        }
       }
 
-      // Upload new brochures
+      // Upload new brochures (one at a time: see gallery upload note above)
       const newBrochures = brochures.filter((doc) => doc.file);
-      await Promise.all(
-        newBrochures.map((brochure) =>
-          projectService.uploadBrochure(id, brochure.file, brochure.title)
-        )
-      );
+      for (const brochure of newBrochures) {
+        await projectService.uploadBrochure(id, brochure.file, brochure.title);
+      }
 
-      // Upload new legal documents
+      // Upload new legal documents (one at a time: see gallery upload note above)
       const newLegalDocs = legalDocuments.filter((doc) => doc.file);
-      await Promise.all(
-        newLegalDocs.map((document) =>
-          projectService.uploadLegalDocument(id, document.file, document.title)
-        )
-      );
+      for (const document of newLegalDocs) {
+        await projectService.uploadLegalDocument(id, document.file, document.title);
+      }
 
       // Upload new RERA certificate
       if (reraCertificateFile) {
         await projectService.uploadReraCertificate(id, reraCertificateFile);
       }
 
-      // Upload new floor plans
+      // Upload new floor plans (one at a time: see gallery upload note above)
       const newFloorPlans = floorPlans.filter((doc) => doc.file);
-      await Promise.all(
-        newFloorPlans.map((floorPlan) =>
-          projectService.uploadFloorPlan(id, floorPlan.file, floorPlan.title)
-        )
+      for (const floorPlan of newFloorPlans) {
+        await projectService.uploadFloorPlan(id, floorPlan.file, floorPlan.title);
+      }
+
+      // Swap the just-uploaded files in the form for their saved server
+      // copies, so the images stay visible and are not re-uploaded by the
+      // next autosave. Skipped for any field the user has changed meanwhile.
+      const hasUploadedGallery = galleryAlbums.some((album) =>
+        (album.images || []).some((img) => img.file)
       );
+      const hasUploadedBrochures = newBrochures.length > 0;
+      const hasUploadedLegalDocs = newLegalDocs.length > 0;
+      const hasUploadedFloorPlans = newFloorPlans.length > 0;
+      if (
+        coverImage || thumbnailImage || hasUploadedGallery || reraCertificateFile ||
+        hasUploadedBrochures || hasUploadedLegalDocs || hasUploadedFloorPlans
+      ) {
+        try {
+          const savedRes = await projectService.getProject(id);
+          const saved = savedRes.data.project;
+
+          if (coverImage && methods.getValues("media.coverImage") === formMedia?.coverImage) {
+            methods.setValue("media.coverImage", saved.media?.coverImage ?? null);
+          }
+          if (thumbnailImage && methods.getValues("media.thumbnailImage") === formMedia?.thumbnailImage) {
+            methods.setValue("media.thumbnailImage", saved.media?.thumbnailImage ?? null);
+          }
+          if (hasUploadedGallery && methods.getValues("media.gallery") === formMedia?.gallery) {
+            methods.setValue("media.gallery", saved.media?.gallery || []);
+          }
+          if (reraCertificateFile && methods.getValues("rera.certificate") === formRera?.certificate) {
+            methods.setValue("rera.certificate", saved.rera?.certificate ?? null);
+          }
+          if (hasUploadedBrochures && methods.getValues("brochures") === formBrochures) {
+            methods.setValue("brochures", saved.brochures || []);
+          }
+          if (hasUploadedLegalDocs && methods.getValues("legalDocuments") === formLegalDocuments) {
+            methods.setValue("legalDocuments", saved.legalDocuments || []);
+          }
+          if (hasUploadedFloorPlans && methods.getValues("floorPlans") === formFloorPlans) {
+            methods.setValue("floorPlans", saved.floorPlans || []);
+          }
+        } catch (syncError) {
+          console.error("Failed to refresh uploaded images:", syncError);
+        }
+      }
 
       // Invalidate React Query caches so updated project appears everywhere
       await queryClient.invalidateQueries();
@@ -287,6 +339,10 @@ const EditProject = () => {
     } catch (error) {
       if (silent) {
         console.error("Autosave failed:", error);
+        // A failed save or upload leaves new floor plans unsaved; say so.
+        if ((methods.getValues("floorPlans") || []).some((doc) => doc.file)) {
+          toast.error(`Floor plan upload failed: ${error?.response?.data?.message || error.message}`);
+        }
       } else {
         const responseData = error?.response?.data;
 
@@ -315,7 +371,7 @@ const EditProject = () => {
     }
   };
 
-  const onSubmit = (data) => handleSave(data, { silent: true });
+  const onSubmit = (data) => handleSave(data);
   const onNext = (data) => handleSave(data, { navigateToMapSkin: true });
 
   const handleBack = () => {
@@ -376,7 +432,12 @@ const EditProject = () => {
             {projectName}
           </Link>
         ) : (
-          projectName
+          <Link
+            to={`${ROUTES.PROJECTS_INDIVIDUAL}?highlight=${id}`}
+            className="hover:text-slate-900 dark:hover:text-slate-100 hover:underline transition"
+          >
+            {projectName}
+          </Link>
         )}
       </span>
       <span>/</span>
@@ -395,7 +456,7 @@ const EditProject = () => {
           onSubmit={onSubmit}
           onBack={handleBack}
           isSubmitting={isSubmitting}
-          hideSubmit
+          projectId={id}
         />
       </div>
     );
@@ -407,13 +468,14 @@ const EditProject = () => {
       <ProjectForm
         methods={methods}
         onSubmit={onSubmit}
-        onNext={onNext}
+        onNext={parentProjectId ? undefined : onNext}
         onBack={handleBack}
         isSubmitting={isSubmitting}
         isNextSubmitting={isNextSubmitting}
         title="Edit Project"
         description="Update the project details below."
         submitButtonText="Save Changes"
+        projectId={parentProjectId ? undefined : id}
       />
     </div>
   );

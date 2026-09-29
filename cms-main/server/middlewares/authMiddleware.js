@@ -1,7 +1,7 @@
 import ApiError from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { verifyToken } from "../utils/jwt.js";
-import Admin from "../models/Admin.js";
+import { findAdminById } from "../models/Admin.js";
 
 /**
  * Protects routes by requiring a valid JWT in the Authorization header,
@@ -26,7 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Not authorized, invalid or expired token");
   }
 
-  const admin = await Admin.findById(decoded.id);
+  const admin = await findAdminById(decoded.id);
 
   if (!admin) {
     throw new ApiError(401, "Not authorized, admin no longer exists");

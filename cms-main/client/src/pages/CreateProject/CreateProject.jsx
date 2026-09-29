@@ -67,15 +67,21 @@ const CreateProject = () => {
         data.rera?.certificate instanceof File ? data.rera.certificate : null;
 
       // Remove File objects before sending JSON
+      // Keep items an autosaved draft already uploaded (they have server
+      // paths, not File objects), or this final save would erase them.
       if (data.media) {
         data.media.coverImage = null;
         data.media.thumbnailImage = null;
-        data.media.gallery = [];
+        data.media.gallery = galleryAlbums.map((album, albumIndex) => ({
+          ...album,
+          albumName: String(album.albumName || "").trim() || `Album ${albumIndex + 1}`,
+          images: (album.images || []).filter((img) => !img.file),
+        }));
       }
 
-      data.brochures = [];
-      data.legalDocuments = [];
-      data.floorPlans = [];
+      data.brochures = brochures.filter((doc) => !doc.file && doc.url);
+      data.legalDocuments = legalDocuments.filter((doc) => !doc.file && doc.url);
+      data.floorPlans = floorPlans.filter((doc) => !doc.file && doc.originalPdf);
       if (data.rera) {
         data.rera.certificate = null;
       }
@@ -88,18 +94,25 @@ const CreateProject = () => {
         delete data.general.customProjectType;
       }
 
+      // Builder Name is hidden for master-child individual projects, so it's
+      // never filled in; default it so the required-field validator passes.
+      if (data.general && !data.general.builderName) {
+        data.general.builderName = data.general.projectName;
+      }
+
       // Intercept custom category
       if (data.filters?.customCategory) {
         data.filters.category = [data.filters.customCategory];
         delete data.filters.customCategory;
       }
 
-      // If an autosaved draft already exists for this individual project,
-      // update it instead of creating a duplicate record.
-      const response = individualProjectId
-        ? await projectService.updateProject(individualProjectId, data)
+      // If an autosaved draft already exists for this project, update it
+      // instead of creating a duplicate record.
+      const draftId = selectedType === "portfolio" ? portfolioProjectId : individualProjectId;
+      const response = draftId
+        ? await projectService.updateProject(draftId, data)
         : await projectService.createProject(data);
-      const project = response.data?.project || (individualProjectId ? { _id: individualProjectId } : undefined);
+      const project = response.data?.project || (draftId ? { _id: draftId } : undefined);
 
       // Upload cover image
       if (coverImage) {
@@ -111,52 +124,46 @@ const CreateProject = () => {
         await projectService.uploadThumbnailImage(project._id, thumbnailImage);
       }
 
-      // Upload gallery albums and images
+      // Upload gallery albums and images (one at a time: each upload
+      // read-modify-saves the same project document, so parallel uploads
+      // overwrite each other and drop images)
       for (const [albumIndex, album] of galleryAlbums.entries()) {
         const safeAlbumName = String(album.albumName || "").trim() || `Album ${albumIndex + 1}`;
         const images = album.images || [];
         const newImages = images.filter((img) => img.file);
 
-        await Promise.all(
-          newImages.map((image, index) =>
-            projectService.uploadGalleryImage(project._id, image.file, {
-              albumName: safeAlbumName,
-              caption: image.caption || "",
-              alt: image.alt || "",
-              displayOrder: index,
-            })
-          )
-        );
+        for (const [index, image] of newImages.entries()) {
+          await projectService.uploadGalleryImage(project._id, image.file, {
+            albumName: safeAlbumName,
+            caption: image.caption || "",
+            alt: image.alt || "",
+            displayOrder: index,
+          });
+        }
       }
 
-      // Upload brochures
+      // Upload brochures (one at a time: see gallery upload note above)
       const newBrochures = brochures.filter((doc) => doc.file);
-      await Promise.all(
-        newBrochures.map((brochure) =>
-          projectService.uploadBrochure(project._id, brochure.file, brochure.title)
-        )
-      );
+      for (const brochure of newBrochures) {
+        await projectService.uploadBrochure(project._id, brochure.file, brochure.title);
+      }
 
-      // Upload legal documents
+      // Upload legal documents (one at a time: see gallery upload note above)
       const newLegalDocs = legalDocuments.filter((doc) => doc.file);
-      await Promise.all(
-        newLegalDocs.map((document) =>
-          projectService.uploadLegalDocument(project._id, document.file, document.title)
-        )
-      );
+      for (const document of newLegalDocs) {
+        await projectService.uploadLegalDocument(project._id, document.file, document.title);
+      }
 
       // Upload RERA certificate
       if (reraCertificateFile) {
         await projectService.uploadReraCertificate(project._id, reraCertificateFile);
       }
 
-      // Upload floor plans
+      // Upload floor plans (one at a time: see gallery upload note above)
       const newFloorPlans = floorPlans.filter((doc) => doc.file);
-      await Promise.all(
-        newFloorPlans.map((floorPlan) =>
-          projectService.uploadFloorPlan(project._id, floorPlan.file, floorPlan.title)
-        )
-      );
+      for (const floorPlan of newFloorPlans) {
+        await projectService.uploadFloorPlan(project._id, floorPlan.file, floorPlan.title);
+      }
 
       // Invalidate React Query caches so new project appears everywhere
       await queryClient.invalidateQueries();
@@ -164,7 +171,7 @@ const CreateProject = () => {
       if (!navigateToMapSkin) {
         toast.success(response.message || "Project created successfully.");
       }
-      const createdId = project?._id || response.data?.project?._id || response.data?._id || individualProjectId;
+      const createdId = project?._id || response.data?.project?._id || response.data?._id || draftId;
       methods.reset({}, { keepValues: true });
 
       const targetPortfolio = portfolioId || data.parentProject;
@@ -462,6 +469,12 @@ const CreateProject = () => {
         delete data.general.customProjectType;
       }
 
+      // Builder Name is hidden for master-child individual projects, so it's
+      // never filled in; default it so the required-field validator passes.
+      if (data.general && !data.general.builderName) {
+        data.general.builderName = data.general.projectName;
+      }
+
       if (data.filters?.customCategory) {
         data.filters = { ...data.filters, category: [data.filters.customCategory] };
         delete data.filters.customCategory;
@@ -505,6 +518,10 @@ const CreateProject = () => {
       }
     } catch (error) {
       console.error("Autosave failed:", error);
+      // A failed save or upload leaves new floor plans unsaved; say so.
+      if ((methods.getValues("floorPlans") || []).some((doc) => doc.file)) {
+        toast.error(`Floor plan upload failed: ${error?.response?.data?.message || error.message}`);
+      }
     }
   };
 
@@ -601,9 +618,8 @@ const CreateProject = () => {
         {breadcrumb}
         <PortfolioTourForm
           methods={methods}
-          onSubmit={() => { }}
+          onSubmit={onSubmit}
           isSubmitting={isSubmitting}
-          hideSubmit
         />
       </div>
     );

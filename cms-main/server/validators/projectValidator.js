@@ -5,6 +5,7 @@ const PROJECT_TYPES = [
   "Commercial",
   "Industrial",
   "Mixed Use",
+  "Portfolio",
 ];
 
 const PROJECT_STATUSES = [
@@ -96,8 +97,8 @@ const generalValidation = (isCreate) => {
 const projectCategoryValidation = (isCreate) => {
   const categoryChain = isCreate
     ? body("projectCategory")
-        .exists()
-        .withMessage("Project category is required")
+      .exists()
+      .withMessage("Project category is required")
     : body("projectCategory").optional({ values: "falsy" });
 
   return [
@@ -397,12 +398,43 @@ const statusValidation = () => [
     ),
 ];
 
+const SKIN_SETTING_KEYS = [
+  "dayNightToggle",
+  "currentFutureToggle",
+  "amenity",
+  "floorplan",
+  "locality",
+  "connectivity",
+  "contact",
+  "location",
+  "brochure",
+  "legal",
+  "photos",
+  "videos",
+  "floorplans",
+  "share",
+  "whatsapp",
+  "vr",
+  "sound",
+  "autoRotate",
+  "fullscreen",
+  "aboutUs",
+  "rera",
+  "specification",
+];
+
 const mapSkinValidation = () => [
   body("mapSkin")
     .optional({ values: "falsy" })
     .isString()
     .withMessage("Map skin must be a string")
     .trim(),
+
+  body(SKIN_SETTING_KEYS.map((key) => `skinSettings.${key}`))
+    .optional()
+    .isBoolean()
+    .withMessage("Skin settings must be true or false")
+    .toBoolean(),
 ];
 
 /**

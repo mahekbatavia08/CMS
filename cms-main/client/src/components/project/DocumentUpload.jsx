@@ -1,9 +1,64 @@
-import { useRef, useState } from "react";
-import { FileText, Trash2, Upload } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Eye, FileText, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { getImageUrl } from "@/lib/utils";
+
+// One row per document: a freshly picked File is previewed through a
+// temporary blob URL (revoked on unmount/removal); a saved document is
+// viewed through its server URL.
+const DocumentRow = ({ document, index, onRemove }) => {
+  const file = document.file || null;
+  const displayName = document.title || file?.name || "Document";
+  const sizeLabel = file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : null;
+
+  const blobUrl = useMemo(() => (file ? URL.createObjectURL(file) : ""), [file]);
+  useEffect(() => {
+    return () => {
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, [blobUrl]);
+
+  const viewUrl = file ? blobUrl : (document.url ? getImageUrl(document.url) : "");
+
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/60">
+      <div className="flex items-center gap-3">
+        <FileText className="h-8 w-8 text-red-500" />
+
+        <div>
+          <p className="font-medium text-slate-900 dark:text-slate-100">
+            {displayName}
+          </p>
+
+          {sizeLabel && (
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {sizeLabel}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        {viewUrl && (
+          <Button
+            variant="outline"
+            size="icon"
+            title="View"
+            render={<a href={viewUrl} target="_blank" rel="noopener noreferrer" />}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+        )}
+
+        <Button type="button" variant="destructive" size="icon" onClick={() => onRemove(index)}>
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
@@ -126,59 +181,9 @@ const DocumentUpload = ({
 
       {value?.length > 0 && (
         <div className="space-y-3">
-          {value.map((document, index) => {
-            const file = document.file || null;
-            const displayName = document.title || file?.name || "Document";
-            const sizeLabel = file
-              ? `${(file.size / 1024 / 1024).toFixed(2)} MB`
-              : null;
-            const viewUrl = !file && document.url ? getImageUrl(document.url) : null;
-
-            return (
-              <div
-                key={index}
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/60"
-              >
-                <div className="flex items-center gap-3">
-                  <FileText className="h-8 w-8 text-red-500" />
-
-                  <div>
-                    {viewUrl ? (
-                      <a
-                        href={viewUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-400"
-                      >
-                        {displayName}
-                      </a>
-                    ) : (
-                      <p className="font-medium text-slate-900 dark:text-slate-100">
-                        {displayName}
-                      </p>
-                    )}
-
-                    {sizeLabel && (
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {sizeLabel}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={() =>
-                    handleRemove(index)
-                  }
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            );
-          })}
+          {value.map((document, index) => (
+            <DocumentRow key={index} document={document} index={index} onRemove={handleRemove} />
+          ))}
         </div>
       )}
     </div>

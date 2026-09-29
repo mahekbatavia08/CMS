@@ -138,7 +138,7 @@ const ImportExportPortfolios = ({ portfolios = [], allProjects = [], onImported 
                 projectName: targetName,
                 builderName: rowBuilder || targetName,
                 slug: generateSlug(targetName),
-                description: `Master Portfolio created for ${targetName}`,
+                description: `Master Project created for ${targetName}`,
               },
               status: {
                 status: "Published",
