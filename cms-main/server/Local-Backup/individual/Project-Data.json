@@ -135,6 +135,12 @@
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_edge/gallery/338eaeb6-1e71-4d95-bf62-33a6b493e35b.jpg",
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_edge/gallery/d2a56967-daa3-4106-899f-140379ace816.jpg",
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_edge/gallery/93e2c3e1-b47b-4485-9481-05d7e3fc7556.jpg"
+      ],
+      "On Site Actual": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc8f8/gallery/1790761330213-e7adc2be4fe1.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc8f8/gallery/1790761331240-edf66584305c.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc8f8/gallery/1790761332469-d76bc149eab0.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc8f8/gallery/1790761333597-f1ca08a4774d.jpeg"
       ]
     },
     "videos": {},
@@ -920,27 +926,33 @@
     ],
     "photos": {
       "Elevation": [
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/ca41ebcc-40e3-4b7d-a28c-96e297f12c34.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/003b404a-8431-4693-8929-07cf60bdd69e.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/8e21c5d4-aa0e-4e35-aa87-b33e33965387.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/33f5d523-eeb5-4347-bf64-749412050535.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/f7dc1845-e2a7-4577-86fd-c6b8652973c6.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/702c476c-f003-4b43-9103-532662de8475.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/6b392d0b-33fd-4676-9b2c-4783fbabd7f2.jpg"
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754126160-6e44203e42ea.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754128000-c683173de0ef.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754129638-048ed4d7e8b0.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754131175-074744b4f320.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754133326-20028270cb04.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754134555-fcc8ac8447aa.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790754136294-17bd47477a7c.jpg"
       ],
       "Amenities": [
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_nirvana/gallery/05f30123-4ef4-4053-8fce-90501e664bd7.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/5cf95cd7-8a03-496b-b726-78f82eee87bc.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/61697527-9ba6-4429-b3e9-84ce9e829466.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/e5107589-3f36-4595-80dc-ac2d11951030.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/4db43667-360e-4491-8656-a6aa49671bf9.jpg",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_nirvana/gallery/4edfee89-c945-4e6b-b4c2-64b2d816953c.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/60c0399d-bec5-4862-9dfd-cc7e78382f0c.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/28071e93-c070-4a9c-afe8-11cd97c790c2.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/b6ca8af5-b142-4eb1-a9f2-1f84fe6363f3.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/db4b5d5d-c0d2-473e-9d8f-629353f8d023.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/79a70828-0472-427e-9900-5b480e858004.jpg",
-        "https://webadmin.sanginigroup.com/UploadFiles/Products/e295618c-5f59-43ea-b81b-3e6e9cf63f00.jpg"
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758406998-ced0a2e9c487.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758408638-f6c6eb9c5f40.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758409974-010593cd102a.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758411197-5d217f497f6d.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758412360-8b96a3370ae2.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758413757-b5eb29f8237b.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758415191-a2cb222bdb4b.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758416418-cd2abc8f9ebd.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758418058-0720e2815690.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758419804-062498bb777b.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758421420-f5af7d8087c0.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758422979-694ec220f934.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758424195-555efea3f1b6.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758425536-7eaf37779870.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758426835-36caf7ecf199.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758428702-5d68660537ad.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758429670-f4845a4e2a3e.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc903/gallery/1790758431168-c867976ef63c.jpg"
       ]
     },
     "videos": {},
@@ -973,7 +985,7 @@
     },
     "location": {
       "text": "Sangini House, Nr. L. P. Savani Academy, Canal Road, Vesu, Surat–395007, Gujarat, India.",
-      "googleMapLink": "",
+      "googleMapLink": "https://maps.app.goo.gl/Quyg8k2vMh2jrwCv6",
       "mapEmbedUrl": ""
     },
     "brochures": [
@@ -986,14 +998,29 @@
       "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/31.png"
     ],
     "photos": {
-      "Photos": [
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/live_photo_2.jpg",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/live_photo_3.jpg",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/live_photo_4.jpg",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/0.png",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/1.png",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/2.jpg",
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_shivanta/6.jpg"
+      "Elevation": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758713072-03ff3188a20c.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758714095-28020b248a84.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758715427-7c4afaee3e93.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758716657-1bd8352e579d.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758717987-e422c17bd1ae.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758719523-21605dd0b0f6.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758758232-3aeb180bd2c1.jpg"
+      ],
+      "Sample Flat": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758782602-002fee203145.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758784096-ca6e9df14ba2.jpg"
+      ],
+      "On Site Actual": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758953898-b9aa22231810.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758955055-dbd6993a19e9.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758956375-cb19c07658db.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758957706-ec547ac0e3aa.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758959241-19dcc19148fa.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758960675-57e63e84f71b.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758962210-bdf4a33eb4c8.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758964014-c64d5db6e030.jpeg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc904/gallery/1790758965897-a884e23e6ceb.jpeg"
       ]
     },
     "videos": {},
@@ -1076,6 +1103,19 @@
       "Pent-House": [
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_skyteria/gallery/bf3352b9-616b-4957-96d8-b6339af91fdc.jpg",
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/sangini_skyteria/gallery/066eb115-5f80-460c-bfb0-99157b2888ca.jpg"
+      ],
+      "Onsite Actual": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760425306-7660b69fac0f.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760426738-3e76739df93c.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760428377-c3edc8189422.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760430013-d83eeadb50bc.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760431342-b28ba4b2ba2d.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760432682-b9cc64b1043e.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760434014-a329c2187aa6.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760435442-5b068e1fef8a.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760436977-7db0b93dfb90.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760438307-b8602f63c8d5.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc905/gallery/1790760439743-d184138cc0ed.jpg"
       ]
     },
     "videos": {},
@@ -1140,8 +1180,22 @@
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/the_identity/gallery/274430b6-c4d4-406c-971d-bb2bace1f27f.jpeg",
         "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/the_identity/gallery/bd737508-add3-4137-a5bb-ea05c8d623ff.jpg"
       ],
-      "Photos": [
-        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/migrated/local/projects/the_identity/gallery/ea2e444e-4f0a-4b24-9b6d-5749874150d0.png"
+      "On Site Actual": [
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760911399-d8a8af0c19e1.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760912844-9948dcb4a7f6.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760914140-9d107afd36b1.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760915392-6544e562bec0.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760916428-3f59dd5387aa.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760917544-16e363f733b3.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760918728-a16fcbdc9169.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760919799-e8ac62525384.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760920728-14efa0f1142f.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760922049-79cbff7b1dd5.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760923285-78225b9b2c29.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760924532-37a4af7c8e7a.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760925863-4aab898589f1.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760927068-d58c51ae629a.jpg",
+        "https://gogisthaxwzpqiynwibc.supabase.co/storage/v1/object/public/cms-media/projects/6aae3d9cb2802ffa789dc906/gallery/1790760928500-dd38ab6aea61.jpg"
       ]
     },
     "videos": {},
@@ -1189,7 +1243,7 @@
     },
     "location": {
       "text": "Nr. L. P. Savani Academy, Canal Road, Vesu, Surat–395007, Gujarat, India.",
-      "googleMapLink": "",
+      "googleMapLink": "https://maps.app.goo.gl/1DLFEHEYYopKCT646",
       "mapEmbedUrl": ""
     },
     "brochures": [
